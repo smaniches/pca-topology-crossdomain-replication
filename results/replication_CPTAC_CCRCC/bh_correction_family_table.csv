@@ -1,0 +1,9 @@
+test,raw_p,BH_adjusted_p,significant_BH_0.05
+GSE81089: Real raw-HVG vs pipeline-symmetric null,0.0005,0.001,True
+GSE81089: Real PCA50 vs pipeline-symmetric null,0.0005,0.001,True
+GSE81089: Real raw-HVG vs Gaussian null,0.002,0.002285714285714286,True
+GSE81089: Real PCA50 vs Gaussian null,0.002,0.002285714285714286,True
+CPTAC-CCRCC: Real raw-HVG vs Gaussian null,0.001996007984031936,0.002285714285714286,True
+CPTAC-CCRCC: Real PCA50 vs Gaussian null,0.003992015968063872,0.003992015968063872,True
+CPTAC-CCRCC: Real raw-HVG vs pipeline-symmetric null,0.0004997501249375312,0.001,True
+CPTAC-CCRCC: Real PCA50 vs pipeline-symmetric null,0.0004997501249375312,0.001,True

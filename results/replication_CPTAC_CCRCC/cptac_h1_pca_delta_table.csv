@@ -1,0 +1,8 @@
+quantity,value
+Real PCA-delta (PCA50 - raw),0.8503265132748403
+Gaussian-null PCA-delta (mean),2.0962692573404467
+Gaussian-null PCA-delta (SD),0.37158479799095673
+Pipeline-null PCA-delta (mean),2.0094042417308122
+Pipeline-null PCA-delta (SD),0.3855554338448024
+Gaussian null >= real (H1 support),True
+Pipeline null >= real (H1 support),True

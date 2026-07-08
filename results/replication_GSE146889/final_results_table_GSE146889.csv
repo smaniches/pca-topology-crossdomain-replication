@@ -1,0 +1,7 @@
+condition,observed_max_H1_persistence,null_model,null_mean,null_sd,z_score,raw_p_value,validation_method
+Real raw HVG,6.203880310058594,Gaussian null (raw),1.0021015625,0.11592629223103794,44.87143207506016,0.001996007984031936,"Monte Carlo Gaussian null, n=500"
+Real raw HVG,6.203880310058594,Pipeline-symmetric null (raw),0.9798308868408203,0.13194812725013114,39.591690553626876,0.0004997501249375312,"Permutation test (per-gene shuffle) + identical pipeline, n=2000"
+Real PCA50,7.56427001953125,Gaussian null (PCA50),3.184006294250488,0.364557623451942,12.015284946738173,0.001996007984031936,"Monte Carlo Gaussian null, n=500"
+Real PCA50,7.56427001953125,Pipeline-symmetric null (PCA50),3.0631333494186403,0.39593998660539165,11.368229586264567,0.0004997501249375312,"Permutation test (per-gene shuffle) + identical pipeline, n=2000"
+Real bottom-variance genes,0.0,Gaussian null (raw),1.0021015625,0.11592629223103794,-8.644299263042408,1.0,"Monte Carlo Gaussian null, n=500"
+Real bottom-variance genes,0.0,Pipeline-symmetric null (raw),0.9798308868408203,0.13194812725013114,-7.4258794517286075,1.0,"Permutation test (per-gene shuffle) + identical pipeline, n=2000"
