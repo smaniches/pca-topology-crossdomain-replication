@@ -1,0 +1,7 @@
+comparison,real_delta,null_delta_mean,null_delta_std,judgment
+rna_gaussian,-0.8932113647460938,2.506906753540039,0.43637028984766596,FOR H1 (null inflation >= real inflation)
+rna_perm,-0.8932113647460938,2.346702956199646,0.508077566306882,FOR H1 (null inflation >= real inflation)
+meth_gaussian_euclidean,0.0,0.0,0.0,FOR H1 (null inflation >= real inflation)
+meth_perm_euclidean,0.0,0.0,0.0,FOR H1 (null inflation >= real inflation)
+meth_gaussian_spectral,-4.0924072265625,-0.7927567991018295,0.17059863606257317,FOR H1 (null inflation >= real inflation)
+meth_perm_spectral,-4.0924072265625,-0.8964957101270556,0.11975212479891756,FOR H1 (null inflation >= real inflation)

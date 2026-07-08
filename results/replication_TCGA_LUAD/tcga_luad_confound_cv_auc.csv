@@ -1,0 +1,7 @@
+space,omics,cv_auc
+raw_hvg,rna,0.9984848484848484
+pca50,rna,0.9984848484848484
+bottom_var,rna,0.9176767676767676
+raw_hvp,meth,0.9333333333333333
+pca35,meth,0.9333333333333333
+bottom_var,meth,0.95
