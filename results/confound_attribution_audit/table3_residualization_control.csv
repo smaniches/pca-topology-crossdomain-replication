@@ -1,0 +1,3 @@
+space,observed_max_H1,z_vs_gaussian,z_vs_permutation,cv_auc
+Full HVG->PCA50 (class-mean intact),4.670711517333984,5.2,5.2,1.0
+Class-mean-residualized HVG->PCA50,3.7305946350097656,31.051039193907194,2.9690130608943712,0.09423076923076924

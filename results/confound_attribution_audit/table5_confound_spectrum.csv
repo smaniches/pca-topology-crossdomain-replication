@@ -1,0 +1,6 @@
+quantity,correlation_with_confound,tier
+PC1,0.865,correlated
+PC2,-0.417,correlated
+PC3,-0.238,free/weak
+1-D confound-direction AUC alone,,identical (AUC=0.9995)
+Loop participants (4 samples),,"all tumor, NOT enriched vs random tumor subset"
