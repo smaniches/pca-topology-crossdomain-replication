@@ -15,4 +15,7 @@ confound_attribution_audit/results_tcga_luad/
 replication_CPTAC_CCRCC/cptac_final_results_table.csv
 replication_GSE146889/GSE146889_GeneCount.tsv.gz
 replication_GSE146889/final_results_table_GSE146889.csv
+replication_TCGA_LUAD/data/
+replication_TCGA_LUAD/tcga_luad_rnaseq_results_table.csv
+replication_TCGA_LUAD/tcga_luad_methylation_results_table.csv
 **/__pycache__/
