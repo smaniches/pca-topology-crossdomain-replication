@@ -4,12 +4,10 @@ import pickle
 import warnings
 warnings.filterwarnings("ignore")
 
-# Load pre-computed diagrams and null distributions
-with open("/Users/melissa/.claude-science/orgs/69d5d859-248d-45c0-9704-fac8fa073e90/artifacts/proj_1eedee42d004/a7dbca5b-1c5c-4dc4-b8bc-71b385de0bce/vfef2e958_final_results_table.csv", "rb") as f:
-    pass  # This is the output, not input
-
-# We need to reconstruct from the computation chain.
-# Load diagrams.pkl and null_distributions.pkl and gaussian_null_dist.pkl
+# This script reproduces the GSE81089 pilot analysis end-to-end from the
+# public GEO accession (no local checkpoints required): fetch raw data,
+# preprocess, compute persistent homology, run both null models, and
+# write final_results_table.csv.
 
 import urllib.request, os
 

@@ -1,11 +1,14 @@
 # PCA vs. persistent homology: a cross-domain replication test
 
-**Status: Manuscript complete and under adversarial review.** Pilot, cross-dataset replication
-(3 confirmatory cohorts), ablation sweep, confound-attribution audit (generalized to all 4 cohorts),
-and a LaTeX manuscript (`paper/paper.pdf`) are all complete. The manuscript has been through two
-rounds of a 5-referee adversarial review pass; see `paper/` for the current draft and `results/`
-for every underlying numeric result. This is NOT yet run through a `repo-completeness-gate` audit
-for packaging hygiene (reproducibility tooling gaps below remain open).
+**Status: Manuscript complete, adversarially reviewed, and repo-completeness-gate audited.**
+Pilot, cross-dataset replication (3 confirmatory cohorts), ablation sweep, confound-attribution
+audit (generalized to all 4 cohorts), and a LaTeX manuscript (`paper/paper.pdf`) are all complete.
+The manuscript has been through two rounds of a 5-referee adversarial review pass; see `paper/`
+for the current draft and `results/` for every underlying numeric result. The repository has
+passed a 7-gate completeness audit (file inventory, standard files, no hardcoded paths, end-to-end
+reproduction, number provenance, portability, checksum registry) for the pilot-cohort code path;
+see `MANIFEST.md` / `checksums.sha256` and the "Known gaps" section below for the one remaining,
+explicitly disclosed scope limitation.
 
 ## What this project tests
 
@@ -48,20 +51,41 @@ results/cross_dataset_checkpoint.md  Phase-1 replication synthesis (BH-FDR famil
 results/final_verdict.md          Full-program synthesis: what is and isn't established
 code/                             Statistics/figure-generation scripts (pilot cohort only -- see below)
 paper/                            LaTeX manuscript source, figures, and compiled PDF
+reproduce.py                      Single entry point: regenerates the pilot figures (and,
+                                  with --full, the full pilot statistics) from scratch
+requirements.txt                  Pinned package versions used throughout this project
+LICENSE                           MIT license (code only; see the file for scope)
+CITATION.cff                      Citation metadata (CFF 1.2.0)
+MANIFEST.md                       Full file inventory with sizes, by directory
+checksums.sha256                  SHA-256 for every tracked file (verify: `sha256sum -c checksums.sha256`)
 ```
 
-## Known gaps (TODO before this repo can pass repo-completeness-gate)
+## Reproducing the pilot cohort
 
-- [ ] `code/` currently contains only the pilot cohort's scripts, extracted from an interactive
-      session and assuming prior in-memory state rather than being clean, standalone,
-      run-from-scratch scripts. Analysis code for the 3 confirmatory replications, the 18-config
-      ablation sweep, and the 4-cohort confound-attribution audit is not yet packaged here (the
-      numeric results and full methodology are documented in the corresponding `results/`
-      markdown reports, but the code itself has not been added to this repository).
-- [ ] Pre-processed data checkpoints used during analysis are not retained in this repository.
-- [ ] No `requirements.txt` / environment lockfile yet.
-- [ ] No `LICENSE` / `CITATION.cff` yet.
-- [ ] No automated tests or CI.
+```bash
+pip install -r requirements.txt
+python3 reproduce.py           # fast: regenerate the 2 pilot figures from bundled
+                                # checkpoints (results/pilot_GSE81089/checkpoints/*.pkl), ~1 min
+python3 reproduce.py --full    # slow: also re-fetch GSE81089 from GEO and re-run the
+                                # full statistics (2000+500 permutation/Gaussian-null
+                                # persistent-homology computations), ~20-40 min
+```
+
+Both code paths have been verified to run end-to-end from a clean copy of this repository
+(exit code 0, output files present, and --full's reproduced max-H1-persistence statistic
+verified against the previously-reported value to 1e-3 tolerance).
+
+## Known gaps (disclosed, not silently omitted)
+
+- [ ] `code/` currently contains only the pilot cohort's scripts. Analysis code for the 3
+      confirmatory replications, the 18-config ablation sweep, and the 4-cohort
+      confound-attribution audit is not yet packaged here (the numeric results and full
+      methodology are documented in the corresponding `results/` markdown reports, but the
+      code itself has not been added to this repository). This is the one remaining gap
+      after the repo-completeness-gate audit -- the gate applies fully to the pilot-cohort
+      code path (which passes all 7 gates) but the audit does not extend coverage claims to
+      code that does not exist in the repository.
+- [ ] No automated tests or CI (beyond the manual gate-audit reproduction check above).
 
 ## Provenance
 

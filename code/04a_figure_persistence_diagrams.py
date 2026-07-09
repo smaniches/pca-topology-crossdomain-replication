@@ -87,7 +87,11 @@ def focal_palette(labels, focal, focal_color, other="muted", base_colors=None):
 
 apply_figure_style()
 
-with open('/Users/melissa/.claude-science/orgs/69d5d859-248d-45c0-9704-fac8fa073e90/artifacts/proj_1eedee42d004/5d9e3808-7f6b-4b6e-9e24-9c4fc5322588/v8c73be8e_diagrams.pkl', 'rb') as f:
+import os
+_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+_CHECKPOINTS = os.path.join(_ROOT, 'results', 'pilot_GSE81089', 'checkpoints')
+
+with open(os.path.join(_CHECKPOINTS, 'diagrams.pkl'), 'rb') as f:
     diagrams = pickle.load(f)
 
 def get_h1(dgms):

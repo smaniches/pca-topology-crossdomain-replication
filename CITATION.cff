@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you use this repository or its results, please cite it as below."
+title: "Does PCA Reveal or Fabricate Topological Structure in Omics Data? A Pre-Registered, Cross-Domain Replication with Matched Null Models"
+authors:
+  - family-names: Maniches
+    given-names: Santiago
+    orcid: "https://orcid.org/0009-0005-6480-1987"
+    affiliation: "TOPOLOGICA LLC"
+date-released: 2026-07-09
+repository-code: "https://github.com/smaniches/pca-topology-crossdomain-replication"
+license: MIT
+keywords:
+  - persistent homology
+  - topological data analysis
+  - principal component analysis
+  - omics
+  - pre-registration
+  - confound analysis

@@ -86,11 +86,15 @@ def focal_palette(labels, focal, focal_color, other="muted", base_colors=None):
 
 apply_figure_style()
 
-with open('/Users/melissa/.claude-science/orgs/69d5d859-248d-45c0-9704-fac8fa073e90/artifacts/proj_1eedee42d004/5d9e3808-7f6b-4b6e-9e24-9c4fc5322588/v8c73be8e_diagrams.pkl', 'rb') as f:
+import os
+_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+_CHECKPOINTS = os.path.join(_ROOT, 'results', 'pilot_GSE81089', 'checkpoints')
+
+with open(os.path.join(_CHECKPOINTS, 'diagrams.pkl'), 'rb') as f:
     diagrams = pickle.load(f)
-with open('/Users/melissa/.claude-science/orgs/69d5d859-248d-45c0-9704-fac8fa073e90/artifacts/proj_1eedee42d004/801eaac0-2430-48e5-ae3b-ed14f9eb3bcb/v261a337d_null_distributions.pkl', 'rb') as f:
+with open(os.path.join(_CHECKPOINTS, 'null_distributions.pkl'), 'rb') as f:
     nulls = pickle.load(f)
-with open('/Users/melissa/.claude-science/orgs/69d5d859-248d-45c0-9704-fac8fa073e90/artifacts/proj_1eedee42d004/1611fe68-95a8-4697-8f06-ff689c68f52a/v7eee4aa7_gaussian_null_dist.pkl', 'rb') as f:
+with open(os.path.join(_CHECKPOINTS, 'gaussian_null_dist.pkl'), 'rb') as f:
     gaussian_null = pickle.load(f)
 
 gauss_null_raw = gaussian_null['gauss_null_raw']
