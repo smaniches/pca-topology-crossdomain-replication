@@ -54,6 +54,7 @@
 | requirements.txt | 145 |
 | results/GATE5_number_provenance.md | 8905 |
 | results/GATE6_portability_smoke_test.md | 2555 |
+| results/GATE_FINAL_SUMMARY.md | 5664 |
 | results/ablation_sweep/ablation_report.md | 21201 |
 | results/ablation_sweep/ablation_sweep_full_table.csv | 7364 |
 | results/ablation_sweep/figures/interaction_and_imputation_overlap.png | 124832 |
