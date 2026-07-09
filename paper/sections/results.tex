@@ -109,9 +109,85 @@ In GSE81089, the tumor/normal class-mean-shift direction correlates strongly wit
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.9\textwidth]{figures/fig4_confound_audit.png}
-\caption{\textbf{Confound-attribution audit --- GSE81089 (pilot) only; generalization to the other three cohorts is pending.} (a) $\maxHone$ null distributions (Gaussian, permutation) for the mixed tumor+normal population ($n=218$), tumor-only subset ($n=199$), and normal-only subset ($n=19$); the observed value (dashed line) matches between the mixed and tumor-only populations and exceeds their respective nulls, while the normal-only subset shows no comparable excess. (b, left) $H_1$ signal $z$-score within each confound-direction quartile of the tumor-only subpopulation; all four quartiles clear the $z=3.0$ threshold. (b, right) $z$-score against each null before and after residualizing out the class-mean-shift direction; the signal survives against the Gaussian null but only marginally against the pipeline-permutation null after residualization. (c) Placeholder: the same four-part audit has not yet been completed for GSE146889, CPTAC-CCRCC, or TCGA-LUAD. GSE146889's own cross-check (\Cref{sec:results-confound-crossdataset}) already shows a tumor-enriched dominant loop, unlike the pilot's --- whether its confound-attribution result matches the pilot's is a genuinely open question, not an assumed one.}
+\includegraphics[width=0.92\textwidth]{figures/fig4_confound_audit.png}
+\caption{\textbf{Confound-attribution audit across all four cohorts.} Dashed grey line marks the pre-registered $z=3.0$ threshold; bars/points below or crossing it are colored red. (a) Within-class decomposition: $z$-score (vs.\ Gaussian null) for the mixed population, tumor-only subset, and normal-only subset, in each cohort. GSE81089's underpowered normal-only arm ($n=19$) shows no excess; CPTAC-CCRCC's well-powered normal-only arm ($n=84$) does. (b) Within-stratum control: the \emph{weakest} confound-quartile's $z$-score in each cohort --- all clear threshold except TCGA-LUAD, where the least tumor-like quartile falls \emph{below} its own null mean. (c) Residualization in PCA(50) space --- the space this program's primary tests are run in --- against the more conservative permutation null: GSE81089 sits just at threshold ($z=2.97$), CPTAC-CCRCC and GSE146889 clear it, and TCGA-LUAD collapses to null-indistinguishable ($z=0.91$). (d) Block-bootstrap 95\% CI on the tumor-only signal-beyond-null ($z$-scale): GSE81089, CPTAC-CCRCC, and TCGA-LUAD exclude zero (TCGA-LUAD's lower bound is close to threshold); GSE146889 does not.}
 \label{fig:fig4}
 \end{figure}
 
-\TODO{Results section pending: confound-attribution audit generalization to GSE146889, CPTAC-CCRCC, and TCGA-LUAD. Do not insert speculative results here --- this section should be extended, not rewritten, once those three audits complete.}
+\subsection{Confound-attribution audit: generalization to the three replication cohorts}
+\label{sec:results-confound-generalization}
+
+The same four-part audit protocol (\Cref{sec:methods-confound}) was subsequently applied, identically, to
+GSE146889, CPTAC-CCRCC, and TCGA-LUAD (RNA-seq layer; the methylation layer was excluded because its
+real PCA-space $\maxHone$ is already zero, so there is no signal to attribute). Each audit independently
+re-verified its dataset's earlier pipeline numbers (real $\maxHone$, intrinsic dimension, classifier AUC)
+to high precision before running any new test, confirming the reproduction was faithful. \Cref{tab:confound-crossdataset}
+summarizes all four audits, including the pilot.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Confound-attribution audit summary across all four cohorts. ``Within-class match'' asks whether a
+single-class subset reproduces the mixed-population $\maxHone$ statistic; ``Within-stratum'' asks whether
+every confound-quartile clears $z>3.0$; ``Residualization'' reports whether the aggregate signal survives
+exact linear removal of the class-mean-shift direction (and, where relevant, in which feature space);
+``Bootstrap CI'' reports whether the 95\% block-bootstrap CI on the signal-beyond-null excludes zero.}
+\label{tab:confound-crossdataset}
+\begin{tabular}{@{}p{2.6cm}p{2.6cm}p{2.3cm}p{3.6cm}p{2.6cm}p{2.6cm}@{}}
+\toprule
+Dataset & Within-class match & Within-stratum & Residualization & Bootstrap CI & Verdict \\
+\midrule
+GSE81089 (pilot) & Yes ($3.887=3.887$) & Yes ($z{=}8.8$--$28.4$) & Gaussian $z{=}31.1$; permutation $z{=}2.97$ (near-miss) & Yes, tumor-only $[1.37,3.77]$ & Genuine, tumor-scoped \\
+CPTAC-CCRCC & Yes ($3.833=3.833$) & Yes ($z{=}4.6$--$11.3$) & Gaussian $z{=}36.5$; permutation $z{=}4.20$ (clears) & Yes, tumor-only $[0.83,3.96]$ & Genuine, extends to normal tissue \\
+GSE146889 & \textbf{No} ($5.880$ vs.\ $7.564$, 78\%) & Yes ($z{=}6.1$--$23.6$)\footnotemark[1] & Clears aggregate stat ($z{=}14.4/13.5$) but dominant loop \emph{identity} changes & \textbf{No}, neither subset excludes 0 & Partially genuine, weaker \\
+TCGA-LUAD (RNA-seq) & \textbf{No} ($4.596$ vs.\ $8.327$, 55\%) & \textbf{No} --- Q1 fails ($z{=}-0.73$) & Raw space survives but $=$ pre-existing normal-loop statistic; \textbf{PCA(50) space collapses} ($z{=}0.50/0.91$) & Marginal, lower bound $z{=}3.65$ & Mixed/weaker, fails in pre-registered space \\
+\bottomrule
+\end{tabular}
+\vspace{2pt}
+\footnotesize{\footnotemark[1]Quartiles here are not label-balanced (Q1 98\% normal, Q4 100\% tumor) because the classifier separates the classes cleanly along this exact projection.}
+\end{table}
+
+\textbf{Two of four cohorts (GSE81089, CPTAC-CCRCC) replicate the clean genuine-signal picture.}
+CPTAC-CCRCC's audit reproduces every element of the pilot's decisive result: the tumor-only subset matches
+the mixed-population statistic to six decimal places, every confound-quartile clears the significance bar,
+and the residualized signal survives against \emph{both} nulls with more room than the pilot itself
+($z=4.20$ vs.\ the pilot's near-miss $z=2.97$ against the permutation null). CPTAC-CCRCC additionally has a
+well-powered normal-only arm ($n=84$, vs.\ the pilot's underpowered $n=19$) that also clears the null
+threshold ($z=9.2$ Gaussian, $z=14.2$ permutation) --- a result the pilot could not establish either way,
+extending rather than merely replicating the confound-independence finding to a second tissue compartment.
+
+\textbf{The other two cohorts (GSE146889, TCGA-LUAD) do not.} GSE146889 passes the within-stratum control
+and the residualization control at the level of the aggregate $\maxHone$ scalar, but fails the two controls
+that gave the pilot its most decisive, assumption-light evidence: neither the tumor-only nor the
+normal-only subset reproduces the mixed-population magnitude, and neither subset's bootstrap CI on the
+signal-beyond-null excludes zero. Moreover, while the aggregate statistic survives residualization, the
+\emph{specific dominant loop} does not --- a different set of 22 samples, at a near-baseline tumor/normal
+composition (Fisher $p=0.65$), replaces the original 45-sample, tumor-enriched loop (Fisher $p=2.9\times10^{-9}$,
+\Cref{sec:results-confound-crossdataset}) as the top persistence feature once the confound is removed. The
+aggregate scalar surviving does not mean the same geometric object survives.
+
+TCGA-LUAD shows the most direct counter-example to a general confound-independence claim. Its within-stratum
+control fails outright in the least tumor-like quartile (observed $\maxHone$ falls \emph{below} its own null
+mean, $z=-0.73$), and --- most consequentially --- residualization in \textbf{PCA(50) space, the exact space
+this program's entire pre-registered test family and the pilot's own headline comparison are conducted in},
+collapses the signal to null-indistinguishable ($z=0.50$ Gaussian, $z=0.91$ permutation). A signal does
+survive residualization in raw $2000$-gene space, but a structural check shows this raw-space value is
+\emph{numerically identical} to the pre-residualization normal-only statistic (an exact-invariance property
+of how a constant per-class linear shift interacts with within-class pairwise distances) --- it reflects
+pre-existing intra-normal-tissue structure passing through unchanged, not a demonstrated tumor-associated
+signal surviving the control. This raw-space survival therefore does not rescue the PCA-space finding.
+
+\Cref{fig:fig4} panel (c), previously a placeholder, now shows all four cohorts' verdicts side by side.
+
+\subsection{Honest cross-dataset confound-attribution pattern}
+
+Across all four cohorts, the underlying $H_0^{\text{stat}}$ real-vs-null test (\Cref{tab:h0-crossdataset})
+remains robust in every case --- the confound audit's mixed and partial findings concern \emph{whether an
+already-established signal is a confound artifact}, not whether the signal exists relative to null at all.
+What varies across cohorts is how much of that signal survives confound control, and specifically whether
+it survives in the pre-registered PCA(50) space where the program's primary claims are made. The pattern is
+2-of-4 clean, 2-of-4 partial-to-failing, with no single covariate (modality, tissue homogeneity, or
+confound-variance share) cleanly separating the two groups: GSE81089 and TCGA-LUAD are both RNA-seq, yet
+land on opposite sides; CPTAC-CCRCC (proteomics) and GSE146889 (RNA-seq, mixed tissue) are not obviously
+more similar to their respective clean/partial partners than to each other. We report this as a genuine,
+unresolved heterogeneity rather than force a single verdict onto the full replication family.

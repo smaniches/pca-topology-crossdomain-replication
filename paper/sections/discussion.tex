@@ -1,6 +1,102 @@
 \section{Discussion}
 \label{sec:discussion}
 
-\TODO{This section is deliberately left as a placeholder. The final discussion and scope statement depend on the outcome of the confound-attribution audit's generalization to GSE146889, CPTAC-CCRCC, and TCGA-LUAD (\Cref{sec:methods-confound}, \Cref{sec:results-confound}), which is in progress and has not yet reported back at the time of writing. Do not draft a synthesis here that assumes a particular outcome for those three audits --- the pilot cohort's finding (confound-independence of the $H_1$ signal, scoped strictly to GSE81089) must not be extrapolated to a general or cross-cohort claim until it is either replicated or refuted in each of the other three cohorts. Note in particular that GSE146889's own cross-check (\Cref{sec:results-confound-crossdataset}) already shows a structural difference from the pilot --- a significantly tumor-enriched dominant $H_1$ loop --- that is a specific, concrete reason the pilot's confound-independence result might not transfer there; the synthesis phase should treat this as a live possibility to be resolved by the pending audit, not dismissed in advance.}
+\subsection{What this program establishes}
 
-\TODO{Once the three remaining confound audits complete, this section should address at minimum: (i) what the complete cross-cohort pattern implies about whether the pilot's confound-independence finding is a general property of the pipeline or a property specific to the pilot cohort's biology/data-collection process; (ii) how the ablation sweep's identified failure boundaries (PC=10; HVG=4000/PC=100) interact with the confound-audit's scope --- e.g., whether a dataset that fails the ablation boundary conditions should be interpreted differently in the confound audit; (iii) an honest statement of what this program does and does not establish about the general relationship between PCA and persistent-homology-based topological claims in omics data, calibrated against the actual evidence gathered rather than the most publishable-sounding interpretation of it; (iv) limitations, including the reliance on a single primary test statistic (max-$H_1$ persistence) rather than a full persistence-diagram distance, the restriction to five cohorts across a still-limited set of tissue types, and the fact that the ablation sweep was run only on the pilot cohort and has not itself been cross-validated on the replication cohorts.}
+Across five independent cohorts spanning two omics modalities (bulk RNA-seq: GSE81089, GSE146889,
+TCGA-LUAD; proteomics: CPTAC-CCRCC; DNA methylation: TCGA-LUAD) and five cancer types/tissues (NSCLC,
+colorectal/endometrial/ovarian, renal cell carcinoma, lung adenocarcinoma), two methodological findings
+replicate robustly. First, real omics data carries persistent-homology $H_1$ structure that significantly
+exceeds both a Gaussian-noise null and a pipeline-symmetric permutation null, in raw feature space
+essentially universally (16/16 tests) and in PCA-reduced space in the substantial majority of cases (10/12,
+at the pre-registered $\mathrm{PC}=50$; the one clean exception, TCGA-LUAD's 36-sample paired methylation
+subset, is attributable to a small-sample PCA dimensionality constraint rather than a contradiction of the
+broader pattern). Second, and more consequentially for how such findings should be reported: a PCA-space
+increase in $\maxHone$ is \emph{not}, by itself, reliable evidence that PCA is revealing genuine structure
+--- a matched null model shows a comparable or larger increase in every one of the four cohorts where a
+real PCA-space signal exists to test against, including a stronger form in TCGA-LUAD's RNA-seq layer, where
+the real $\Delta$ is actually negative. Both findings are qualified rather than unconditional: the ablation
+sweep shows the PCA-attribution finding holds robustly at the pre-registered operating point across a wide
+hyperparameter range, but fails in two specific, hyperparameter-coherent regimes (very low PC count,
+independent of gene count; and the high-gene-count/high-PC-count corner against the more conservative
+permutation null specifically) --- boundaries discovered by systematic ablation on the pilot cohort, not
+by post-hoc rationalization of a sweep failure.
+
+\subsection{The confound-attribution finding is itself a genuine, dataset-dependent result}
+
+The pilot cohort's confound-attribution audit found that its $H_1$ signal was not a re-description of the
+tumor/normal class-mean shift that separately drives near-ceiling classifier performance in the same
+feature space. Generalizing this audit to the three replication cohorts (\Cref{sec:results-confound-generalization})
+was the explicit remaining gap identified after the first synthesis pass of this program, and it did not
+resolve to a uniform answer. Two cohorts (GSE81089, CPTAC-CCRCC) replicate the clean picture by every
+control tested, including the two most decisive and assumption-light ones (exact within-class magnitude
+match; bootstrap CI exclusion of zero). CPTAC-CCRCC in fact extends the finding beyond what the pilot could
+establish, showing a well-powered normal-tissue compartment also carries confound-independent structure.
+The other two cohorts (GSE146889, TCGA-LUAD) show a materially different picture: some controls pass, others
+do not, and in TCGA-LUAD the failure occurs specifically in the pre-registered PCA(50) space --- the exact
+space in which this program's primary claims are made.
+
+We treat this heterogeneity as a finding in its own right, not as noise to be averaged away or as a defect
+in any individual audit. Each audit independently re-verified its cohort's earlier pipeline numbers to high
+precision before running new tests, so the divergence is not attributable to a broken reproduction. Nor
+does any single covariate we examined cleanly separate the two clean cohorts from the two partial ones: 
+modality does not (GSE81089 and TCGA-LUAD are both RNA-seq, yet diverge), and neither does the coarse
+tissue-homogeneity distinction (GSE146889's mixed-tissue composition is a plausible contributor to its
+weaker within-class result, but TCGA-LUAD is a single-tissue cohort and shows the more severe failure
+of the two). The honest, falsifiable statement this program can support is that \textbf{whether a
+PCA-space topological signal survives confound control is not a fixed property of the persistent-homology
+pipeline --- it depends on the dataset, and must be tested per dataset rather than assumed from one
+successful audit.} A single audit, however carefully controlled, licenses a claim about that one dataset;
+it does not license a claim about the method in general.
+
+\subsection{How the ablation and confound-attribution findings interact}
+
+The ablation sweep (\Cref{sec:results}) and the confound-attribution audit answer different questions and
+were run on different scopes --- the sweep varied pipeline hyperparameters on the pilot cohort alone; the
+confound audit varied the dataset while holding pipeline hyperparameters fixed at the pre-registered
+default. We did not cross the two axes (i.e.\ we did not re-run the confound audit across the ablation
+sweep's hyperparameter grid, nor re-run the ablation sweep on the three replication cohorts), so we cannot
+report whether TCGA-LUAD's PCA-space confound-audit failure would persist, worsen, or resolve at a
+different PC count, nor whether the pilot cohort's own ablation-identified failure boundaries (PC$=10$;
+HVG$=4000$/PC$=100$) would show a corresponding confound-attribution pattern if tested there. This is a
+concrete, identifiable direction for follow-up work rather than a result we can respons‑ibly interpolate
+from the two separate analyses already performed. What we can say is that TCGA-LUAD's own primary
+$H_1^{\text{stat}}$ result (\Cref{tab:h1-crossdataset}) --- a negative real $\Delta$, the ``stronger form''
+of the PCA-attribution claim --- and its confound-audit failure in the same PCA(50) space are not
+contradictory: the former shows PCA does not manufacture spurious topological inflation relative to a
+matched null; the latter shows that the topological signal that \emph{is} present in that space is not
+robust to removing the dominant class-mean-shift direction. These are logically independent claims, and
+this cohort happens to land on the affirmative side of one and the negative side of the other.
+
+\subsection{What remains open}
+
+This program does not establish, and does not claim to establish: (i) a single, dataset-independent
+mechanism explaining why two cohorts show clean confound-independence and two do not --- candidate factors
+noted in the individual audit reports (GSE146889's mixed-tissue composition; TCGA-LUAD's unusually
+concentrated confound-variance share and negative real-PCA-delta) are plausible but untested against each
+other; (ii) what the intra-tumor (or, in CPTAC-CCRCC, intra-normal) topological structure biologically
+represents in the cohorts where it is confound-independent --- a molecular subtype, a batch effect, or
+genuine heterogeneity all remain open explanations, since ablation and confound-attribution establish fair
+attribution and robustness, not causal or biological mechanism; (iii) generalization of the ablation sweep's
+hyperparameter-sensitivity boundaries beyond the pilot cohort on which they were discovered; and (iv) any
+claim about persistent homology or PCA behavior on omics data types not tested here (single-cell
+transcriptomics, metabolomics, other cancer types or non-cancer conditions).
+
+\subsection{Limitations}
+
+Beyond the scope limits above, four further limitations apply to the program as a whole. First, the primary
+test statistic throughout is a single scalar, $\maxHone$ (the persistence of the most long-lived $H_1$
+feature), rather than a full persistence-diagram distance (e.g.\ bottleneck or Wasserstein distance to a
+null diagram); a single scalar is more interpretable and was fixed by the pre-registration, but it discards
+information about the rest of each diagram's topology. Second, the five cohorts, while spanning two
+modalities and five tissue/cancer types, remain a small sample of the space of possible omics datasets;
+extrapolating either the PCA-attribution finding or the confound-attribution heterogeneity to modalities or
+conditions not tested here is not supported by this evidence. Third, the confound-attribution audit tests
+one named confound (tumor/normal class-mean shift) via one primary method (exact linear residualization);
+higher-order (non-linear) separability between classes is not addressed by this control, and in every
+cohort tested, the residualized classifier AUC remained significantly different from chance in at least
+one feature space, indicating some class-related structure survives residualization regardless of the
+topological verdict. Fourth, the ablation sweep itself was run only on the pilot cohort; whether its
+identified failure boundaries reproduce, in either direction, on any of the three replication cohorts is an
+open question this program did not test and flags explicitly as future work, alongside the
+sweep-by-confound-audit interaction noted above.
