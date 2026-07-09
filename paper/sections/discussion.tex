@@ -8,10 +8,10 @@ TCGA-LUAD; proteomics: CPTAC-CCRCC; DNA methylation: TCGA-LUAD) and five cancer 
 colorectal/endometrial/ovarian, renal cell carcinoma, lung adenocarcinoma), two methodological findings
 replicate robustly. First, real omics data carries persistent-homology $H_1$ structure that significantly
 exceeds both a Gaussian-noise null and a pipeline-symmetric permutation null, in raw feature space
-essentially universally (16/16 tests) and in PCA-reduced space in the substantial majority of cases (10/12,
-at the pre-registered $\mathrm{PC}=50$; the one clean exception, TCGA-LUAD's 36-sample paired methylation
-subset, is attributable to a small-sample PCA dimensionality constraint rather than a contradiction of the
-broader pattern). Second, and more consequentially for how such findings should be reported: a PCA-space
+universally, across all 5 dataset/layer combinations and both null models (10/10 tests, \Cref{tab:h0-crossdataset}),
+and in PCA-reduced space in the substantial majority of cases (8/10 tests, at the pre-registered
+$\mathrm{PC}=50$; the one clean exception, TCGA-LUAD's 36-sample paired methylation subset, is attributable
+to a small-sample PCA dimensionality constraint rather than a contradiction of the broader pattern). Second, and more consequentially for how such findings should be reported: a PCA-space
 increase in $\maxHone$ is \emph{not}, by itself, reliable evidence that PCA is revealing genuine structure
 --- a matched null model shows a comparable or larger increase in every one of the four cohorts where a
 real PCA-space signal exists to test against, including a stronger form in TCGA-LUAD's RNA-seq layer, where
