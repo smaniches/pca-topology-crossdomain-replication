@@ -168,12 +168,13 @@ Full table: [interaction_check_table.csv](interaction_check_table.csv).
 **Two distinct claims must be kept separate, per the pre-registration's own Section 1 framing:**
 
 **H0 (does real data significantly exceed both nulls at all) — holds in 16/18 configs (89%).**
-The two exceptions: HVG=500/PC=50 fails on PCA-space-vs-Gaussian (z=1.44, `<3.0`) — at only 500 genes,
-raw-space still passes overwhelmingly (z=20.4) but PCA-space signal is weak; and HVG=2000/PC=100 fails
-marginally on PCA-space-vs-pipeline-null (z=2.86, just under 3.0, while PCA-vs-Gaussian z=3.02 narrowly
-passes). Both failures occur in **PCA-reduced space specifically**, at parameter extremes (small HVG or
-large PC-count relative to sample count), never in raw-feature space, where every single one of the 18
-configs passes comfortably (z≥7.6, most ≥13).
+The two exceptions: HVG=500/PC=50 fails on **both** PCA-space null comparisons
+(PCA-vs-Gaussian z=1.44, PCA-vs-pipeline z=1.76, both `<3.0`) — at only 500 genes, raw-space still passes
+overwhelmingly (z=20.4) but PCA-space signal is weak against either null; and HVG=2000/PC=100 fails
+marginally on PCA-space-vs-pipeline-null only (z=2.86, just under 3.0, while PCA-vs-Gaussian z=3.02
+narrowly passes). Both failures occur in **PCA-reduced space specifically**, at parameter extremes (small
+HVG or large PC-count relative to sample count), never in raw-feature space, where every single one of the
+18 configs passes comfortably (z≥7.6, most ≥13).
 
 **H1 (does PCA inflate real persistence LESS than or comparably to null inflation — the specific
 pre-registered claim under test) — holds in 14/18 configs (78%), and fails in a hyperparameter-coherent
@@ -189,17 +190,27 @@ HVG500_PC10 is 0.56σ and HVG4000_PC10 is 1.65σ — i.e. only the HVG4000_PC10 
 interaction term in its own right, while HVG500_PC10's failure is driven mostly by the PC-alone effect
 rather than an interaction with gene count.
 
-**Overall: the H1 finding is directionally robust at and above the pre-registered PC=50, and breaks down
-specifically at low PC-count (PC=10), independent of gene count.** This is not a minor caveat — at the
-lowest number of principal components tested, PCA inflates persistence in the real data by more than
-either null shows, the opposite of the pre-registered directional claim, and does so consistently. The
-pre-registered default (PC=50) sits safely inside the region where H1 holds (real PCA-delta +0.784,
-both nulls above it at +1.52 and +2.00), and the sweep's marginal PC-count series (Section 3) shows the
-H1-supporting margin *shrinks monotonically* from PC=25→50→100 but the effect reverses sharply at PC=10.
-This is consistent with a known geometric phenomenon: very-low-dimensional PCA embeddings are more prone
-to spurious loop formation from geometric artifacts of the projection itself, independent of whether the
-underlying data is structured or noise — precisely the OQ-006 "PCA fabricates phantom topology"
-mechanism the pilot analysis flagged, evidently strongest at aggressive dimensionality reduction.
+**Overall: the H1 finding is directionally robust at the pre-registered PC=50 (all three tested gene
+counts pass), degrades at the tested extremes, and fails in two distinct patterns rather than one.**
+The dominant pattern is at low PC-count (PC=10): all three gene counts tested there (500, 2000, 4000)
+show real PCA-delta exceeding both nulls, the opposite of the pre-registered directional claim, and this
+replicates cleanly across gene count — the pre-registered default (PC=50) sits safely inside the region
+where H1 holds (real PCA-delta +0.784, both nulls above it at +1.52 and +2.00), and the sweep's marginal
+PC-count series at HVG=2000 (Section 3) shows the H1-supporting margin *shrinks monotonically* from
+PC=25→50 and then reverses sharply at PC=10. This low-PC pattern is consistent with a known geometric
+phenomenon: very-low-dimensional PCA embeddings are more prone to spurious loop formation from geometric
+artifacts of the projection itself, independent of whether the underlying data is structured or noise —
+precisely the OQ-006 "PCA fabricates phantom topology" mechanism the pilot analysis flagged, evidently
+strongest at aggressive dimensionality reduction. **A second, distinct failure occurs at HVG=4000,
+PC=100** — not a low-PC-count case — where the H1 criterion (the null's own PCA-driven delta should
+match or exceed the real delta) holds against the Gaussian null (mean null delta +2.754 > real +2.445)
+but fails against the pipeline-symmetric null (mean null delta +2.358 < real +2.445), even though the
+real signal remains highly significant against both nulls in the ordinary sense
+(z_pca_vs_pipeline=6.64, z_pca_vs_gauss=7.12 — this config fails H1 on the delta-comparison criterion,
+not on a low z-score). This means H1's boundary is not fully described as "holds at PC≥25, fails only at
+PC=10": at high gene count (4000), a failure also appears at PC=100 against the pipeline-symmetric null's
+delta specifically. We report the sweep's actual 4-failure pattern rather than collapsing it to the
+simpler PC=10-only story.
 
 ## 8. Anti-patterns avoided / deviations acknowledged
 

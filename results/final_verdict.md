@@ -51,20 +51,29 @@ a matched null, in every one of 4 independent real-data sources tested.
 
 ## 4. What the ablation sweep adds: is H1 robust to the pipeline's hyperparameters?
 
-The ablation sweep (18 configurations on GSE81089) found the H1 finding is **directionally robust at and
-above the pre-registered PC=50**, across gene counts 500–4000 and all four imputation rules tested, but
-**breaks down specifically at PC=10** (independent of gene count) — at very low PC-count, PCA inflates
-real-data persistence by more than either null, the opposite of the H1 claim. This replicated across
-all three gene-count levels tested at PC=10, so it is a genuine boundary of the finding's validity, not
-sweep noise.
+The ablation sweep (18 configurations on GSE81089) found the H1 finding is **directionally robust at the
+pre-registered PC=50** across gene counts 500–4000 and all four imputation rules tested, but fails in
+**two distinct patterns**, not one. The dominant pattern **breaks down at PC=10** (independent of gene
+count) — at very low PC-count, PCA inflates real-data persistence by more than either null, the opposite
+of the H1 claim, and this replicated across all three gene-count levels tested at PC=10, so it is a
+genuine boundary of the finding's validity, not sweep noise. A **second, distinct failure** occurs at
+HVG=4000, PC=100 — not a low-PC-count case — where the H1 criterion (the null's own PCA-driven delta
+should match or exceed the real delta) holds against the Gaussian null (mean null delta +2.754 exceeds
+real +2.445) but fails against the pipeline-symmetric null (mean null delta +2.358, smaller than real
++2.445), even though the real signal remains highly significant against both nulls in the ordinary sense
+(z_pca_vs_pipeline=6.64, z_pca_vs_gauss=7.12) — this config fails H1 on the delta-comparison criterion,
+not on a low z-score.
 
-**This means H1, as pre-registered, should be qualified: it holds at PC≥25 (where the pre-registered
-default of 50 sits comfortably), and does not hold at PC=10.** The overall H1 pass rate across the full
-18-config sweep is 14/18 (78%); the overall H0 pass rate is 16/18 (89%). Permutation count was found to
-have converged well before the pre-registered 2000, validating that hyperparameter choice. Imputation
-rule was found inconsequential (Jaccard=1.000 on the dominant topological loop across all four rules
-tested). Gene-count and PC-count show a real, superadditive interaction — their effects on the real-data
-statistic are not independent.
+**This means H1, as pre-registered, should be qualified more carefully than a single "PC≥25 holds, PC=10
+fails" rule: it holds robustly at the pre-registered default (PC=50, all three gene counts), fails clearly
+at PC=10 (all three gene counts, both nulls), and shows one additional pipeline-null-specific failure at
+high gene count and high PC count (HVG=4000, PC=100).** The overall H1 pass rate across the full 18-config
+sweep is 14/18 (78%) — four failures total (three at PC=10, one at HVG4000/PC100), which is the number
+that is internally consistent with the 78% figure. The overall H0 pass rate is 16/18 (89%). Permutation
+count was found to have converged well before the pre-registered 2000, validating that hyperparameter
+choice. Imputation rule was found inconsequential (Jaccard=1.000 on the dominant topological loop across
+all four rules tested). Gene-count and PC-count show a real, superadditive interaction — their effects on
+the real-data statistic are not independent.
 
 ## 5. What the confound-attribution-audit adds: is the signal genuine, or a class-separability proxy?
 
@@ -78,9 +87,11 @@ of the tumor/normal class-mean-shift confound, specifically within the tumor sub
 - The tumor-only subset alone reproduces the exact same observed statistic as the full mixed set.
 - The signal survives binning by the confound at every quartile (z=8.8–28.4, all clearing the threshold).
 - The signal survives exact linear removal of the class-mean-shift direction: post-residualization,
-  it remains strongly significant against the Gaussian null (z=31.1) and marginally clears the
-  permutation null (z=2.97 — just under the pre-registered z>3.0 bar, while classifier AUC on the same
-  residualized space collapses from 1.000 to 0.094, confirming the confound was genuinely removed).
+  it remains strongly significant against the Gaussian null (z=31.1) but falls just short of the
+  pre-registered z>3.0 bar against the permutation null (z=2.97) — a partial, not complete, pass of this
+  specific control. Classifier AUC on the same residualized space collapses from 1.000 to 0.094,
+  confirming the class-mean confound itself was genuinely removed, but the near-miss on the
+  permutation-null comparison means this control should be read as suggestive rather than conclusive.
 - A block-bootstrap 95% CI on the signal-beyond-null excludes zero ([1.37, 3.77]).
 
 **This audit was run on one dataset (GSE81089) only** — whether the same confound-independence result
@@ -100,10 +111,12 @@ is untested and is the clearest remaining gap in this program.
 
 2. The pilot's central methodological caution — that a PCA-space persistence increase is not, by itself,
    reliable evidence that PCA is revealing genuine structure, because matched null models show comparable
-   or larger increases — replicates across every real dataset tested, holds robustly across a wide
-   hyperparameter range (gene count 500–4000, PC count ≥25, all imputation rules tested), and is
-   **qualified by one clean boundary condition discovered via ablation**: it does not hold at PC=10,
-   where real-data PCA inflation exceeds both nulls.
+   or larger increases — replicates across every real dataset tested, holds robustly at the
+   pre-registered default (PC=50, gene count 500–4000, all imputation rules tested), and is
+   **qualified by two boundary conditions discovered via ablation**: (a) it does not hold at PC=10,
+   independent of gene count, where real-data PCA inflation exceeds both nulls; and (b) at HVG=4000,
+   PC=100 it also fails against the pipeline-symmetric null specifically (though not the Gaussian null),
+   showing the boundary is not confined to low PC-count alone.
 
 3. In GSE81089 specifically, the detected topological signal is not a proxy for the tumor/normal
    class-mean-shift that separately drives near-ceiling classifier performance in the same feature space —
