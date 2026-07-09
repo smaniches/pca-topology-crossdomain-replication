@@ -1,0 +1,65 @@
+\section{Methods}
+\label{sec:methods}
+
+\subsection{Pre-registration discipline}
+
+All primary hyperparameters, normalization rules, effect-size thresholds, and the confirmatory dataset family were locked in a pre-registration document (\texttt{PREREGISTRATION.md}) prior to any confirmatory analysis, timestamped and checksummed (SHA-256) at lock time. The pilot cohort (GSE81089) was used to develop the pipeline and is reported separately from the confirmatory family; only the three subsequently-analyzed cohorts (GSE146889, CPTAC-CCRCC, TCGA-LUAD) contribute to the pre-registered, multiple-testing-corrected confirmatory statistics reported in \Cref{sec:results}. The decision rule fixed in advance was that each dataset's result stands on its own merits --- a dataset that fails a gate (e.g., the intrinsic-dimension check below) is reported as blocked or deviated, not silently dropped from the family.
+
+\subsection{Persistent homology pipeline}
+
+For each cohort and omics layer, samples are represented as points in a feature space (genes, methylation probes, or proteins). Two feature spaces are analyzed per cohort/layer: (i) \emph{raw} space, restricted to the top highly-variable features (HVG count fixed at 2000 in the pre-registered configuration; varied in the ablation sweep, \Cref{sec:methods-ablation}); and (ii) \emph{PCA-reduced} space, obtained by projecting the raw feature matrix onto its top 50 principal components (varied in the ablation sweep). A Vietoris--Rips filtration $\Rips(X,\varepsilon)$ is built on the resulting point cloud $X$ in each space, and persistent $H_1$ features are computed; the primary test statistic throughout is $\maxHone$, the longest-lived $H_1$ bar (death $-$ birth) in each filtration. This choice --- a single scalar summary rather than a full persistence-diagram distance (e.g.\ bottleneck or Wasserstein) --- was fixed at pre-registration to keep the statistical comparison against null distributions simple and the effect-size definition unambiguous.
+
+\subsection{Null models}
+
+Two null models are computed in parallel, matched to the same feature space and sample count as the real data at each step:
+
+\begin{description}
+\item[Gaussian null.] 500 draws of i.i.d.\ Gaussian noise, dimension- and sample-count-matched to the real data, independently subjected to the identical HVG-selection (where applicable), PCA, and Rips-filtration pipeline as the real data.
+\item[Pipeline-symmetric permutation null.] 2000 permutations in which each gene/feature's values are independently shuffled across samples (destroying all cross-feature correlation structure while preserving each feature's marginal distribution exactly), then re-run through the identical HVG-selection, PCA, and filtration pipeline.
+\end{description}
+
+The permutation null is the more conservative and more relevant comparison for the $H_1^{\text{stat}}$ (PCA-attribution) test, since it inherits the real data's marginal feature distributions exactly and differs from the real data only in cross-feature dependence structure --- any $\maxHone$ inflation it shows under PCA is attributable purely to the projection step acting on realistic per-feature marginals, not to a mismatched noise model. Both nulls are retained throughout because they answer different questions: the Gaussian null asks whether the signal exceeds what unstructured continuous noise would produce; the permutation null asks whether it exceeds what the same marginal distributions, decorrelated, would produce.
+
+Permutation-count convergence was checked in the ablation sweep (\Cref{sec:methods-ablation}): $z$-scores versus the pipeline-symmetric null were computed at $n_{\text{perm}} \in \{100, 250, 500, 1000, 2000\}$ and found to have converged (bootstrapped 95\% CI stabilized) well before the pre-registered $n=2000$.
+
+\subsection{Effect size and significance thresholds}
+
+Effect size against each null is reported as a $z$-score: $(\text{observed} - \text{null mean})/\text{null SD}$. The pre-registered significance threshold is $z>3.0$ in every comparison (both null models, both feature spaces), chosen to clear the pilot's weakest single margin with room to spare while remaining well above conventional large-effect benchmarks. For the confirmatory family (GSE146889, CPTAC-CCRCC, TCGA-LUAD), the resulting $p$-values across up to 20 planned tests are corrected for multiple comparisons via Benjamini--Hochberg FDR control at $\alpha=0.05$; a test is reported as passing $H_0^{\text{stat}}$ only if it clears both the raw $z>3.0$ threshold and the BH-adjusted significance criterion.
+
+\subsection{Intrinsic dimension and Johnson--Lindenstrauss regime gate}
+
+Before PCA is applied, the intrinsic dimensionality of each feature space is estimated using two independent estimators --- the Levina--Bickel maximum-likelihood estimator and the TwoNN estimator --- and compared against the ambient (post-HVG) dimension. When the ratio $d_{\text{int}}/d_{\text{amb}} \geq 0.3$, the data is judged to sit outside the regime in which Euclidean Vietoris--Rips distances behave predictably under linear projection (the Johnson--Lindenstrauss heuristic is not expected to hold), and a spectral-cascade metric is substituted for the naive Euclidean distance in that space's filtration. This gate was triggered for TCGA-LUAD's methylation PCA space ($d_{\text{int}}/d_{\text{amb}} = 0.320$; \Cref{sec:results}), where it is flagged as a pre-registered deviation rather than an ad hoc fix.
+
+\subsection{Datasets}
+
+Five cohorts, spanning four tissue/tumor types and three omics modalities, were analyzed:
+
+\begin{itemize}
+\item \textbf{GSE81089} (pilot, not part of the confirmatory family): NSCLC bulk RNA-seq, $n=218$ (199 tumor / 19 normal).
+\item \textbf{GSE146889}: colorectal/endometrial/ovarian MMR-deficiency cohort, bulk RNA-seq, $n=176$ (91 tumor / 85 paired-normal).
+\item \textbf{CPTAC-CCRCC} (PDC000127): renal clear-cell carcinoma, mass-spectrometry proteomics, $n=194$ (110 tumor / 84 normal), no substitution required.
+\item \textbf{TCGA-LUAD}: lung adenocarcinoma, two omics layers --- RNA-seq ($n=116$) and DNA methylation ($n=36$ paired samples, 58 cases with both layers available).
+\end{itemize}
+
+Normalization follows modality-specific pre-registered rules: bulk RNA-seq is $\log_1p$-transformed (FPKM or TPM as available per cohort); DNA methylation is logit-transformed on the $\beta$-value scale (clipped to $[10^{-6}, 1-10^{-6}]$ to avoid boundary singularities); CPTAC proteomics is median-normalized then $\log_2$-transformed. Missing values are zero-filled in the pre-registered primary analysis; three alternative imputation rules (mean, median, drop) are compared in the ablation sweep (\Cref{sec:methods-ablation}).
+
+TCGA-LUAD required four declared deviations from the pre-registered protocol, each pre-specified as a contingency rather than an ad hoc decision after seeing results: (D1) the ``bottom-variance'' negative-control gene set is selected among genes with nonzero variance only (5{,}556 of 60{,}660 genes have exactly zero variance and would trivially fail any test); (D2) methylation $\beta$-values are clipped before the logit transform; (D3) methylation PCA is capped at 35 components rather than the pre-registered 50, since only 35 are available given the sample count, and is treated as a rotation-only isometry check rather than an independent significance test; (D4) the spectral-cascade metric is applied to the methylation PCA space per the intrinsic-dimension gate above.
+
+\subsection{Ablation / hyperparameter-sensitivity sweep}
+\label{sec:methods-ablation}
+
+To establish the boundary of validity around the pre-registered operating point (HVG$=2000$, PC$=50$), an 18-configuration sweep was run on the pilot cohort (GSE81089), varying: HVG gene count ($\{500, 1000, 2000, 4000\}$, PC count fixed at 50); PCA component count ($\{10, 25, 50, 100\}$, HVG fixed at 2000); missing-value imputation rule (zero, mean, median, drop); and a $2\times2$ gene-count $\times$ PC-count interaction check at the corners of the grid (HVG$\in\{500,4000\}$ $\times$ PC$\in\{10,100\}$) to test whether the two hyperparameters' effects are additive or interact superadditively. Permutation count was reduced to $n=500$ in the sweep (from the pre-registered $n=2000$) to keep the 18-configuration sweep computationally tractable; convergence at this reduced count was separately verified (above).
+
+\subsection{Confound-attribution audit protocol}
+\label{sec:methods-confound}
+
+Where an $H_1^{\text{stat}}$ signal is found to survive both null models, a separate question is whether that signal reflects genuine topological structure in the omics manifold, or is instead a re-description of the tumor/normal class-mean separation --- a shift that a simple linear classifier can already recover, in every cohort tested here, at or near ceiling cross-validated AUC. The audit protocol, applied here in full only to the pilot cohort (GSE81089; \Cref{sec:results}), consists of four complementary checks:
+
+\begin{enumerate}
+\item \textbf{Within-class decomposition.} The $\maxHone$ statistic is recomputed on the tumor-only subpopulation alone (excluding normal samples entirely), and separately on the normal-only subpopulation. If the mixed-population signal is driven purely by the tumor/normal class-mean gap, it should collapse when either subpopulation is analyzed in isolation.
+\item \textbf{Within-stratum control.} The tumor-only subpopulation is further stratified into quartiles along the direction of maximal tumor/normal class-mean separation (the top discriminant axis, e.g.\ PC1 where correlated with class), and the $H_1^{\text{stat}}$ test is repeated within each quartile. A signal that survives uniformly across quartiles cannot be attributed to residual variation along that specific confound direction.
+\item \textbf{Residualization control.} The tumor/normal class-mean-shift direction is estimated and projected out of the feature matrix (residualization), and the $H_1^{\text{stat}}$ test is repeated on the residualized data. A classifier trained to recover tumor/normal status from the residualized data is also evaluated; its cross-validated AUC collapsing toward chance is evidence the confound direction has been successfully removed without also removing the topological signal.
+\item \textbf{Block-bootstrap confidence interval.} A block-bootstrap procedure (resampling at the sample level, preserving each feature's within-sample structure) is used to construct a 95\% confidence interval on the residual signal-beyond-null quantity after residualization; an interval excluding zero is evidence the residual signal is not a bootstrap artifact of the small effective sample size in some strata.
+\end{enumerate}
+
+This protocol is applied identically across all four cohorts in the completed program design; at the time of writing it has been executed to completion only on GSE81089. \TODO{confound-audit generalization results for GSE146889, CPTAC-CCRCC, and TCGA-LUAD --- to be inserted by synthesis phase once available. GSE146889's own replication report already surfaces a specific reason the pilot's finding may not transfer: its dominant $H_1$ loop is significantly enriched for tumor-status samples (Fisher's exact $p=2.9\times10^{-9}$), unlike the pilot's small, non-enriched loop --- this audit's outcome in that cohort is genuinely open, not assumed.}
