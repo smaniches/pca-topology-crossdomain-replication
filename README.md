@@ -71,9 +71,14 @@ python3 reproduce.py --full    # slow: also re-fetch GSE81089 from GEO and re-ru
                                 # persistent-homology computations), ~20-40 min
 ```
 
-Both code paths have been verified to run end-to-end from a clean copy of this repository
-(exit code 0, output files present, and --full's reproduced max-H1-persistence statistic
-verified against the previously-reported value to 1e-3 tolerance).
+The fast path (figure regeneration from bundled checkpoints) has been verified to run
+end-to-end from a clean copy of this repository (exit code 0, output files present).
+The `--full` path (full from-scratch GEO fetch + statistics recomputation) has NOT yet
+been run to completion as part of this verification pass -- `reproduce.py`'s own code
+includes a built-in spot-check (comparing the reproduced max-H1-persistence statistic
+against the pre-registered value to 1e-3 tolerance) that will run automatically the
+first time `--full` completes, but until that run finishes this claim is unverified,
+not confirmed.
 
 ## Known gaps (disclosed, not silently omitted)
 
