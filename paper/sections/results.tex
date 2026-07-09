@@ -140,11 +140,11 @@ Dataset & Within-class match & Within-stratum & Residualization & Bootstrap CI &
 GSE81089 (pilot) & Yes ($3.887=3.887$) & Yes ($z{=}8.8$--$28.4$) & Gaussian $z{=}31.1$; permutation $z{=}2.97$ (near-miss) & Yes, tumor-only $[1.37,3.77]$ & Genuine, tumor-scoped \\
 CPTAC-CCRCC & Yes ($3.833=3.833$) & Yes ($z{=}4.6$--$11.3$) & Gaussian $z{=}36.5$; permutation $z{=}4.20$ (clears) & Yes, tumor-only $[0.83,3.96]$ & Genuine, extends to normal tissue \\
 GSE146889 & \textbf{No} ($5.880$ vs.\ $7.564$, 78\%) & Yes ($z{=}6.1$--$23.6$)\footnotemark[1] & Clears aggregate stat ($z{=}14.4/13.5$) but dominant loop \emph{identity} changes & \textbf{No}, neither subset excludes 0 & Partially genuine, weaker \\
-TCGA-LUAD (RNA-seq) & \textbf{No} ($4.596$ vs.\ $8.327$, 55\%) & \textbf{No} --- Q1 fails ($z{=}-0.73$) & Raw space survives but $=$ pre-existing normal-loop statistic; \textbf{PCA(50) space collapses} ($z{=}0.50/0.91$) & Marginal, lower bound $z{=}3.65$ & Mixed/weaker, fails in pre-registered space \\
+TCGA-LUAD (RNA-seq) & \textbf{No} ($4.596$ vs.\ $8.327$, 55\%) & \textbf{No} --- Q1 fails ($z{=}-0.73$) & Raw space survives but $=$ pre-existing normal-loop statistic; \textbf{PCA(50) space collapses} ($z{=}0.50/0.91$) & Yes, lower bound $z{=}3.65$\footnotemark[2] & Mixed/weaker, fails in pre-registered space \\
 \bottomrule
 \end{tabular}
 \vspace{2pt}
-\footnotesize{\footnotemark[1]Quartiles here are not label-balanced (Q1 98\% normal, Q4 100\% tumor) because the classifier separates the classes cleanly along this exact projection.}
+\footnotesize{\footnotemark[1]Quartiles here are not label-balanced (Q1 98\% normal, Q4 100\% tumor) because the classifier separates the classes cleanly along this exact projection. \footnotemark[2]The CI excludes zero (satisfying this column's criterion), but its lower bound ($z=3.65$) sits much closer to the pre-registered $z>3.0$ significance threshold than the other three cohorts' lower bounds ($z\geq5.4$); see \Cref{sec:results-confound-generalization} for discussion of this fragility.}
 \end{table}
 
 \textbf{Two of four cohorts (GSE81089, CPTAC-CCRCC) replicate the clean genuine-signal picture.}
