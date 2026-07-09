@@ -4,14 +4,17 @@
 \subsection{What this program establishes}
 
 Across five independent cohorts spanning two omics modalities (bulk RNA-seq: GSE81089, GSE146889,
-TCGA-LUAD; proteomics: CPTAC-CCRCC; DNA methylation: TCGA-LUAD) and five cancer types/tissues (NSCLC,
-colorectal/endometrial/ovarian, renal cell carcinoma, lung adenocarcinoma), two methodological findings
+TCGA-LUAD; proteomics: CPTAC-CCRCC; DNA methylation: TCGA-LUAD) and four tissue types/cancer types (NSCLC,
+colorectal/endometrial/ovarian, renal cell carcinoma, lung adenocarcinoma) --- consistent with the
+Introduction's count for the same cohort set --- two methodological findings
 replicate robustly. First, real omics data carries persistent-homology $H_1$ structure that significantly
 exceeds both a Gaussian-noise null and a pipeline-symmetric permutation null, in raw feature space
 universally, across all 5 dataset/layer combinations and both null models (10/10 tests, \Cref{tab:h0-crossdataset}),
 and in PCA-reduced space in the substantial majority of cases (8/10 tests, at the pre-registered
-$\mathrm{PC}=50$; the one clean exception, TCGA-LUAD's 36-sample paired methylation subset, is attributable
-to a small-sample PCA dimensionality constraint rather than a contradiction of the broader pattern). Second, and more consequentially for how such findings should be reported: a PCA-space
+$\mathrm{PC}=50$; the one exception is TCGA-LUAD's 36-sample paired methylation subset, where the real
+$\maxHone$ itself collapses to zero after PCA(35, spectral) --- a substantive failure of the topological
+signal to survive PCA in that specific modality, not merely a small-sample statistical-power limitation,
+though it may still be related to that layer's unusually small sample size). Second, and more consequentially for how such findings should be reported: a PCA-space
 increase in $\maxHone$ is \emph{not}, by itself, reliable evidence that PCA is revealing genuine structure
 --- a matched null model shows a comparable or larger increase in every one of the four cohorts where a
 real PCA-space signal exists to test against, including a stronger form in TCGA-LUAD's RNA-seq layer, where
@@ -59,7 +62,7 @@ sweep's hyperparameter grid, nor re-run the ablation sweep on the three replicat
 report whether TCGA-LUAD's PCA-space confound-audit failure would persist, worsen, or resolve at a
 different PC count, nor whether the pilot cohort's own ablation-identified failure boundaries (PC$=10$;
 HVG$=4000$/PC$=100$) would show a corresponding confound-attribution pattern if tested there. This is a
-concrete, identifiable direction for follow-up work rather than a result we can respons‑ibly interpolate
+concrete, identifiable direction for follow-up work rather than a result we can responsibly interpolate
 from the two separate analyses already performed. What we can say is that TCGA-LUAD's own primary
 $H_1^{\text{stat}}$ result (\Cref{tab:h1-crossdataset}) --- a negative real $\Delta$, the ``stronger form''
 of the PCA-attribution claim --- and its confound-audit failure in the same PCA(50) space are not
@@ -93,10 +96,35 @@ modalities and five tissue/cancer types, remain a small sample of the space of p
 extrapolating either the PCA-attribution finding or the confound-attribution heterogeneity to modalities or
 conditions not tested here is not supported by this evidence. Third, the confound-attribution audit tests
 one named confound (tumor/normal class-mean shift) via one primary method (exact linear residualization);
-higher-order (non-linear) separability between classes is not addressed by this control, and in every
-cohort tested, the residualized classifier AUC remained significantly different from chance in at least
-one feature space, indicating some class-related structure survives residualization regardless of the
-topological verdict. Fourth, the ablation sweep itself was run only on the pilot cohort; whether its
+higher-order (non-linear) separability between classes is not addressed by this control, and in three of
+the four cohorts where a permutation test on the residualized classifier's AUC was explicitly performed
+(GSE81089, GSE146889, TCGA-LUAD; $p=0.005$ in each case), the residualized AUC remained significantly
+different from chance in at least one feature space, indicating some class-related structure survives
+residualization regardless of the topological verdict. CPTAC-CCRCC's residualized AUC (0.236, also
+below-chance in direction) was not subjected to the same permutation test in the underlying audit, so we
+do not extend this specific significance claim to that cohort. Fourth, the ablation sweep itself was run only on the pilot cohort; whether its
 identified failure boundaries reproduce, in either direction, on any of the three replication cohorts is an
 open question this program did not test and flags explicitly as future work, alongside the
-sweep-by-confound-audit interaction noted above.
+sweep-by-confound-audit interaction noted above. Fifth, the residualization control's own validity assumption
+deserves explicit note: linear confound-regression procedures of the kind used here have been shown, in other
+machine-learning contexts, to interact unpredictably with downstream nonlinear analysis rather than cleanly
+removing the confound~\cite{hamdan2023}. Our downstream statistic (persistent-homology $\maxHone$ on the
+residualized point cloud, and a linear classifier check) is not the nonlinear model class in which that
+leakage effect was originally demonstrated, which limits its direct applicability here, but it does not
+constitute a proof that our specific residualization is leakage-free --- a fuller treatment (e.g.\ a
+nonlinear residualization baseline, or a leakage-diagnostic analogous to the one in that literature) is a
+natural methodological follow-up, particularly given that this exact control is the load-bearing evidence
+for the ``genuine, tumor-scoped'' verdict in two of the four cohorts and is also the precise mechanism whose
+failure drives the TCGA-LUAD counter-example.
+
+\subsection*{Data and Code Availability}
+
+All code, pre-processed data checkpoints, pre-registration documents, per-cohort analysis reports, and
+the full confound-attribution audit and ablation-sweep results underlying this manuscript are available at
+\url{https://github.com/smaniches/pca-topology-crossdomain-replication}. The repository's \texttt{prereg/}
+directory contains the locked pre-registration (SHA-256 checksummed); \texttt{results/} contains one
+subdirectory per cohort/analysis phase (\texttt{pilot\_GSE81089}, \texttt{replication\_GSE146889},
+\texttt{replication\_CPTAC\_CCRCC}, \texttt{replication\_TCGA\_LUAD}, \texttt{ablation\_sweep},
+\texttt{confound\_attribution\_audit}) with the full numeric tables, figures, and markdown reports each
+Results subsection summarizes; \texttt{code/} contains the statistics and figure-generation scripts; and
+\texttt{paper/} contains this manuscript's LaTeX source.
