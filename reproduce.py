@@ -5,13 +5,13 @@ optionally, the full pilot statistics (including ~2500 persistent-homology
 computations, which takes on the order of an hour on a single machine).
 
 SCOPE (see README.md "Known gaps" for the full disclosure): this script
-reproduces the pilot cohort only. Analysis code for the three confirmatory
-replication cohorts (GSE146889, CPTAC-CCRCC, TCGA-LUAD), the 18-configuration
-ablation sweep, and the confound-attribution audit is not yet packaged in
-this repository -- their full numeric results and methodology are documented
-in the corresponding results/*/*.md reports, but are not independently
-re-runnable from this script. This is an acknowledged, disclosed gap, not
-an oversight.
+reproduces the pilot cohort only. The three confirmatory replication cohorts
+(GSE146889, CPTAC-CCRCC, TCGA-LUAD) each have their own standalone driver
+under code/replication_<COHORT>/, the 18-configuration ablation sweep is
+under code/ablation_sweep/, and the confound-attribution audit (all 4
+cohorts) is under code/confound_attribution_audit/ -- none of those are
+wired into this entry point yet, so run them directly per their own
+README.md if you need those results reproduced.
 
 Usage:
     python3 reproduce.py                 # fast: regenerate the 2 pilot figures

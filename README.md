@@ -92,10 +92,22 @@ matched the pre-registered value exactly, well within the 1e-3 tolerance in
       verified end-to-end in a dedicated environment (at a reduced null-model draw count for
       runtime; the real-data statistics that are independent of draw count were verified at
       full tolerance -- see each script's docstring and README for the exact tolerances and the
-      reduction disclosure). Analysis code for the 18-config ablation sweep and the 4-cohort
-      confound-attribution audit is still not packaged here; the numeric results and full
-      methodology for those remain documented in the corresponding `results/` markdown reports
-      only.
+      reduction disclosure).
+- [x] ~~Analysis code for the 18-config ablation sweep and the 4-cohort confound-attribution audit
+      is not packaged~~ -- **resolved.** The ablation sweep is packaged under `code/ablation_sweep/`
+      (parameterized driver + config enumeration + results-aggregation script, all 18 real-data
+      configs verified to match `results/ablation_sweep/ablation_sweep_full_table.csv` to exact
+      bit-for-bit precision at a reduced permutation-draw count -- see
+      `code/ablation_sweep/README.md`). The confound-attribution audit is packaged under
+      `code/confound_attribution_audit/` (one shared statistics module implementing the 4 controls
+      -- within-class decomposition, within-stratum quartile control, residualization,
+      block-bootstrap CI -- plus one driver script per cohort). GSE81089, CPTAC-CCRCC, and
+      TCGA-LUAD drivers were verified against their committed reports to exact or near-exact
+      precision; the GSE146889 driver was reconstructed from a delegated sub-agent's conversation
+      transcript rather than from code lineage (that cohort's original run has no recoverable
+      lineage chain) and carries materially higher reconstruction risk than the other 3, though its
+      real-data statistics were verified to match the committed report closely -- see
+      `code/confound_attribution_audit/README.md` for the full disclosure.
 - [ ] No automated tests or CI (beyond the manual gate-audit reproduction check above).
 
 ## Provenance

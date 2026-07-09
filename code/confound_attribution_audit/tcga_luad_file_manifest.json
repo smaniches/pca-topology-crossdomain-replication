@@ -1,0 +1,698 @@
+[
+ {
+  "sample": "TCGA-44-2655__Primary_Tumor",
+  "case": "TCGA-44-2655",
+  "sample_type": "Primary Tumor",
+  "file_id": "eac5ebd0-d788-4908-8eb7-976d6b611667"
+ },
+ {
+  "sample": "TCGA-44-2655__Solid_Tissue_Normal",
+  "case": "TCGA-44-2655",
+  "sample_type": "Solid Tissue Normal",
+  "file_id": "d4778869-f3f2-481b-ab02-65a654128766"
+ },
+ {
+  "sample": "TCGA-55-6983__Primary_Tumor",
+  "case": "TCGA-55-6983",
+  "sample_type": "Primary Tumor",
+  "file_id": "26c96b62-02b6-4108-9a2d-bec3d880db2a"
+ },
+ {
+  "sample": "TCGA-55-6983__Solid_Tissue_Normal",
+  "case": "TCGA-55-6983",
+  "sample_type": "Solid Tissue Normal",
+  "file_id": "46ef57a2-e2ce-4ffe-9ce8-c043c6065863"
+ },
+ {
+  "sample": "TCGA-44-6145__Primary_Tumor",
+  "case": "TCGA-44-6145",
+  "sample_type": "Primary Tumor",
+  "file_id": "895ca581-915e-4057-b66a-dc2d5213d7e4"
+ },
+ {
+  "sample": "TCGA-44-6145__Solid_Tissue_Normal",
+  "case": "TCGA-44-6145",
+  "sample_type": "Solid Tissue Normal",
+  "file_id": "bd98b566-f179-4be8-8b4d-672149eedcba"
+ },
+ {
+  "sample": "TCGA-55-6978__Primary_Tumor",
+  "case": "TCGA-55-6978",
+  "sample_type": "Primary Tumor",
+  "file_id": "deddc259-f962-468a-bfcf-60da1e695833"
+ },
+ {
+  "sample": "TCGA-55-6978__Solid_Tissue_Normal",
+  "case": "TCGA-55-6978",
+  "sample_type": "Solid Tissue Normal",
+  "file_id": "bbb426a9-806b-4417-a3cd-4dd1b0c87792"
+ },
+ {
+  "sample": "TCGA-49-4490__Primary_Tumor",
+  "case": "TCGA-49-4490",
+  "sample_type": "Primary Tumor",
+  "file_id": "2f2cc9dc-1d0a-4302-b674-02d56c259ff3"
+ },
+ {
+  "sample": "TCGA-49-4490__Solid_Tissue_Normal",
+  "case": "TCGA-49-4490",
+  "sample_type": "Solid Tissue Normal",
+  "file_id": "eac45bfd-6795-47a4-8d6b-5a7c8bc76cd1"
+ },
+ {
+  "sample": "TCGA-50-6595__Primary_Tumor",
+  "case": "TCGA-50-6595",
+  "sample_type": "Primary Tumor",
+  "file_id": "0e9c2659-4131-4274-b0b4-3e191239f5f3"
+ },
+ {
+  "sample": "TCGA-50-6595__Solid_Tissue_Normal",
+  "case": "TCGA-50-6595",
+  "sample_type": "Solid Tissue Normal",
+  "file_id": "f700b996-2ccf-4f59-9249-da7f087054ba"
+ },
+ {
+  "sample": "TCGA-44-6148__Primary_Tumor",
+  "case": "TCGA-44-6148",
+  "sample_type": "Primary Tumor",
+  "file_id": "4a5c811e-d5d9-48d7-9bcc-4c9dc72df8f4"
+ },
+ {
+  "sample": "TCGA-44-6148__Solid_Tissue_Normal",
+  "case": "TCGA-44-6148",
+  "sample_type": "Solid Tissue Normal",
+  "file_id": "4756b201-87c2-4428-b2cd-f933422fe8cf"
+ },
+ {
+  "sample": "TCGA-91-6849__Primary_Tumor",
+  "case": "TCGA-91-6849",
+  "sample_type": "Primary Tumor",
+  "file_id": "ad8bf3fe-2831-4c1c-81f9-c65e09b2d45e"
+ },
+ {
+  "sample": "TCGA-91-6849__Solid_Tissue_Normal",
+  "case": "TCGA-91-6849",
+  "sample_type": "Solid Tissue Normal",
+  "file_id": "bb64143e-c48a-45c7-914b-4ec5bcea9e27"
+ },
+ {
+  "sample": "TCGA-44-2668__Primary_Tumor",
+  "case": "TCGA-44-2668",
+  "sample_type": "Primary Tumor",
+  "file_id": "5f2d965a-25df-4736-a675-efeb59341a04"
+ },
+ {
+  "sample": "TCGA-44-2668__Solid_Tissue_Normal",
+  "case": "TCGA-44-2668",
+  "sample_type": "Solid Tissue Normal",
+  "file_id": "55831884-c907-457d-bb2c-7c7b3f7c4cd1"
+ },
+ {
+  "sample": "TCGA-44-2662__Primary_Tumor",
+  "case": "TCGA-44-2662",
+  "sample_type": "Primary Tumor",
+  "file_id": "946692ad-ed52-4bd8-85ac-efe5178b15b4"
+ },
+ {
+  "sample": "TCGA-44-2662__Solid_Tissue_Normal",
+  "case": "TCGA-44-2662",
+  "sample_type": "Solid Tissue Normal",
+  "file_id": "a4377fa6-f7e2-4289-ac2d-3cc87b6cc289"
+ },
+ {
+  "sample": "TCGA-38-4627__Primary_Tumor",
+  "case": "TCGA-38-4627",
+  "sample_type": "Primary Tumor",
+  "file_id": "08971a88-cb64-4030-93e5-08d77d2ed654"
+ },
+ {
+  "sample": "TCGA-38-4627__Solid_Tissue_Normal",
+  "case": "TCGA-38-4627",
+  "sample_type": "Solid Tissue Normal",
+  "file_id": "5a37129a-9672-4fda-8576-e7de1db7b2c2"
+ },
+ {
+  "sample": "TCGA-91-6831__Primary_Tumor",
+  "case": "TCGA-91-6831",
+  "sample_type": "Primary Tumor",
+  "file_id": "14d76abd-84f2-4875-8d03-5a27b4505715"
+ },
+ {
+  "sample": "TCGA-91-6831__Solid_Tissue_Normal",
+  "case": "TCGA-91-6831",
+  "sample_type": "Solid Tissue Normal",
+  "file_id": "7671d2c4-d6da-46d5-8ef0-baab496456d2"
+ },
+ {
+  "sample": "TCGA-50-5932__Primary_Tumor",
+  "case": "TCGA-50-5932",
+  "sample_type": "Primary Tumor",
+  "file_id": "b080156e-0711-42f5-83c7-a34de25cbba9"
+ },
+ {
+  "sample": "TCGA-50-5932__Solid_Tissue_Normal",
+  "case": "TCGA-50-5932",
+  "sample_type": "Solid Tissue Normal",
+  "file_id": "75473987-65e2-43eb-a5bb-04cb7a40c902"
+ },
+ {
+  "sample": "TCGA-44-6147__Primary_Tumor",
+  "case": "TCGA-44-6147",
+  "sample_type": "Primary Tumor",
+  "file_id": "9a64a124-9787-4378-ba01-b79aa183f25f"
+ },
+ {
+  "sample": "TCGA-44-6147__Solid_Tissue_Normal",
+  "case": "TCGA-44-6147",
+  "sample_type": "Solid Tissue Normal",
+  "file_id": "bdae198f-aedf-46cc-8156-c1ec37eac88f"
+ },
+ {
+  "sample": "TCGA-44-6776__Primary_Tumor",
+  "case": "TCGA-44-6776",
+  "sample_type": "Primary Tumor",
+  "file_id": "736227d9-3cee-40ed-bdec-0e88968ef179"
+ },
+ {
+  "sample": "TCGA-44-6776__Solid_Tissue_Normal",
+  "case": "TCGA-44-6776",
+  "sample_type": "Solid Tissue Normal",
+  "file_id": "a5c19494-731c-4519-b8a7-b7307aea2f9c"
+ },
+ {
+  "sample": "TCGA-73-4676__Primary_Tumor",
+  "case": "TCGA-73-4676",
+  "sample_type": "Primary Tumor",
+  "file_id": "4320b770-69f3-4dd2-afea-8b7f7cdf44c2"
+ },
+ {
+  "sample": "TCGA-73-4676__Solid_Tissue_Normal",
+  "case": "TCGA-73-4676",
+  "sample_type": "Solid Tissue Normal",
+  "file_id": "e4988cad-67b9-41a6-9640-2226d6b7424a"
+ },
+ {
+  "sample": "TCGA-44-6146__Primary_Tumor",
+  "case": "TCGA-44-6146",
+  "sample_type": "Primary Tumor",
+  "file_id": "074b0792-df3c-4b59-9f50-793bc14bcb81"
+ },
+ {
+  "sample": "TCGA-44-6146__Solid_Tissue_Normal",
+  "case": "TCGA-44-6146",
+  "sample_type": "Solid Tissue Normal",
+  "file_id": "efb3bf8d-7d14-42d6-8845-e81af909d47f"
+ },
+ {
+  "sample": "TCGA-91-6836__Primary_Tumor",
+  "case": "TCGA-91-6836",
+  "sample_type": "Primary Tumor",
+  "file_id": "e7ae9253-4c2d-41bd-9d3a-c37e9841f479"
+ },
+ {
+  "sample": "TCGA-91-6836__Solid_Tissue_Normal",
+  "case": "TCGA-91-6836",
+  "sample_type": "Solid Tissue Normal",
+  "file_id": "e1a4e922-876b-45d1-8fb6-5d39dbf6ff60"
+ },
+ {
+  "sample": "TCGA-50-5939__Primary_Tumor",
+  "case": "TCGA-50-5939",
+  "sample_type": "Primary Tumor",
+  "file_id": "8148f34c-1ddd-454a-8761-8b76e97e8534"
+ },
+ {
+  "sample": "TCGA-50-5939__Solid_Tissue_Normal",
+  "case": "TCGA-50-5939",
+  "sample_type": "Solid Tissue Normal",
+  "file_id": "81152340-ffac-4122-8b21-bef3a474a18e"
+ },
+ {
+  "sample": "TCGA-50-5935__Primary_Tumor",
+  "case": "TCGA-50-5935",
+  "sample_type": "Primary Tumor",
+  "file_id": "d3d249ab-0483-4e9c-99f3-07afb5b6dabc"
+ },
+ {
+  "sample": "TCGA-50-5935__Solid_Tissue_Normal",
+  "case": "TCGA-50-5935",
+  "sample_type": "Solid Tissue Normal",
+  "file_id": "2ff24c33-39c6-4171-af42-f54e4ee8b021"
+ },
+ {
+  "sample": "TCGA-55-6986__Primary_Tumor",
+  "case": "TCGA-55-6986",
+  "sample_type": "Primary Tumor",
+  "file_id": "ad6ae9d2-c6f5-4686-9b3c-45ea130493f3"
+ },
+ {
+  "sample": "TCGA-55-6986__Solid_Tissue_Normal",
+  "case": "TCGA-55-6986",
+  "sample_type": "Solid Tissue Normal",
+  "file_id": "3f474548-c7b2-4d5e-9f8d-03c800a094fe"
+ },
+ {
+  "sample": "TCGA-55-6981__Primary_Tumor",
+  "case": "TCGA-55-6981",
+  "sample_type": "Primary Tumor",
+  "file_id": "a777fb14-4498-4f32-bccb-1e8521567302"
+ },
+ {
+  "sample": "TCGA-55-6981__Solid_Tissue_Normal",
+  "case": "TCGA-55-6981",
+  "sample_type": "Solid Tissue Normal",
+  "file_id": "aab3583f-37ca-4f2f-8428-aa8eda2c2274"
+ },
+ {
+  "sample": "TCGA-38-4625__Primary_Tumor",
+  "case": "TCGA-38-4625",
+  "sample_type": "Primary Tumor",
+  "file_id": "242a2880-95da-453f-892d-fafd49a4865e"
+ },
+ {
+  "sample": "TCGA-38-4625__Solid_Tissue_Normal",
+  "case": "TCGA-38-4625",
+  "sample_type": "Solid Tissue Normal",
+  "file_id": "661b6fed-d56a-452b-adaa-4b48ee9f4dbb"
+ },
+ {
+  "sample": "TCGA-50-5931__Primary_Tumor",
+  "case": "TCGA-50-5931",
+  "sample_type": "Primary Tumor",
+  "file_id": "69933ac8-e7a7-43b6-8231-2ecb35f88d52"
+ },
+ {
+  "sample": "TCGA-50-5931__Solid_Tissue_Normal",
+  "case": "TCGA-50-5931",
+  "sample_type": "Solid Tissue Normal",
+  "file_id": "94613d97-0a68-4212-beef-3c97a0b363ef"
+ },
+ {
+  "sample": "TCGA-38-4626__Primary_Tumor",
+  "case": "TCGA-38-4626",
+  "sample_type": "Primary Tumor",
+  "file_id": "d1a18468-9c02-4d61-8e3e-43a6d23d402e"
+ },
+ {
+  "sample": "TCGA-38-4626__Solid_Tissue_Normal",
+  "case": "TCGA-38-4626",
+  "sample_type": "Solid Tissue Normal",
+  "file_id": "e6e83fd4-2f80-44e1-8dce-588a37308dbb"
+ },
+ {
+  "sample": "TCGA-55-6980__Primary_Tumor",
+  "case": "TCGA-55-6980",
+  "sample_type": "Primary Tumor",
+  "file_id": "4b11527c-fb98-4ad4-aaac-6f0c6c1d185c"
+ },
+ {
+  "sample": "TCGA-55-6980__Solid_Tissue_Normal",
+  "case": "TCGA-55-6980",
+  "sample_type": "Solid Tissue Normal",
+  "file_id": "a8252e2f-1dbd-4f3c-9e11-599a33d6fd24"
+ },
+ {
+  "sample": "TCGA-91-6835__Primary_Tumor",
+  "case": "TCGA-91-6835",
+  "sample_type": "Primary Tumor",
+  "file_id": "8e14dba9-6132-483c-892b-b244704fdc38"
+ },
+ {
+  "sample": "TCGA-91-6835__Solid_Tissue_Normal",
+  "case": "TCGA-91-6835",
+  "sample_type": "Solid Tissue Normal",
+  "file_id": "b6d704be-2e8f-40cc-9c09-ffde6be5c814"
+ },
+ {
+  "sample": "TCGA-50-5930__Primary_Tumor",
+  "case": "TCGA-50-5930",
+  "sample_type": "Primary Tumor",
+  "file_id": "df504497-a30e-4a11-a62f-dcb46e741dfb"
+ },
+ {
+  "sample": "TCGA-50-5930__Solid_Tissue_Normal",
+  "case": "TCGA-50-5930",
+  "sample_type": "Solid Tissue Normal",
+  "file_id": "94913b2f-256e-4487-90ed-2c9b3869ca6b"
+ },
+ {
+  "sample": "TCGA-44-6777__Primary_Tumor",
+  "case": "TCGA-44-6777",
+  "sample_type": "Primary Tumor",
+  "file_id": "5f4fa91b-489e-4ac9-b685-53952f77bd7a"
+ },
+ {
+  "sample": "TCGA-44-6777__Solid_Tissue_Normal",
+  "case": "TCGA-44-6777",
+  "sample_type": "Solid Tissue Normal",
+  "file_id": "a6298ad5-dd68-44f6-85cf-f1d2c7673aa3"
+ },
+ {
+  "sample": "TCGA-49-6761__Primary_Tumor",
+  "case": "TCGA-49-6761",
+  "sample_type": "Primary Tumor",
+  "file_id": "5b99d571-43d2-4d26-9a3b-0a299a0ce048"
+ },
+ {
+  "sample": "TCGA-49-6761__Solid_Tissue_Normal",
+  "case": "TCGA-49-6761",
+  "sample_type": "Solid Tissue Normal",
+  "file_id": "ca8dc4e0-e8d2-4574-b3a0-74b058bd2b96"
+ },
+ {
+  "sample": "TCGA-44-6778__Primary_Tumor",
+  "case": "TCGA-44-6778",
+  "sample_type": "Primary Tumor",
+  "file_id": "c5a1245e-f3c5-4f42-afd6-9b12f01a6445"
+ },
+ {
+  "sample": "TCGA-44-6778__Solid_Tissue_Normal",
+  "case": "TCGA-44-6778",
+  "sample_type": "Solid Tissue Normal",
+  "file_id": "2d99f93c-797e-49a5-8892-a4e31e17b9c3"
+ },
+ {
+  "sample": "TCGA-50-5933__Primary_Tumor",
+  "case": "TCGA-50-5933",
+  "sample_type": "Primary Tumor",
+  "file_id": "a412b415-0692-4adf-8447-067ad69913d7"
+ },
+ {
+  "sample": "TCGA-50-5933__Solid_Tissue_Normal",
+  "case": "TCGA-50-5933",
+  "sample_type": "Solid Tissue Normal",
+  "file_id": "a71c722c-3483-4910-926d-c79b6c9a4e7d"
+ },
+ {
+  "sample": "TCGA-55-6970__Primary_Tumor",
+  "case": "TCGA-55-6970",
+  "sample_type": "Primary Tumor",
+  "file_id": "9bf51961-c60a-43df-87eb-a64dae9e4e10"
+ },
+ {
+  "sample": "TCGA-55-6970__Solid_Tissue_Normal",
+  "case": "TCGA-55-6970",
+  "sample_type": "Solid Tissue Normal",
+  "file_id": "89bdfb20-8991-4bc4-b112-6e9be096b566"
+ },
+ {
+  "sample": "TCGA-55-6968__Primary_Tumor",
+  "case": "TCGA-55-6968",
+  "sample_type": "Primary Tumor",
+  "file_id": "883bbed6-0216-48c2-9694-5dba83ce65c7"
+ },
+ {
+  "sample": "TCGA-55-6968__Solid_Tissue_Normal",
+  "case": "TCGA-55-6968",
+  "sample_type": "Solid Tissue Normal",
+  "file_id": "29dd3ad7-f2c6-4abf-8e81-6734e4bd8a6a"
+ },
+ {
+  "sample": "TCGA-55-6975__Primary_Tumor",
+  "case": "TCGA-55-6975",
+  "sample_type": "Primary Tumor",
+  "file_id": "385d903b-bab4-4c2e-8334-3a304d1a56fa"
+ },
+ {
+  "sample": "TCGA-55-6975__Solid_Tissue_Normal",
+  "case": "TCGA-55-6975",
+  "sample_type": "Solid Tissue Normal",
+  "file_id": "8dbb93bd-bf45-4148-acdb-6609d5c4a1e3"
+ },
+ {
+  "sample": "TCGA-49-4512__Primary_Tumor",
+  "case": "TCGA-49-4512",
+  "sample_type": "Primary Tumor",
+  "file_id": "e20ecad8-f22d-4e2d-99af-bc1be98c5128"
+ },
+ {
+  "sample": "TCGA-49-4512__Solid_Tissue_Normal",
+  "case": "TCGA-49-4512",
+  "sample_type": "Solid Tissue Normal",
+  "file_id": "09fb135f-1c19-45d6-ae31-a8c32a0e06bf"
+ },
+ {
+  "sample": "TCGA-44-5645__Primary_Tumor",
+  "case": "TCGA-44-5645",
+  "sample_type": "Primary Tumor",
+  "file_id": "091d2c9e-a8cb-4212-a434-7c7d4fd75f7b"
+ },
+ {
+  "sample": "TCGA-44-5645__Solid_Tissue_Normal",
+  "case": "TCGA-44-5645",
+  "sample_type": "Solid Tissue Normal",
+  "file_id": "df86c451-62c7-43bc-9b11-463181a5a98a"
+ },
+ {
+  "sample": "TCGA-55-6969__Primary_Tumor",
+  "case": "TCGA-55-6969",
+  "sample_type": "Primary Tumor",
+  "file_id": "45d4b468-9089-46fd-8b5e-ad80a5148abd"
+ },
+ {
+  "sample": "TCGA-55-6969__Solid_Tissue_Normal",
+  "case": "TCGA-55-6969",
+  "sample_type": "Solid Tissue Normal",
+  "file_id": "9ad544f6-b684-4a97-8d05-f812267962bb"
+ },
+ {
+  "sample": "TCGA-55-6979__Primary_Tumor",
+  "case": "TCGA-55-6979",
+  "sample_type": "Primary Tumor",
+  "file_id": "765f26d4-120a-459d-90c7-74a8532b407c"
+ },
+ {
+  "sample": "TCGA-55-6979__Solid_Tissue_Normal",
+  "case": "TCGA-55-6979",
+  "sample_type": "Solid Tissue Normal",
+  "file_id": "3ce6800e-9df0-45a7-9e18-7e141911e4e9"
+ },
+ {
+  "sample": "TCGA-44-2661__Primary_Tumor",
+  "case": "TCGA-44-2661",
+  "sample_type": "Primary Tumor",
+  "file_id": "c3e2e99a-537a-4263-a835-fef5ed2c3588"
+ },
+ {
+  "sample": "TCGA-44-2661__Solid_Tissue_Normal",
+  "case": "TCGA-44-2661",
+  "sample_type": "Solid Tissue Normal",
+  "file_id": "359d07bf-89e3-49fd-8237-723ffb299cfb"
+ },
+ {
+  "sample": "TCGA-49-6742__Primary_Tumor",
+  "case": "TCGA-49-6742",
+  "sample_type": "Primary Tumor",
+  "file_id": "a03c9de0-7526-4942-8a7a-5fe03ea191f6"
+ },
+ {
+  "sample": "TCGA-49-6742__Solid_Tissue_Normal",
+  "case": "TCGA-49-6742",
+  "sample_type": "Solid Tissue Normal",
+  "file_id": "0d1f21df-73b3-4dd0-9ad4-fd5c7a5d2424"
+ },
+ {
+  "sample": "TCGA-49-6744__Primary_Tumor",
+  "case": "TCGA-49-6744",
+  "sample_type": "Primary Tumor",
+  "file_id": "1876b908-e911-464f-be23-2b4eae0a43b6"
+ },
+ {
+  "sample": "TCGA-49-6744__Solid_Tissue_Normal",
+  "case": "TCGA-49-6744",
+  "sample_type": "Solid Tissue Normal",
+  "file_id": "9c7f6057-8225-4447-adb3-aed12aa974ad"
+ },
+ {
+  "sample": "TCGA-55-6982__Primary_Tumor",
+  "case": "TCGA-55-6982",
+  "sample_type": "Primary Tumor",
+  "file_id": "5c32fbb8-55ee-4bc9-a0db-d8ac0b04bdc4"
+ },
+ {
+  "sample": "TCGA-55-6982__Solid_Tissue_Normal",
+  "case": "TCGA-55-6982",
+  "sample_type": "Solid Tissue Normal",
+  "file_id": "1a06f92b-21c5-4666-b666-8b9135a4482a"
+ },
+ {
+  "sample": "TCGA-44-3396__Primary_Tumor",
+  "case": "TCGA-44-3396",
+  "sample_type": "Primary Tumor",
+  "file_id": "bbb70a6e-a91c-4c67-9ec0-b33185ab4f8d"
+ },
+ {
+  "sample": "TCGA-44-3396__Solid_Tissue_Normal",
+  "case": "TCGA-44-3396",
+  "sample_type": "Solid Tissue Normal",
+  "file_id": "f8cee5c6-bfd7-439d-8ba7-20ee2dfa5d68"
+ },
+ {
+  "sample": "TCGA-49-6745__Primary_Tumor",
+  "case": "TCGA-49-6745",
+  "sample_type": "Primary Tumor",
+  "file_id": "9db8b103-5f3a-439b-993c-14879744c30a"
+ },
+ {
+  "sample": "TCGA-49-6745__Solid_Tissue_Normal",
+  "case": "TCGA-49-6745",
+  "sample_type": "Solid Tissue Normal",
+  "file_id": "24079217-3899-4843-81fc-638293771d93"
+ },
+ {
+  "sample": "TCGA-38-4632__Primary_Tumor",
+  "case": "TCGA-38-4632",
+  "sample_type": "Primary Tumor",
+  "file_id": "665a7af8-9c2d-4a31-9a22-da89fc7107b2"
+ },
+ {
+  "sample": "TCGA-38-4632__Solid_Tissue_Normal",
+  "case": "TCGA-38-4632",
+  "sample_type": "Solid Tissue Normal",
+  "file_id": "54a00dd0-503f-471f-88e4-8d6fcdcf8483"
+ },
+ {
+  "sample": "TCGA-55-6971__Primary_Tumor",
+  "case": "TCGA-55-6971",
+  "sample_type": "Primary Tumor",
+  "file_id": "d72c21fe-ff33-4f1e-a138-420968f1daf4"
+ },
+ {
+  "sample": "TCGA-55-6971__Solid_Tissue_Normal",
+  "case": "TCGA-55-6971",
+  "sample_type": "Solid Tissue Normal",
+  "file_id": "c36f84e5-8c59-46fe-af32-7f70684383b2"
+ },
+ {
+  "sample": "TCGA-91-6828__Primary_Tumor",
+  "case": "TCGA-91-6828",
+  "sample_type": "Primary Tumor",
+  "file_id": "afdf58d1-5814-4e78-a92e-26fbcc97da32"
+ },
+ {
+  "sample": "TCGA-91-6828__Solid_Tissue_Normal",
+  "case": "TCGA-91-6828",
+  "sample_type": "Solid Tissue Normal",
+  "file_id": "2fe6f165-3396-4abd-a0cd-07968d826828"
+ },
+ {
+  "sample": "TCGA-49-6743__Primary_Tumor",
+  "case": "TCGA-49-6743",
+  "sample_type": "Primary Tumor",
+  "file_id": "e9d3cac1-3a16-4e21-8fe8-a4944ce82cb8"
+ },
+ {
+  "sample": "TCGA-49-6743__Solid_Tissue_Normal",
+  "case": "TCGA-49-6743",
+  "sample_type": "Solid Tissue Normal",
+  "file_id": "c48eecc3-0099-4dd4-b319-f13ad65bdc7e"
+ },
+ {
+  "sample": "TCGA-91-6847__Primary_Tumor",
+  "case": "TCGA-91-6847",
+  "sample_type": "Primary Tumor",
+  "file_id": "32046abb-8476-4e4f-8090-1ce003107490"
+ },
+ {
+  "sample": "TCGA-91-6847__Solid_Tissue_Normal",
+  "case": "TCGA-91-6847",
+  "sample_type": "Solid Tissue Normal",
+  "file_id": "9f01664c-19be-4841-afb4-297483d22ec8"
+ },
+ {
+  "sample": "TCGA-55-6972__Primary_Tumor",
+  "case": "TCGA-55-6972",
+  "sample_type": "Primary Tumor",
+  "file_id": "68b00cb6-4335-4c64-a3e0-0c29ed574480"
+ },
+ {
+  "sample": "TCGA-55-6972__Solid_Tissue_Normal",
+  "case": "TCGA-55-6972",
+  "sample_type": "Solid Tissue Normal",
+  "file_id": "a4b8b2f2-6a56-4999-bd95-c2c8e4aa3bd0"
+ },
+ {
+  "sample": "TCGA-91-6829__Primary_Tumor",
+  "case": "TCGA-91-6829",
+  "sample_type": "Primary Tumor",
+  "file_id": "ffec28dd-cc44-4057-bcc3-ccc0cd2331c2"
+ },
+ {
+  "sample": "TCGA-91-6829__Solid_Tissue_Normal",
+  "case": "TCGA-91-6829",
+  "sample_type": "Solid Tissue Normal",
+  "file_id": "3f441cc8-98bd-4650-b5ad-19ae8542b666"
+ },
+ {
+  "sample": "TCGA-55-6985__Primary_Tumor",
+  "case": "TCGA-55-6985",
+  "sample_type": "Primary Tumor",
+  "file_id": "40dba5d9-ce2e-483b-b4a7-19fbca8158e5"
+ },
+ {
+  "sample": "TCGA-55-6985__Solid_Tissue_Normal",
+  "case": "TCGA-55-6985",
+  "sample_type": "Solid Tissue Normal",
+  "file_id": "6c20a899-c806-46d0-b744-a26e53a9cb45"
+ },
+ {
+  "sample": "TCGA-55-6984__Primary_Tumor",
+  "case": "TCGA-55-6984",
+  "sample_type": "Primary Tumor",
+  "file_id": "09296d1f-9877-438d-96d8-7b4cc52940dd"
+ },
+ {
+  "sample": "TCGA-55-6984__Solid_Tissue_Normal",
+  "case": "TCGA-55-6984",
+  "sample_type": "Solid Tissue Normal",
+  "file_id": "53b14fb6-9f29-412a-921b-49e270fa2039"
+ },
+ {
+  "sample": "TCGA-50-5936__Primary_Tumor",
+  "case": "TCGA-50-5936",
+  "sample_type": "Primary Tumor",
+  "file_id": "055fcce9-7448-4a16-ad18-d235dac7ce97"
+ },
+ {
+  "sample": "TCGA-50-5936__Solid_Tissue_Normal",
+  "case": "TCGA-50-5936",
+  "sample_type": "Solid Tissue Normal",
+  "file_id": "ad62355a-f287-49b2-84a9-64c0f5847c20"
+ },
+ {
+  "sample": "TCGA-44-2657__Primary_Tumor",
+  "case": "TCGA-44-2657",
+  "sample_type": "Primary Tumor",
+  "file_id": "93db566e-8ff9-45b0-afa2-0fbe82b8f580"
+ },
+ {
+  "sample": "TCGA-44-2657__Solid_Tissue_Normal",
+  "case": "TCGA-44-2657",
+  "sample_type": "Solid Tissue Normal",
+  "file_id": "e39f6bf6-2206-45f2-a1c0-81fc1d858fd2"
+ },
+ {
+  "sample": "TCGA-44-2665__Primary_Tumor",
+  "case": "TCGA-44-2665",
+  "sample_type": "Primary Tumor",
+  "file_id": "fc732523-d387-4a1d-ab81-34e44e869bac"
+ },
+ {
+  "sample": "TCGA-44-2665__Solid_Tissue_Normal",
+  "case": "TCGA-44-2665",
+  "sample_type": "Solid Tissue Normal",
+  "file_id": "56e9a740-ee72-4c10-a90d-921034141b42"
+ },
+ {
+  "sample": "TCGA-44-3398__Primary_Tumor",
+  "case": "TCGA-44-3398",
+  "sample_type": "Primary Tumor",
+  "file_id": "f73807f5-edf8-4a4d-8550-048d9c5413e5"
+ },
+ {
+  "sample": "TCGA-44-3398__Solid_Tissue_Normal",
+  "case": "TCGA-44-3398",
+  "sample_type": "Solid Tissue Normal",
+  "file_id": "5d65e761-0cb3-4e52-b14f-79be5850dba4"
+ }
+]
