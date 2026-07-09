@@ -1,0 +1,3 @@
+statistic,point_estimate,ci_lower,ci_upper,excludes_zero
+Delta (observed max-H1 - Gaussian null mean),2.8549822506913682,0.8329770277460153,3.962864921834204,True
+z (Delta / null SD),18.59565953614612,5.425517866405233,25.811749567381632,True
