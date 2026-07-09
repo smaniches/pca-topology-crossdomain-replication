@@ -7,18 +7,19 @@ SHA-256 checksums for every file are in `checksums.sha256` (verify with `sha256s
 
 | File | Size |
 |---|---|
+| .gitignore | 102 B |
 | CITATION.cff | 662 B |
 | LICENSE | 1.3 KB |
-| MANIFEST.md | 6.7 KB |
+| MANIFEST.md | 7.0 KB |
 | README.md | 7.9 KB |
-| reproduce.py | 4.4 KB |
+| reproduce.py | 10.4 KB |
 | requirements.txt | 145 B |
 
 ## code/
 
 | File | Size |
 |---|---|
-| .gitignore | 782 B |
+| .gitignore | 929 B |
 | 03_statistics_and_results_table.py | 10.0 KB |
 | 04a_figure_persistence_diagrams.py | 5.7 KB |
 | 04b_figure_barcode_null_distributions.py | 7.9 KB |
@@ -90,7 +91,7 @@ SHA-256 checksums for every file are in `checksums.sha256` (verify with `sha256s
 | .gitignore | 79 B |
 | paper.pdf | 1.5 MB |
 | paper.tex | 1.7 KB |
-| references.bib | 3.7 KB |
+| references.bib | 4.2 KB |
 
 ## paper/figures/
 
@@ -121,6 +122,8 @@ SHA-256 checksums for every file are in `checksums.sha256` (verify with `sha256s
 
 | File | Size |
 |---|---|
+| GATE5_number_provenance.md | 7.1 KB |
+| GATE6_portability_smoke_test.md | 2.5 KB |
 | cross_dataset_BH_family.csv | 2.1 KB |
 | cross_dataset_checkpoint.md | 11.4 KB |
 | final_verdict.md | 16.5 KB |
@@ -260,4 +263,4 @@ SHA-256 checksums for every file are in `checksums.sha256` (verify with `sha256s
 | tcga_luad_h1_pca_delta.png | 77.8 KB |
 | tcga_luad_null_comparison.png | 167.3 KB |
 
-**Total: 122 files, 18.6 MB**
+**Total: 125 files, 18.7 MB**
