@@ -119,19 +119,54 @@ failure drives the TCGA-LUAD counter-example.
 
 \subsection*{Data and Code Availability}
 
-The pre-registration document, per-cohort analysis reports, and the full confound-attribution audit and
-ablation-sweep numeric tables and figures underlying this manuscript are available at
-\url{https://github.com/smaniches/pca-topology-crossdomain-replication}. The repository's \texttt{prereg/}
-directory contains the locked pre-registration (with a SHA-256 hash recorded at lock time as a
-provenance marker, per \Cref{sec:methods}); \texttt{results/} contains
-one subdirectory per cohort/analysis phase (\texttt{pilot\allowbreak\_GSE81089}, \texttt{replication\allowbreak\_GSE146889},
+All analysis code, numeric results, and the manuscript source are available at
+\url{https://github.com/smaniches/pca-topology-crossdomain-replication}, together with a single entry
+point (\texttt{reproduce.py}) that runs every phase described in this manuscript end-to-end. The
+repository's \texttt{prereg/} directory contains the locked pre-registration (with a SHA-256 hash recorded
+at lock time as an internal provenance marker, per \Cref{sec:methods}); \texttt{results/} contains one
+subdirectory per cohort/analysis phase (\texttt{pilot\allowbreak\_GSE81089}, \texttt{replication\allowbreak\_GSE146889},
 \texttt{replication\allowbreak\_CPTAC\allowbreak\_CCRCC}, \texttt{replication\allowbreak\_TCGA\allowbreak\_LUAD}, \texttt{ablation\allowbreak\_sweep},
 \texttt{confound\allowbreak\_attribution\allowbreak\_audit}) with the full numeric tables, figures, and markdown reports each
-Results subsection summarizes; and \texttt{paper/} contains this manuscript's LaTeX source. The
-\texttt{code/} directory currently contains the pilot cohort's statistics and figure-generation scripts only;
-analysis code for the three confirmatory replications, the 18-configuration ablation sweep, and the
-four-cohort confound-attribution audit is not yet packaged for independent re-run and is an acknowledged gap
-in this repository as of this writing. Pre-processed data checkpoints used during analysis are not currently
-retained in the repository; readers wishing to reproduce a specific numeric result should start from each
-cohort's raw public accession (cited in \Cref{sec:methods}) and the fixed hyperparameters in the
-pre-registration.
+Results subsection summarizes, plus a repository-completeness audit trail
+(\texttt{GATE5\allowbreak\_number\allowbreak\_provenance.md}, \texttt{GATE6\allowbreak\_portability\allowbreak\_smoke\allowbreak\_test.md}); and
+\texttt{paper/} contains this manuscript's LaTeX source.
+
+The \texttt{code/} directory contains standalone, run-from-scratch reproduction scripts for every phase in
+this manuscript: the pilot cohort (statistics and figure generation), all three confirmatory replication
+cohorts (\texttt{replication\allowbreak\_GSE146889}, \texttt{replication\allowbreak\_CPTAC\allowbreak\_CCRCC},
+\texttt{replication\allowbreak\_TCGA\allowbreak\_LUAD} -- the latter covering both its RNA-seq and methylation layers), the
+18-configuration ablation sweep (\texttt{ablation\allowbreak\_sweep}), and the four-cohort confound-attribution audit
+(\texttt{confound\allowbreak\_attribution\allowbreak\_audit}). Each replication and confound-audit script fetches its own raw
+data directly from the cohort's original public accession (GEO FTP, the PDC GraphQL API, or the GDC API,
+documented in each script's docstring) rather than depending on a pre-fetched snapshot. Pre-processed data
+checkpoints are retained in the repository where refetching would be costly or where the original processing
+is not independently re-derivable: the pilot cohort's persistence diagrams and null distributions
+(\texttt{results/pilot\allowbreak\_GSE81089/checkpoints/}), a preprocessed CPTAC-CCRCC expression cache
+(\texttt{code/replication\allowbreak\_CPTAC\allowbreak\_CCRCC/data/}), and GSE146889's confound-audit null distributions
+(\texttt{code/confound\allowbreak\_attribution\allowbreak\_audit/data\allowbreak\_gse146889\allowbreak\_reused\allowbreak\_null/}, reused rather than
+redrawn because the original run's code lineage could not be recovered -- see that phase's README for the
+full disclosure of this one case's higher reconstruction risk relative to the other three confound-audit
+cohorts). All other cohorts' raw data is fetched fresh on each run rather than cached, since re-fetching from
+the public source is inexpensive and keeps the repository size manageable.
+
+Every phase was independently verified to run end-to-end from a machine with no prior exposure to this
+project's development environment, but not all phases were re-verified at the same null-model rigor.
+\texttt{reproduce.py --full} re-runs the pilot cohort at its full pre-registered rigor
+($n_{\text{Gaussian}}=500$, $n_{\text{permutation}}=2000$) and reproduces every statistic reported for that
+cohort in \Cref{sec:results} exactly. \texttt{reproduce.py --replication --ablation --confound}, by contrast,
+was verified end-to-end at a \emph{reduced} null-model draw count (for runtime reasons -- the three
+replication cohorts, the 18-configuration ablation sweep, and the four-cohort confound audit were not
+re-run at the pilot's full $n_{\text{Gaussian}}=500$/$n_{\text{permutation}}=2000$ rigor during this
+verification pass). What \emph{is} confirmed at full precision regardless of draw count is every
+\emph{real-data} statistic these three phases report -- observed $\maxHone$ values, CV-AUC, and effect
+sizes are deterministic given the real data and are independent of how many null draws are taken, and each
+script asserts its own cohort's real-data statistics against the corresponding \texttt{results/} report to
+exact or near-exact tolerance. The null-derived quantities specific to these three phases (the exact
+$z$-scores and $p$-values reported in \Cref{sec:results} for the confirmatory cohorts, the ablation sweep,
+and the confound audit) were established once, during the original full-rigor analysis runs whose outputs
+are the numbers in \Cref{sec:results} and the \texttt{results/} directory; this reproducibility check
+re-derives the real-data statistics and pipeline logic underlying those numbers, not a second full-rigor
+null-model draw. See \texttt{results/GATE6\allowbreak\_portability\allowbreak\_smoke\allowbreak\_test.md} for the
+clean-environment verification and \texttt{results/GATE5\allowbreak\_number\allowbreak\_provenance.md} for a traced
+source-file/column citation of every headline number in this manuscript, including which were re-derived at
+full rigor versus reduced draw count during this check.

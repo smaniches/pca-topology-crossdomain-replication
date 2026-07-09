@@ -29,20 +29,24 @@
   pages   = {77--102}
 }
 
+% NOTE (not rendered -- bib comment, outside any entry): damrich2024's
+% volume is 37, not 38. The official NeurIPS series index
+% (proceedings.neurips.cc, papers.nips.cc, dblp) all list "Advances in
+% Neural Information Processing Systems 37" for NeurIPS 2024, and other
+% papers citing NeurIPS 2024 works independently use vol. 37. The paper
+% PDF's own "38th Conference on Neural Information Processing Systems"
+% header is a conference-ordinal count (the 38th annual meeting), not the
+% series volume number -- and the authors' self-cited GitHub bibtex
+% (volume=38) likely conflates the two. Verified via web_search
+% 2026-07-09; do not flip this back to 38 without re-checking the primary
+% sources above, not just the authors' own bibtex.
 @inproceedings{damrich2024,
   author    = {Damrich, Sebastian and Berens, Philipp and Kobak, Dmitry},
   title     = {Persistent Homology for High-dimensional Data Based on Spectral Methods},
   booktitle = {Advances in Neural Information Processing Systems},
   volume    = {37},
   year      = {2024},
-  note      = {NeurIPS 2024. Volume 37 per the official series index
-               (proceedings.neurips.cc, papers.nips.cc, dblp all list
-               "Advances in Neural Information Processing Systems 37" for
-               NeurIPS 2024) and per other papers' own citations of NeurIPS
-               2024 works using vol. 37 -- distinct from the paper PDF's
-               "38th Conference" ordinal, which counts conferences held, not
-               series volumes, and differs from the authors' own (likely
-               conflated) self-cited volume=38 in their GitHub bibtex.}
+  note      = {NeurIPS 2024}
 }
 
 @article{hamdan2023,
