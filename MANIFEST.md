@@ -21,12 +21,42 @@ SHA-256 checksums for every file are in `checksums.sha256` (verify with `sha256s
 | 04a_figure_persistence_diagrams.py | 5.7 KB |
 | 04b_figure_barcode_null_distributions.py | 7.9 KB |
 
+## code/replication_CPTAC_CCRCC/
+
+| File | Size |
+|---|---|
+| 01_fetch_preprocess_and_results_table.py | 14.6 KB |
+| README.md | 2.9 KB |
+
+## code/replication_CPTAC_CCRCC/data/
+
+| File | Size |
+|---|---|
+| cptac_ccrcc_labels.csv | 5.8 KB |
+| cptac_ccrcc_log2ratio_raw.csv | 12.43 MB |
+
+## code/replication_GSE146889/
+
+| File | Size |
+|---|---|
+| 01_fetch_preprocess_and_results_table.py | 14.0 KB |
+| README.md | 2.8 KB |
+
+## code/replication_TCGA_LUAD/
+
+| File | Size |
+|---|---|
+| 01_rnaseq_fetch_preprocess_and_results_table.py | 14.9 KB |
+| 02_methylation_fetch_preprocess_and_results_table.py | 18.1 KB |
+| README.md | 5.3 KB |
+| _common.py | 5.6 KB |
+
 ## paper/
 
 | File | Size |
 |---|---|
 | .gitignore | 0.1 KB |
-| paper.pdf | 1.60 MB |
+| paper.pdf | 1.53 MB |
 | paper.tex | 1.7 KB |
 | references.bib | 3.7 KB |
 
@@ -197,5 +227,3 @@ SHA-256 checksums for every file are in `checksums.sha256` (verify with `sha256s
 |---|---|
 | tcga_luad_h1_pca_delta.png | 77.8 KB |
 | tcga_luad_null_comparison.png | 167.3 KB |
-
-**Total: 95 files, 6.23 MB**

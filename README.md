@@ -80,14 +80,22 @@ matched the pre-registered value exactly, well within the 1e-3 tolerance in
 
 ## Known gaps (disclosed, not silently omitted)
 
-- [ ] `code/` currently contains only the pilot cohort's scripts. Analysis code for the 3
-      confirmatory replications, the 18-config ablation sweep, and the 4-cohort
-      confound-attribution audit is not yet packaged here (the numeric results and full
-      methodology are documented in the corresponding `results/` markdown reports, but the
-      code itself has not been added to this repository). This is the one remaining gap
-      after the repo-completeness-gate audit -- the gate applies fully to the pilot-cohort
-      code path (which passes all 7 gates) but the audit does not extend coverage claims to
-      code that does not exist in the repository.
+- [x] ~~`code/` currently contains only the pilot cohort's scripts~~ -- **resolved.** Standalone,
+      run-from-scratch reproduction scripts for all 3 confirmatory replication cohorts are now
+      packaged under `code/replication_GSE146889/`, `code/replication_CPTAC_CCRCC/`, and
+      `code/replication_TCGA_LUAD/` (the latter covering both its RNA-seq and methylation
+      layers). Each script fetches its own raw data from the original public source (GEO FTP,
+      the PDC GraphQL API, or the GDC API -- documented explicitly in each script's docstring;
+      CPTAC-CCRCC additionally ships a bundled preprocessed-data cache under
+      `code/replication_CPTAC_CCRCC/data/` to avoid re-hitting the PDC API on every run), prints
+      and asserts its cohort's key numbers against the corresponding `results/` report, and was
+      verified end-to-end in a dedicated environment (at a reduced null-model draw count for
+      runtime; the real-data statistics that are independent of draw count were verified at
+      full tolerance -- see each script's docstring and README for the exact tolerances and the
+      reduction disclosure). Analysis code for the 18-config ablation sweep and the 4-cohort
+      confound-attribution audit is still not packaged here; the numeric results and full
+      methodology for those remain documented in the corresponding `results/` markdown reports
+      only.
 - [ ] No automated tests or CI (beyond the manual gate-audit reproduction check above).
 
 ## Provenance
