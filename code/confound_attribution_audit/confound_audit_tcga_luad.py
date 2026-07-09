@@ -5,8 +5,8 @@ reproducing results/confound_attribution_audit/confound_audit_TCGA_LUAD.md.
 
 Data source: GDC API (STAR-Counts workflow, "Gene Expression Quantification" data type),
 TCGA-LUAD project, restricted to Primary Tumor / Solid Tissue Normal sample types, paired
-by case. Fetched via the GDC REST API (curl-based file manifest + file download; this
-script uses `requests` for the equivalent HTTP calls) -- see 00_fetch_gdc_rnaseq.py.
+by case. Fetched via the GDC REST API using `requests`; the fetch logic is implemented
+inline in this script (see fetch_tcga_luad_rnaseq() below), not in a separate file.
 
 Preprocessing: log1p(FPKM) -> top-2000 HVG by variance -> per-SAMPLE standardize (note:
 this cohort's original code standardizes each row/sample rather than each gene/column

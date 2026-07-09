@@ -13,10 +13,13 @@ Preprocessing (protein/proteomics-specific, differs from the RNA-seq cohorts):
   3. top-2000 most-variable proteins by variance across samples
   4. StandardScaler + PCA(50)
 
-Topological backend: gudhi (matches what was actually run for this cohort in the
-original audit -- gives identical H1 persistence to ripser for the same point cloud,
-since both compute a Vietoris-Rips filtration, but gudhi was the one whose exact
-numerical output the committed report's numbers come from).
+Topological backend: gudhi. Verified against this cohort's original audit transcript
+(the sub-agent's actual executed cells import gudhi.RipsComplex throughout, not ripser --
+confirmed by inspecting the raw tool-call history, not assumed). Both gudhi and ripser
+compute an exact Vietoris-Rips filtration on the same distance matrix and should agree on
+max-H1 persistence in theory, but this project has not empirically cross-checked the two
+backends against each other bit-for-bit; gudhi is used here because it is what the
+original audit's report numbers were computed with.
 
 Expected results (from the committed report): mixed max-H1 = 3.833, tumor-only max-H1 =
 3.833 (EXACT match, same "tumor subset alone reproduces mixed magnitude" pattern as

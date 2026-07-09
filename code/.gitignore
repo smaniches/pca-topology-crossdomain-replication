@@ -1,0 +1,18 @@
+# Byproducts of running the reproduction scripts locally -- not committed.
+# The scripts fetch/regenerate these; see each subdirectory's README.md.
+ablation_sweep/data/
+ablation_sweep/results/
+ablation_sweep/configs.json
+confound_attribution_audit/__pycache__/
+confound_attribution_audit/data_cptac/
+confound_attribution_audit/data_gse146889/
+confound_attribution_audit/data_gse81089/
+confound_attribution_audit/data_tcga_luad/
+confound_attribution_audit/results_cptac/
+confound_attribution_audit/results_gse146889/
+confound_attribution_audit/results_gse81089/
+confound_attribution_audit/results_tcga_luad/
+replication_CPTAC_CCRCC/cptac_final_results_table.csv
+replication_GSE146889/GSE146889_GeneCount.tsv.gz
+replication_GSE146889/final_results_table_GSE146889.csv
+**/__pycache__/

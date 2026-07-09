@@ -9,7 +9,7 @@ SHA-256 checksums for every file are in `checksums.sha256` (verify with `sha256s
 |---|---|
 | CITATION.cff | 662 B |
 | LICENSE | 1.3 KB |
-| MANIFEST.md | 6.1 KB |
+| MANIFEST.md | 6.7 KB |
 | README.md | 7.9 KB |
 | reproduce.py | 4.4 KB |
 | requirements.txt | 145 B |
@@ -18,6 +18,7 @@ SHA-256 checksums for every file are in `checksums.sha256` (verify with `sha256s
 
 | File | Size |
 |---|---|
+| .gitignore | 782 B |
 | 03_statistics_and_results_table.py | 10.0 KB |
 | 04a_figure_persistence_diagrams.py | 5.7 KB |
 | 04b_figure_barcode_null_distributions.py | 7.9 KB |
@@ -39,11 +40,18 @@ SHA-256 checksums for every file are in `checksums.sha256` (verify with `sha256s
 |---|---|
 | README.md | 8.3 KB |
 | confound_audit_common.py | 14.8 KB |
-| confound_audit_cptac_ccrcc.py | 9.5 KB |
-| confound_audit_gse146889.py | 14.3 KB |
+| confound_audit_cptac_ccrcc.py | 9.7 KB |
+| confound_audit_gse146889.py | 14.2 KB |
 | confound_audit_gse81089.py | 8.7 KB |
 | confound_audit_tcga_luad.py | 13.2 KB |
 | tcga_luad_file_manifest.json | 19.0 KB |
+
+## code/confound_attribution_audit/data_gse146889_reused_null/
+
+| File | Size |
+|---|---|
+| diagrams_GSE146889.pkl | 11.8 KB |
+| null_distributions_GSE146889.pkl | 39.4 KB |
 
 ## code/replication_CPTAC_CCRCC/
 
@@ -57,7 +65,7 @@ SHA-256 checksums for every file are in `checksums.sha256` (verify with `sha256s
 | File | Size |
 |---|---|
 | cptac_ccrcc_labels.csv | 5.8 KB |
-| cptac_ccrcc_log2ratio_raw.csv | 12.43 MB |
+| cptac_ccrcc_log2ratio_raw.csv | 12.4 MB |
 
 ## code/replication_GSE146889/
 
@@ -80,7 +88,7 @@ SHA-256 checksums for every file are in `checksums.sha256` (verify with `sha256s
 | File | Size |
 |---|---|
 | .gitignore | 79 B |
-| paper.pdf | 1.53 MB |
+| paper.pdf | 1.5 MB |
 | paper.tex | 1.7 KB |
 | references.bib | 3.7 KB |
 
@@ -251,3 +259,5 @@ SHA-256 checksums for every file are in `checksums.sha256` (verify with `sha256s
 |---|---|
 | tcga_luad_h1_pca_delta.png | 77.8 KB |
 | tcga_luad_null_comparison.png | 167.3 KB |
+
+**Total: 122 files, 18.6 MB**

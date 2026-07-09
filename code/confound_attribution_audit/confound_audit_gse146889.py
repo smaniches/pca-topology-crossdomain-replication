@@ -94,25 +94,23 @@ def preprocess(rpkm, n_hvg=2000):
                              # needed for pipeline-symmetric permutation nulls that reselect HVG
 
 
+_BUNDLED_NULL_DIR = os.path.join(_ROOT, "data_gse146889_reused_null")
+
+
 def load_reused_null(artifact_root=None):
     """Load the reused mixed-set null distributions from the original Phase-1 replication
-    run for this cohort (see module docstring). If a local host.artifact_path resolution
-    isn't available (e.g. running outside the Claude Science kernel), pass
-    artifact_root pointing at a directory containing the two pickles by their known
-    filenames as a fallback."""
-    try:
-        import host  # only available inside a Claude Science kernel
-        null_path = host.artifact_path(REUSED_NULL_DISTS_ARTIFACT)
-        diag_path = host.artifact_path(REUSED_DIAGRAMS_ARTIFACT)
-    except Exception:
-        if artifact_root is None:
-            raise RuntimeError(
-                "Cannot resolve reused null-distribution artifacts outside a Claude Science "
-                "kernel -- pass --local-null-dir pointing at a directory with "
-                "null_distributions_GSE146889.pkl and diagrams_GSE146889.pkl"
-            )
-        null_path = os.path.join(artifact_root, "null_distributions_GSE146889.pkl")
-        diag_path = os.path.join(artifact_root, "diagrams_GSE146889.pkl")
+    run for this cohort (see module docstring). These two pickles are bundled in this repo
+    at data_gse146889_reused_null/ (52 KB total) for portability -- no artifact-store or
+    network access needed. artifact_root overrides the bundled location if given."""
+    search_dir = artifact_root or _BUNDLED_NULL_DIR
+    null_path = os.path.join(search_dir, "null_distributions_GSE146889.pkl")
+    diag_path = os.path.join(search_dir, "diagrams_GSE146889.pkl")
+    if not (os.path.isfile(null_path) and os.path.isfile(diag_path)):
+        raise RuntimeError(
+            f"Reused null-distribution pickles not found in {search_dir}. "
+            "They should be bundled at code/confound_attribution_audit/data_gse146889_reused_null/ "
+            "in this repo; pass --local-null-dir to point elsewhere."
+        )
     with open(null_path, "rb") as f:
         null_dists = pickle.load(f)
     with open(diag_path, "rb") as f:
