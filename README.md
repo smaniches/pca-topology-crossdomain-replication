@@ -6,9 +6,10 @@ audit (generalized to all 4 cohorts), and a LaTeX manuscript (`paper/paper.pdf`)
 The manuscript has been through two rounds of a 5-referee adversarial review pass; see `paper/`
 for the current draft and `results/` for every underlying numeric result. The repository has
 passed a 7-gate completeness audit (file inventory, standard files, no hardcoded paths, end-to-end
-reproduction, number provenance, portability, checksum registry) for the pilot-cohort code path;
-see `MANIFEST.md` / `checksums.sha256` and the "Known gaps" section below for the one remaining,
-explicitly disclosed scope limitation.
+reproduction, number provenance, portability, checksum registry) covering every cohort's packaged
+code (pilot, all 3 confirmatory replications, the ablation sweep, and the confound-attribution
+audit); see `MANIFEST.md` / `checksums.sha256` and the "Known gaps" section below for the specific,
+disclosed reproduction-depth caveats.
 
 ## What this project tests
 
@@ -49,7 +50,8 @@ results/ablation_sweep/           18-configuration hyperparameter-sensitivity sw
 results/confound_attribution_audit/  Confound-attribution audit, all 4 cohorts
 results/cross_dataset_checkpoint.md  Phase-1 replication synthesis (BH-FDR family)
 results/final_verdict.md          Full-program synthesis: what is and isn't established
-code/                             Statistics/figure-generation scripts (pilot cohort only -- see below)
+code/                             Statistics/figure-generation scripts for every cohort, the ablation
+                                  sweep, and the confound-attribution audit (see "Known gaps" below)
 paper/                            LaTeX manuscript source, figures, and compiled PDF
 reproduce.py                      Single entry point: regenerates the pilot figures (and,
                                   with --full, the full pilot statistics) from scratch
@@ -108,6 +110,16 @@ matched the pre-registered value exactly, well within the 1e-3 tolerance in
       lineage chain) and carries materially higher reconstruction risk than the other 3, though its
       real-data statistics were verified to match the committed report closely -- see
       `code/confound_attribution_audit/README.md` for the full disclosure.
+- [x] ~~Figures 2, 3, and 4 (cross-dataset replication, ablation sweep, confound audit) existed only
+      as static PNGs with no committed generation script~~ -- **resolved.** Recovered via
+      `host.lineage` and repackaged as `code/replication_cross_dataset/04c_figure_cross_dataset_replication.py`,
+      `code/ablation_sweep/04_figure_sweep_sensitivity.py`, and
+      `code/confound_attribution_audit/04_figure_confound_audit.py`, each reading only from
+      already-committed `results/` CSVs. Verified to regenerate each figure's data and layout
+      exactly. One narrow gap remains and is disclosed in
+      `code/replication_cross_dataset/README.md`: Figure 2's dominant-H1-loop tumor-enrichment
+      numbers exist only as prose in each cohort's own report, not as a committed CSV, and are
+      transcribed as literal constants rather than computed.
 - [ ] No automated tests or CI (beyond the manual gate-audit reproduction check above).
 
 ## Provenance

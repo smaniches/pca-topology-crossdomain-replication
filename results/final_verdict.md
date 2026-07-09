@@ -1,12 +1,21 @@
 # Final Verdict: Cross-Dataset Replication, Ablation, and Confound-Attribution Synthesis
 
+> **SUPERSEDED.** The manuscript (`paper/paper.pdf`, built from `paper/sections/*.tex`) is the
+> single source of truth for every specific number in this program. This file is kept for audit
+> history only — it predates the manuscript's final cohort-count terminology cleanup — and should
+> not be cited as a current restatement of results. See `GATE_FINAL_SUMMARY.md` for current
+> gate/commit/checksum status and the manuscript itself for all reported figures.
+
 **Project:** TOPOLOGICA PCA-topology cross-domain replication
 **Pre-registration:** locked 2026-07-08T13:50:55Z, SHA-256 `5e539309747188a2e77aa36bf1f9aecd3b50b8493803efa756ee4715773f0517`
-**Scope:** synthesizes the pilot (GSE81089), 3 confirmatory replication datasets (GSE146889, CPTAC-CCRCC,
-TCGA-LUAD), the full ablation/hyperparameter-sensitivity sweep, and the confound-attribution-audit — now
-run on **all four** datasets — into one honest, final statement of what this program has and has not
-established. This revision closes the gap flagged in the prior version: the confound-attribution-audit
-has now been generalized from GSE81089 alone to all three replication datasets.
+**Scope:** synthesizes the pilot (GSE81089) and 3 pre-registered confirmatory replication cohorts
+(GSE146889, CPTAC-CCRCC, TCGA-LUAD) — four independent cohorts in total, five cohort/layer analyses
+since TCGA-LUAD contributes two omics layers (RNA-seq and DNA methylation), spanning three omics
+modalities (bulk RNA-seq, DNA methylation, mass-spectrometry proteomics) — together with the full
+ablation/hyperparameter-sensitivity sweep and the confound-attribution-audit, now run on **all four**
+cohorts, into one honest, final statement of what this program has and has not established. This
+revision closes the gap flagged in the prior version: the confound-attribution-audit has now been
+generalized from GSE81089 alone to all three replication cohorts.
 
 ## 1. The central claims under test
 
@@ -28,12 +37,13 @@ persistence increase is not supported without a matched null.
 | TCGA-LUAD | Methylation | raw space | PASS (z = 19.3–26.7) |
 | TCGA-LUAD | Methylation | PCA space | **FAIL** (z = −0.20 to −0.79; real max-H1 = 0) |
 
-14 of 16 confirmatory tests (87.5%) pass BH-FDR-corrected significance at the pre-registered threshold.
-**H0 replicates broadly across bulk RNA-seq (3 independent cohorts, 5 cancer types/tissues) and
-proteomics (1 independent cohort, 1 additional cancer type), with one clean, mechanistically-understood
-exception**: a 36-sample paired methylation subset where PCA reduction to 35 (not 50, due to the small
-sample size) produces a space with no detectable H1 structure at all — not a contradiction of H0 elsewhere,
-but a boundary condition tied to that dataset's small sample count.
+14 of 16 confirmatory tests (87.5%) pass BH-FDR-corrected significance at the pre-registered threshold
+(8/8 in raw feature space; 6/8 in PCA-reduced space — the two PCA-space failures are TCGA-LUAD
+methylation only). **H0 replicates broadly across bulk RNA-seq (3 of the 4 cohorts: GSE81089, GSE146889,
+TCGA-LUAD) and proteomics (1 of the 4 cohorts: CPTAC-CCRCC), with one clean, mechanistically-understood
+exception**: a 36-sample paired methylation subset (TCGA-LUAD's second omics layer) where PCA reduction
+to 35 (not 50, due to the small sample size) produces a space with no detectable H1 structure at all —
+not a contradiction of H0 elsewhere, but a boundary condition tied to that dataset's small sample count.
 
 ## 3. Cross-dataset replication: does H1 hold?
 
@@ -141,12 +151,14 @@ whether it survives in the *pre-registered PCA(50) space* that the program's pri
 
 **What is established with reasonable confidence, at the scope actually demonstrated:**
 
-1. Real omics data (5 independent cohorts, 2 modalities: transcript and protein abundance, spanning
-   NSCLC, colorectal/endometrial/ovarian, renal, and lung-adenocarcinoma cancer types) carries
-   persistent-homology H1 structure that significantly exceeds both a Gaussian-noise null and a
-   pipeline-symmetric permutation null, in raw feature space essentially universally (16/16 raw-space
-   tests pass), and in PCA-reduced space in the substantial majority of cases (10/12 PCA-space tests
-   pass, at the pre-registered PC=50).
+1. Real omics data (four independent cohorts — five cohort/layer analyses in total, since TCGA-LUAD
+   contributes two omics layers — spanning four tissue types and three omics modalities: bulk RNA-seq,
+   DNA methylation, and mass-spectrometry proteomics, across NSCLC, colorectal/endometrial/ovarian,
+   renal, and lung-adenocarcinoma cancer types) carries persistent-homology H1 structure that
+   significantly exceeds both a Gaussian-noise null and a pipeline-symmetric permutation null, in raw
+   feature space universally (8/8 raw-space tests pass), and in PCA-reduced space in the substantial
+   majority of cases (6/8 PCA-space tests pass, at the pre-registered PC=50) — 14/16 confirmatory tests
+   overall (87.5%).
 
 2. The pilot's central methodological caution — that a PCA-space persistence increase is not, by itself,
    reliable evidence that PCA is revealing genuine structure, because matched null models show comparable

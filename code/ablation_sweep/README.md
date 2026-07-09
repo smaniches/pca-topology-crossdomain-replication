@@ -100,3 +100,13 @@ A full-precision run (`--quick` omitted, n_perm as specified per config)
 was NOT executed in this session due to compute-time constraints (would
 take multiple hours) -- this is the disclosed reduction. The deterministic
 real-data statistics verified above do not depend on this choice.
+
+## Figure generation
+
+`04_figure_sweep_sensitivity.py` regenerates `paper/figures/fig3_ablation_sensitivity.png`
+from the 4 committed CSVs above (`ablation_sweep_full_table.csv`,
+`permutation_convergence_table.csv`, `interaction_check_table.csv`,
+`imputation_overlap_table.csv`) -- no raw pickles or JSON needed. Recovered
+via `host.lineage` from the original session (previously this figure existed
+only as a static PNG with no committed generation script); verified to
+reproduce the committed figure's data/layout exactly.

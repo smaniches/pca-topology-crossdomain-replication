@@ -126,3 +126,15 @@ toward the reported near-null ~0.50) but not to full numerical precision.
 - Draw counts were reduced for local testing in this session (see table above); the
   4 scripts default to the pre-registered draw counts and should be run with those
   defaults (no `--quick` flag) for a publication-grade full-precision replication.
+
+## Figure generation
+
+`04_figure_confound_audit.py` regenerates `paper/figures/fig4_confound_audit.png`
+from the committed `table1_within_class_decomposition[_<COHORT>].csv`,
+`table2_within_stratum_control[_<COHORT>].csv`,
+`table3_residualization_control[_<COHORT>].csv`, and
+`table4_block_bootstrap_ci[_<COHORT>].csv` files for all four cohorts -- no
+raw pickles needed. Recovered via `host.lineage` from the original session
+(previously this figure existed only as a static PNG with no committed
+generation script); verified to reproduce the committed figure's data/layout
+exactly.
