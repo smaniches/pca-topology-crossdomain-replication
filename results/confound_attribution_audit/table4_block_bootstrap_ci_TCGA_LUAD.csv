@@ -1,0 +1,2 @@
+statistic,point_estimate_z,ci_low_z,ci_high_z,point_estimate_delta,ci_low_delta,ci_high_delta,n_bootstrap,resample_unit
+"max-H1 persistence, tumor-only (n=58), signal beyond Gaussian null",24.989079671773744,3.6523082166571736,33.43014620882046,3.7290660934448243,0.5450260238647461,4.988708122253416,500,class block (tumor)
