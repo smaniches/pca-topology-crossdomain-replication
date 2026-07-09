@@ -1,0 +1,7 @@
+pair,jaccard_samples,jaccard_hvg_genes
+zero vs mean,1.0,0.9801980198019802
+zero vs median,1.0,0.9801980198019802
+zero vs drop,1.0,0.9694731659281143
+mean vs median,1.0,1.0
+mean vs drop,1.0,0.9890601690701144
+median vs drop,1.0,0.9890601690701144
