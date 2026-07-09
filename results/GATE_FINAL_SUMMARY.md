@@ -8,7 +8,7 @@
 > re-derived), see git history for this file's pre-restructuring version.
 
 **Repository:** https://github.com/smaniches/pca-topology-crossdomain-replication
-**Final commit:** `PLACEHOLDER_COMMIT`
+**Final commit:** `aa1070a`
 **Audit date:** 2026-07-09 (gates 1-4, 6 last run); gates 5 and 7 re-run after the cohort-count
 wording fix and figure-generation-code recovery (see commit history)
 
@@ -27,5 +27,5 @@ wording fix and figure-generation-code recovery (see commit history)
 ## Final state
 
 - All 7 gates: **PASS**
-- Working tree: clean, in sync with `origin/main` at commit `PLACEHOLDER_COMMIT`
+- Working tree: clean, in sync with `origin/main` at commit `aa1070a`
 - No open TODOs, no undefined LaTeX references remaining in the repository as of this commit.
