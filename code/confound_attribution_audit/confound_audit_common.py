@@ -229,10 +229,49 @@ def residualize_class_mean(X_std, tumor_mask):
 
 
 def cv_auc(X, y, seed=42, n_splits=5):
-    clf = LogisticRegression(max_iter=5000, C=1.0)
+    """5-fold CV AUC for tumor/normal status, matching the exact hyperparameters and
+    aggregation used in the original GSE81089 confound audit (C=0.01 -- strong L2
+    regularization was needed for a meaningful "does removing the confound direction
+    kill classifier performance" check in a p >> n regime; the per-fold-mean
+    aggregation via cross_val_score, not a pooled-prediction cross_val_predict AUC,
+    is likewise what the original analysis computed). This function's earlier
+    version (C=1.0, cross_val_predict-based pooled AUC) reproduced a materially
+    different residualized-space AUC (0.111 vs the reported 0.094) -- a code-drift
+    bug introduced when this ad-hoc analysis was packaged into a reusable module,
+    caught and fixed during the repo-completeness-gate audit."""
+    clf = LogisticRegression(max_iter=5000, C=0.01)
     skf = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=seed)
-    proba = cross_val_predict(clf, X, y, cv=skf, method="predict_proba")[:, 1]
-    return float(roc_auc_score(y, proba))
+    scores = cross_val_score(clf, X, y, cv=skf, scoring="roc_auc")
+    return float(scores.mean())
+
+
+def auc_collapse_permutation_test(X_pca_resid, y, seed=0, n_perm=200, auc_seed=42):
+    """Significance test for the residualization control's AUC collapse: is the
+    residualized-space classifier AUC (well below 0.5, not just "not above 0.5")
+    itself a non-trivial deviation, or could a chance labeling produce an equally
+    extreme two-sided deviation from 0.5? Builds a label-permutation null by
+    refitting the same classifier/CV scheme on label-shuffled data in the same
+    residualized PCA space, then compares |observed_AUC - 0.5| against the null
+    distribution of |null_AUC - 0.5| (two-sided on distance from chance). This is
+    the exact methodology used to produce the p=0.005 permutation-test figure
+    reported in the manuscript's residualization-control discussion; it was
+    originally run ad hoc and is packaged here as a reusable function so that
+    figure has recoverable, reproducible code."""
+    clf = LogisticRegression(max_iter=5000, C=0.01)
+    obs_auc = cv_auc(X_pca_resid, y, seed=auc_seed)
+
+    rng = np.random.RandomState(seed)
+    null_aucs = np.empty(n_perm)
+    for i in range(n_perm):
+        y_perm = rng.permutation(y)
+        skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=auc_seed)
+        null_aucs[i] = cross_val_score(clf, X_pca_resid, y_perm, cv=skf, scoring="roc_auc").mean()
+
+    obs_dev = abs(obs_auc - 0.5)
+    null_dev = np.abs(null_aucs - 0.5)
+    p_perm = (1 + np.sum(null_dev >= obs_dev)) / (1 + n_perm)
+    return dict(observed_auc=obs_auc, null_auc_mean=float(null_aucs.mean()),
+                null_auc_std=float(null_aucs.std()), p_permutation=float(p_perm))
 
 
 def residualization_control(X_std, tumor_mask, n_pcs=50, n_gauss=500, n_perm=500,
@@ -264,6 +303,7 @@ def residualization_control(X_std, tumor_mask, n_pcs=50, n_gauss=500, n_perm=500
                     perm=zscore_pvalue(obs_intact, perm_pca)),
         residualized=dict(observed=obs_resid, auc=auc_resid, gauss=zscore_pvalue(obs_resid, gauss_pca),
                            perm=zscore_pvalue(obs_resid, perm_pca)),
+        X_pca_resid=X_pca_resid, y=y,
         gauss_draws=gauss_pca, perm_draws=perm_pca,
     )
 

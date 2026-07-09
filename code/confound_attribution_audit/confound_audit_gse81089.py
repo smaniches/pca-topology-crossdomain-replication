@@ -32,6 +32,7 @@ sys.path.insert(0, _ROOT)
 from confound_audit_common import (
     max_h1_persistence, within_class_decomposition, confound_direction,
     within_stratum_control, residualization_control, block_bootstrap_ci, zscore_pvalue,
+    auc_collapse_permutation_test,
 )
 
 
@@ -132,6 +133,21 @@ def main():
         print("  VERIFIED: residualized z_gaussian matches expected ~31.1 (rtol 0.15)")
     else:
         print("  [QUICK MODE] skipping z_gaussian tolerance check (draw count reduced)")
+
+    # Significance test for the AUC collapse itself: is 0.094 (well below chance) a
+    # genuine, non-trivial deviation, or could a label-shuffled null produce an equally
+    # extreme two-sided |AUC-0.5| by chance? This is the source of the manuscript's
+    # "permutation test on this collapse gives p=0.005" claim.
+    n_perm_auc = min(args.n_perm, 200) if args.quick else 200
+    auc_perm = auc_collapse_permutation_test(resid['X_pca_resid'], resid['y'], seed=0, n_perm=n_perm_auc)
+    print(f"  AUC-collapse permutation test: observed_auc={auc_perm['observed_auc']:.4f} "
+          f"null_auc_mean={auc_perm['null_auc_mean']:.4f} null_auc_std={auc_perm['null_auc_std']:.4f} "
+          f"p_permutation={auc_perm['p_permutation']:.4f}")
+    if not args.quick:
+        np.testing.assert_allclose(resid['residualized']['auc'], 0.0942, atol=0.01)
+        print("  VERIFIED: residualized AUC matches expected 0.094 (atol 0.01)")
+    else:
+        print("  [QUICK MODE] skipping AUC-collapse tolerance check (approximate at reduced draw count)")
 
     # --- Control 4: block-bootstrap CI (tumor-only subset) ---
     print("\n=== Control 4: block-bootstrap CI (tumor-only) ===")

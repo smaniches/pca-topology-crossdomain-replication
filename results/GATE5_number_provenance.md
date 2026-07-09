@@ -16,7 +16,7 @@ against the full-precision stored value.
 | GSE81089 pilot, PCA50 vs permutation null | z=5.23 | 5.232864 | `results/pilot_GSE81089/final_results_table.csv` | z-score, "Real PCA50 vs pipeline-null-PCA50" row |
 | GSE81089 real PCA-delta | Delta=0.78 | 0.784039 | `results/ablation_sweep/ablation_sweep_full_table.csv` | `real_pca_delta`, tag=HVG2000_PC50_zero_np500 |
 | GSE81089 Gaussian-null PCA-delta | Delta=2.00 +/- 0.34 | mean=1.996171 (see mean/std cols) | `results/ablation_sweep/ablation_sweep_full_table.csv` | `gauss_pca_delta_mean`/`gauss_pca_delta_std`, same row |
-| GSE81089 pipeline-null PCA-delta | Delta=1.50 +/- 0.39 | mean=1.996171 -> recheck; pipeline cols | `results/ablation_sweep/ablation_sweep_full_table.csv` | `pipeline_pca_delta_mean`/`pipeline_pca_delta_std`, same row |
+| GSE81089 pipeline-null PCA-delta | Delta=1.50 +/- 0.39 | mean=1.517678, std=0.391240 (exact match) | `results/ablation_sweep/ablation_sweep_full_table.csv` | `pipeline_pca_delta_mean`/`pipeline_pca_delta_std`, same row |
 | Cross-dataset H0 pass rate | 14/16 (87.5%) | 14/16 = 0.875 (computed) | `results/cross_dataset_BH_family.csv` | sum(H0_verdict) / len(df) |
 | TCGA-LUAD methylation, PCA35-spectral vs Gaussian | z=-0.20 | -0.198233 | `results/cross_dataset_BH_family.csv` | z_score, condition="Methylation_pca35spectral_gaussian" |
 | TCGA-LUAD methylation, PCA35-spectral vs permutation | z=-0.79 | -0.789158 | `results/cross_dataset_BH_family.csv` | z_score, condition="Methylation_pca35spectral_perm" |
@@ -63,3 +63,29 @@ reproduction code in a clean `tda-repro` environment during this gate audit:
 and column/field, and every spot-checked value matches the manuscript's
 rounded figure to within normal rounding tolerance. No paper number was
 found to be unsourced, inconsistent with its source file, or unverifiable.
+
+**Note on two issues caught and fixed during this gate's own verification
+(not merely disclosed -- corrected):**
+
+1. This document's row for the GSE81089 pipeline-null PCA-delta initially
+   duplicated the adjacent Gaussian-null row's mean value (1.996171) with a
+   `-> recheck` placeholder rather than the true sourced value. Corrected to
+   the actual `pipeline_pca_delta_mean`/`_std` column values
+   (mean=1.517678, std=0.391240), which do match the manuscript's reported
+   Delta=1.50 +/- 0.39.
+2. The manuscript's residualization-control claim (Results, `AUC=0.094`,
+   permutation `p=0.005`) initially failed to reproduce from the packaged
+   `code/confound_attribution_audit/confound_audit_common.py` -- the
+   packaged `cv_auc()` function had drifted from the original ad hoc
+   analysis on two parameters simultaneously (classifier regularization
+   `C=1.0` vs. the original `C=0.01`, and pooled cross_val_predict-based AUC
+   vs. the original per-fold cross_val_score mean), producing AUC=0.1108
+   instead of 0.094 -- a genuine code-packaging bug, not a rounding
+   difference. Root-caused by diffing against the original analysis's
+   lineage-recovered code, fixed in `confound_audit_common.py` (with the
+   discrepancy and fix documented in that function's docstring), and a new
+   `auc_collapse_permutation_test()` function was added and wired into
+   `confound_audit_gse81089.py` to make the previously-uncoded p=0.005
+   permutation test itself reproducible. Re-running the fixed, packaged
+   script now reproduces AUC=0.0942 and p_permutation=0.0050, both matching
+   the manuscript exactly.
