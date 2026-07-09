@@ -9,7 +9,7 @@ SHA-256 checksums for every file are in `checksums.sha256` (verify with `sha256s
 |---|---|
 | CITATION.cff | 0.6 KB |
 | LICENSE | 1.3 KB |
-| README.md | 6.3 KB |
+| README.md | 6.1 KB |
 | reproduce.py | 4.4 KB |
 | requirements.txt | 0.1 KB |
 
