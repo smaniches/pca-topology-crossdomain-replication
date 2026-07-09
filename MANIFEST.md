@@ -91,7 +91,7 @@ SHA-256 checksums for every file are in `checksums.sha256` (verify with `sha256s
 | .gitignore | 79 B |
 | paper.pdf | 1.5 MB |
 | paper.tex | 1.7 KB |
-| references.bib | 4.2 KB |
+| references.bib | 4.4 KB |
 
 ## paper/figures/
 
@@ -107,7 +107,7 @@ SHA-256 checksums for every file are in `checksums.sha256` (verify with `sha256s
 | File | Size |
 |---|---|
 | abstract.tex | 4.0 KB |
-| discussion.tex | 11.9 KB |
+| discussion.tex | 15.4 KB |
 | introduction.tex | 6.7 KB |
 | methods.tex | 12.1 KB |
 | results.tex | 23.3 KB |
