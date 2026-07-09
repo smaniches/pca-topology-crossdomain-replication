@@ -41,13 +41,13 @@
 | paper/figures/fig2_cross_dataset_replication.png | 318436 |
 | paper/figures/fig3_ablation_sensitivity.png | 403606 |
 | paper/figures/fig4_confound_audit.png | 273476 |
-| paper/paper.pdf | 1605853 |
+| paper/paper.pdf | 1606190 |
 | paper/paper.tex | 1702 |
 | paper/references.bib | 4514 |
-| paper/sections/abstract.tex | 4048 |
-| paper/sections/discussion.tex | 15806 |
+| paper/sections/abstract.tex | 4132 |
+| paper/sections/discussion.tex | 15883 |
 | paper/sections/introduction.tex | 6824 |
-| paper/sections/methods.tex | 12423 |
+| paper/sections/methods.tex | 12539 |
 | paper/sections/results.tex | 23839 |
 | prereg/PREREGISTRATION.md | 7263 |
 | reproduce.py | 10630 |
