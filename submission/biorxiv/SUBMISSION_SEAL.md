@@ -7,13 +7,15 @@ This file records the non-self-referential seal for the initial bioRxiv submissi
 `pca_topology_crossdomain_replication_biorxiv.pdf`
 
 This file is an exact byte-for-byte copy of `paper/paper.pdf` as of the final manuscript compile
-that produced commit `7f964a2` (the most recent commit at package-creation time). Verified via
-`sha256sum`: both files hash to the same value (see below).
+following the US-Letter page-size conversion (`a4paper` to `letterpaper` in `paper/paper.tex`'s
+geometry package options; no other manuscript-source change). Verified via `sha256sum`: both files
+hash to the same value (see below). Page geometry: 612 x 792 points (8.5in x 11in US Letter),
+portrait orientation, uniform across all 20 pages.
 
 ## SHA-256 hashes
 
-- `paper/paper.pdf`: `b77ae8b67099c5b0f7312fda2bc8668e1c5454dacae74ed63549faa7afc0f4ce`
-- `submission/biorxiv/pca_topology_crossdomain_replication_biorxiv.pdf`: `b77ae8b67099c5b0f7312fda2bc8668e1c5454dacae74ed63549faa7afc0f4ce` (matches `paper/paper.pdf` — confirmed byte-identical)
+- `paper/paper.pdf`: `cfc2410130c5872979a62e08cecfb964aa5412d42192c0c632c22d48e1983aac`
+- `submission/biorxiv/pca_topology_crossdomain_replication_biorxiv.pdf`: `cfc2410130c5872979a62e08cecfb964aa5412d42192c0c632c22d48e1983aac` (matches `paper/paper.pdf` — confirmed byte-identical)
 - `submission/biorxiv/biorxiv_submission_metadata.md`: `eb55c2c624f32d7d1926bb99910a6fcc73d1d3f8beda26ab7e1ac348d22dd0a6`
 - `submission/biorxiv/abstract_plain_text.txt`: `f856dfa3955c4f21e1275512d50d3c6d0f27eb96d046bdac9d4e8f54c63de878`
 - `submission/biorxiv/submission_checklist.md`: `b92613c9406222c07341e5e4406dcec0937348f12dea2ea0188fbd9895bda59d`
@@ -35,13 +37,13 @@ This file does not contain its own SHA-256. Its hash is recorded only in the rep
 
 The repository commit hash and release tag are the authoritative repository-level seal.
 
-**Last substantive commit at package-creation time:** `7f964a2` (verification-rigor corrections
-to figure-regeneration claims, immediately preceding this submission package). This field
-necessarily describes a commit *prior to* the one that adds this file — committing this file
-creates a new HEAD past what this note names, the same self-reference constraint documented in
-`results/GATE_FINAL_SUMMARY.md`. Check `git log -1` for the true current HEAD after this package
-is committed; report that hash separately (commit message, release notes, or final audit message)
-rather than chasing it into this file.
+**Last substantive commit at package-creation time:** `354026f` (checklist-state cleanup,
+immediately preceding the US-Letter page-size conversion recorded in this update). This field
+necessarily describes a commit *prior to* the one that adds this file's current revision —
+committing this file creates a new HEAD past what this note names, the same self-reference
+constraint documented in `results/GATE_FINAL_SUMMARY.md`. Check `git log -1` for the true current
+HEAD after this package is committed; report that hash separately (commit message, release notes,
+or final audit message) rather than chasing it into this file.
 
 Suggested release tag:
 

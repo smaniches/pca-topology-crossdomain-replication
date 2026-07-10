@@ -45,8 +45,8 @@
 | paper/figures/fig2_cross_dataset_replication.png | 318436 |
 | paper/figures/fig3_ablation_sensitivity.png | 403606 |
 | paper/figures/fig4_confound_audit.png | 273476 |
-| paper/paper.pdf | 1606410 |
-| paper/paper.tex | 1702 |
+| paper/paper.pdf | 1606555 |
+| paper/paper.tex | 1706 |
 | paper/references.bib | 4514 |
 | paper/sections/abstract.tex | 4132 |
 | paper/sections/discussion.tex | 15883 |
@@ -132,9 +132,9 @@
 | results/replication_TCGA_LUAD/tcga_luad_h1_pca_delta_summary.csv | 674 |
 | results/replication_TCGA_LUAD/tcga_luad_primary_stats_summary.csv | 1230 |
 | results/replication_TCGA_LUAD/tcga_luad_report.md | 12889 |
-| submission/biorxiv/SUBMISSION_SEAL.md | 2941 |
+| submission/biorxiv/SUBMISSION_SEAL.md | 3143 |
 | submission/biorxiv/abstract_plain_text.txt | 2469 |
 | submission/biorxiv/biorxiv_submission_metadata.md | 2464 |
-| submission/biorxiv/pca_topology_crossdomain_replication_biorxiv.pdf | 1606410 |
+| submission/biorxiv/pca_topology_crossdomain_replication_biorxiv.pdf | 1606555 |
 | submission/biorxiv/submission_checklist.md | 3881 |
 | submission/biorxiv/upload_filename.txt | 49 |
