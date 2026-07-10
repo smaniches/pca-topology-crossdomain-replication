@@ -108,5 +108,14 @@ from the 4 committed CSVs above (`ablation_sweep_full_table.csv`,
 `permutation_convergence_table.csv`, `interaction_check_table.csv`,
 `imputation_overlap_table.csv`) -- no raw pickles or JSON needed. Recovered
 via `host.lineage` from the original session (previously this figure existed
-only as a static PNG with no committed generation script); verified to
-reproduce the committed figure's data/layout exactly.
+only as a static PNG with no committed generation script). Every plotted
+value was checked against its source CSV before this script was written.
+The regenerated PNG is NOT byte-identical to the committed one (SHA-256
+differs); a pixel-level diff confirms the difference is confined to
+0.12% of pixels (mean per-pixel channel delta 0.028 on a 0-255 scale;
+isolated pixels reach a max delta of 111, consistent with anti-aliased
+text/line edges shifting by a fraction of a pixel between matplotlib
+renders, not a systematic color or data difference), consistent with
+font-cache/rendering non-determinism across environments -- but this was
+not confirmed against the exact rendering environment that produced the
+originally-committed PNG.

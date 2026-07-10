@@ -14,8 +14,15 @@ committed elsewhere in this repository:
 
 Recovered via `host.lineage` on the session that originally produced this
 figure (previously it existed only as a static PNG with no committed
-generation script); verified to reproduce the committed figure's data/layout
-exactly.
+generation script). Every plotted value was checked against its source CSV
+before this script was written. The regenerated PNG is NOT byte-identical
+to the committed one (SHA-256 differs); a pixel-level diff confirms the
+difference is confined to 0.08% of pixels (mean per-pixel channel delta
+0.018 on a 0-255 scale; max delta 189 at isolated pixels), consistent with
+matplotlib rendering non-determinism (font cache, anti-aliasing) across
+environments rather than a data or layout difference -- but this was not
+confirmed against the exact rendering environment that produced the
+originally-committed PNG.
 
 **Disclosed gap:** panel (c)'s dominant-H1-loop tumor-enrichment numbers
 (samples touched / total, Fisher's exact p) are NOT present in any committed

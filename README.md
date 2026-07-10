@@ -115,11 +115,18 @@ matched the pre-registered value exactly, well within the 1e-3 tolerance in
       `host.lineage` and repackaged as `code/replication_cross_dataset/04c_figure_cross_dataset_replication.py`,
       `code/ablation_sweep/04_figure_sweep_sensitivity.py`, and
       `code/confound_attribution_audit/04_figure_confound_audit.py`, each reading only from
-      already-committed `results/` CSVs. Verified to regenerate each figure's data and layout
-      exactly. One narrow gap remains and is disclosed in
-      `code/replication_cross_dataset/README.md`: Figure 2's dominant-H1-loop tumor-enrichment
-      numbers exist only as prose in each cohort's own report, not as a committed CSV, and are
-      transcribed as literal constants rather than computed.
+      already-committed `results/` CSVs, with every plotted value checked against its source CSV
+      before the script was written. None of the three regenerated PNGs is byte-identical to its
+      committed counterpart (SHA-256 differs in all three cases); a pixel-level diff on each pair
+      confirms the difference is confined to under 0.15% of pixels with sub-half-percent mean
+      per-channel delta, consistent with matplotlib rendering non-determinism (font cache,
+      anti-aliasing) across environments rather than a data or layout difference -- but this was
+      not confirmed against the exact rendering environment that produced the originally-committed
+      PNGs, and no one has re-run these scripts in that environment to force an exact match. See
+      each script's own README for the per-figure diff numbers. One further, narrower gap is
+      disclosed in `code/replication_cross_dataset/README.md`: Figure 2's dominant-H1-loop
+      tumor-enrichment numbers exist only as prose in each cohort's own report, not as a committed
+      CSV, and are transcribed as literal constants rather than computed.
 - [ ] No automated tests or CI (beyond the manual gate-audit reproduction check above).
 
 ## Provenance

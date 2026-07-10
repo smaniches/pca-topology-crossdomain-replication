@@ -8,9 +8,16 @@
 > re-derived), see git history for this file's pre-restructuring version.
 
 **Repository:** https://github.com/smaniches/pca-topology-crossdomain-replication
-**Final commit:** `aa1070a`
+**Last substantive commit:** `aa1070a` (Fig 1 caption fix + Fig 2/3/4 script recovery + doc cleanup)
 **Audit date:** 2026-07-09 (gates 1-4, 6 last run); gates 5 and 7 re-run after the cohort-count
 wording fix and figure-generation-code recovery (see commit history)
+
+> **Note on this field:** because this file's own commit hash is part of its content, the commit
+> that records "the current HEAD" necessarily becomes a new HEAD the moment it's committed --
+> this field cannot describe itself exactly. It names the last commit that changed substantive
+> repository content; check `git log -1` for the true current HEAD, which will be one commit
+> ahead of this value if only this file (or checksums.sha256/MANIFEST.md alongside it) changed
+> since.
 
 ## Gate-by-gate result
 
@@ -27,5 +34,7 @@ wording fix and figure-generation-code recovery (see commit history)
 ## Final state
 
 - All 7 gates: **PASS**
-- Working tree: clean, in sync with `origin/main` at commit `aa1070a`
-- No open TODOs, no undefined LaTeX references remaining in the repository as of this commit.
+- Working tree: clean, in sync with `origin/main` as of the last substantive commit above
+  (see the self-reference note: true current HEAD may be one commit ahead if only this file's
+  own bookkeeping changed since)
+- No open TODOs, no undefined LaTeX references remaining in the repository.

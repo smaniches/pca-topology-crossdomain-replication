@@ -6,7 +6,7 @@
 | CITATION.cff | 662 |
 | LICENSE | 1301 |
 | MANIFEST.md | 109 |
-| README.md | 9188 |
+| README.md | 9912 |
 | code/.gitignore | 929 |
 | code/03_statistics_and_results_table.py | 10271 |
 | code/04a_figure_persistence_diagrams.py | 5807 |
@@ -16,10 +16,10 @@
 | code/ablation_sweep/02_run_sweep.py | 11444 |
 | code/ablation_sweep/03_aggregate_results.py | 11582 |
 | code/ablation_sweep/04_figure_sweep_sensitivity.py | 10178 |
-| code/ablation_sweep/README.md | 5946 |
+| code/ablation_sweep/README.md | 6557 |
 | code/ablation_sweep/verify_default.py | 2754 |
 | code/confound_attribution_audit/04_figure_confound_audit.py | 11724 |
-| code/confound_attribution_audit/README.md | 9058 |
+| code/confound_attribution_audit/README.md | 9579 |
 | code/confound_attribution_audit/confound_audit_common.py | 17660 |
 | code/confound_attribution_audit/confound_audit_cptac_ccrcc.py | 9947 |
 | code/confound_attribution_audit/confound_audit_gse146889.py | 14492 |
@@ -39,7 +39,7 @@
 | code/replication_TCGA_LUAD/README.md | 5409 |
 | code/replication_TCGA_LUAD/_common.py | 5717 |
 | code/replication_cross_dataset/04c_figure_cross_dataset_replication.py | 22859 |
-| code/replication_cross_dataset/README.md | 2079 |
+| code/replication_cross_dataset/README.md | 2600 |
 | paper/.gitignore | 79 |
 | paper/figures/fig1_pilot_motivation.png | 252769 |
 | paper/figures/fig2_cross_dataset_replication.png | 318436 |
@@ -58,7 +58,7 @@
 | requirements.txt | 145 |
 | results/GATE5_number_provenance.md | 8905 |
 | results/GATE6_portability_smoke_test.md | 2555 |
-| results/GATE_FINAL_SUMMARY.md | 1623 |
+| results/GATE_FINAL_SUMMARY.md | 2309 |
 | results/ablation_sweep/ablation_report.md | 21201 |
 | results/ablation_sweep/ablation_sweep_full_table.csv | 7364 |
 | results/ablation_sweep/figures/interaction_and_imputation_overlap.png | 124832 |
