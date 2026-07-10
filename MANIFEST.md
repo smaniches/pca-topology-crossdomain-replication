@@ -136,5 +136,5 @@
 | submission/biorxiv/abstract_plain_text.txt | 2469 |
 | submission/biorxiv/biorxiv_submission_metadata.md | 2464 |
 | submission/biorxiv/pca_topology_crossdomain_replication_biorxiv.pdf | 1606410 |
-| submission/biorxiv/submission_checklist.md | 3784 |
+| submission/biorxiv/submission_checklist.md | 3881 |
 | submission/biorxiv/upload_filename.txt | 49 |

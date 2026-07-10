@@ -20,10 +20,10 @@ unverified/not-yet-done items are left unchecked per the "no overclaiming" instr
 - [x] Article Category: Research article with data.
 - [x] Subject Area: Bioinformatics.
 - [x] Distribution/reuse option selected, recommended CC BY 4.0.
-- [ ] Final PDF SHA-256 recorded in `SUBMISSION_SEAL.md`. **[To be filled in the same commit as this checklist — see that file.]**
-- [ ] `MANIFEST.md` regenerated after adding submission files. **[Pending — done in the same work session as this checklist, verify against the commit that follows.]**
-- [ ] `checksums.sha256` regenerated after adding submission files. **[Pending — same as above.]**
-- [ ] Repository checksum verification passes according to the repository's existing convention. **[To be re-verified after the above regeneration.]**
+- [x] Final PDF SHA-256 recorded in `SUBMISSION_SEAL.md`. **[Recorded: `paper/paper.pdf` and the upload copy both hash to `b77ae8b67099c5b0f7312fda2bc8668e1c5454dacae74ed63549faa7afc0f4ce`.]**
+- [x] `MANIFEST.md` regenerated after adding submission files. **[Verified: all 6 `submission/biorxiv/` entries present, self-referential hash re-converged.]**
+- [x] `checksums.sha256` regenerated after adding submission files. **[Verified: all 6 `submission/biorxiv/` entries present.]**
+- [x] Repository checksum verification passes according to the repository's existing convention. **[Re-verified after regeneration: 136 tracked entries, 0 mismatches.]**
 
 ## Additional items found during this package's preparation (not in the original template)
 

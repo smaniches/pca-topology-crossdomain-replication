@@ -16,7 +16,7 @@ that produced commit `7f964a2` (the most recent commit at package-creation time)
 - `submission/biorxiv/pca_topology_crossdomain_replication_biorxiv.pdf`: `b77ae8b67099c5b0f7312fda2bc8668e1c5454dacae74ed63549faa7afc0f4ce` (matches `paper/paper.pdf` — confirmed byte-identical)
 - `submission/biorxiv/biorxiv_submission_metadata.md`: `eb55c2c624f32d7d1926bb99910a6fcc73d1d3f8beda26ab7e1ac348d22dd0a6`
 - `submission/biorxiv/abstract_plain_text.txt`: `f856dfa3955c4f21e1275512d50d3c6d0f27eb96d046bdac9d4e8f54c63de878`
-- `submission/biorxiv/submission_checklist.md`: `fff873cd4bd3d816c566aa6cc0d4c7bba07c134048020e9c337af3f3cccdf157`
+- `submission/biorxiv/submission_checklist.md`: `b92613c9406222c07341e5e4406dcec0937348f12dea2ea0188fbd9895bda59d`
 - `submission/biorxiv/upload_filename.txt`: `81e2d807e7a242e290aef8a9cbbe5d544b2cafd5bcb4737b7efd1b123a8c40a5`
 
 **Note:** the hashes above were computed at package-creation time, before this file itself was
