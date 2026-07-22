@@ -11,6 +11,10 @@ code (pilot, all 3 confirmatory replications, the ablation sweep, and the confou
 audit); see `MANIFEST.md` / `checksums.sha256` and the "Known gaps" section below for the specific,
 disclosed reproduction-depth caveats.
 
+> **Publication status:** submitted to bioRxiv (MS ID BIORXIV/2026/737609); rejected on the "established research organization" affiliation policy, not on scientific grounds. No resubmission is planned. The citable public record is the Zenodo mirror: [10.5281/zenodo.21287944](https://doi.org/10.5281/zenodo.21287944).
+>
+> **Author:** Santiago Maniches, independent researcher (sole member, TOPOLOGICA LLC).
+
 ## What this project tests
 
 Does PCA(50) inflate persistent-homology (H1) signal in a way that reflects genuine biological
