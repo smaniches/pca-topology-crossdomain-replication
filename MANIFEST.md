@@ -2,11 +2,13 @@
 
 | File | Size (bytes) |
 |---|---|
+| .github/workflows/ci.yml | 878 |
 | .gitignore | 102 |
 | CITATION.cff | 662 |
 | LICENSE | 1301 |
-| MANIFEST.md | 109 |
-| README.md | 9912 |
+| MANIFEST.md | 9196 |
+| README.md | 10321 |
+| checksums.sha256 | 16599 |
 | code/.gitignore | 929 |
 | code/03_statistics_and_results_table.py | 10271 |
 | code/04a_figure_persistence_diagrams.py | 5807 |
