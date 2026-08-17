@@ -131,7 +131,7 @@ matched the pre-registered value exactly, well within the 1e-3 tolerance in
       disclosed in `code/replication_cross_dataset/README.md`: Figure 2's dominant-H1-loop
       tumor-enrichment numbers exist only as prose in each cohort's own report, not as a committed
       CSV, and are transcribed as literal constants rather than computed.
-- [ ] No automated tests or CI (beyond the manual gate-audit reproduction check above).
+- [x] Automated CI is active. On pushes to `main` and pull requests it verifies `checksums.sha256`, installs the pinned environment, runs the bundled `reproduce.py` smoke test, and audits `requirements.txt` with `pip-audit`.
 
 ## Provenance
 
