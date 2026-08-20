@@ -7,6 +7,7 @@ authors:
     orcid: "https://orcid.org/0009-0005-6480-1987"
     affiliation: "TOPOLOGICA LLC"
 date-released: 2026-07-09
+doi: "10.5281/zenodo.21287944"
 repository-code: "https://github.com/smaniches/pca-topology-crossdomain-replication"
 license: MIT
 keywords:

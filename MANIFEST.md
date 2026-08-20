@@ -4,7 +4,7 @@
 |---|---|
 | .github/workflows/ci.yml | 878 |
 | .gitignore | 102 |
-| CITATION.cff | 662 |
+| CITATION.cff | 693 |
 | LICENSE | 1301 |
 | MANIFEST.md | 9196 |
 | README.md | 10457 |
