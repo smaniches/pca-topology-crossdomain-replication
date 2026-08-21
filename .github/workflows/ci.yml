@@ -10,6 +10,69 @@ permissions:
   contents: read
 
 jobs:
+  integration-preview:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+
+      - name: Build exact final integration bundle without writing GitHub
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+
+          readme = Path("README.md")
+          text = readme.read_text(encoding="utf-8")
+          anchor = (
+              "      real-data statistics were verified to match the committed report closely -- see\n"
+              "      `code/confound_attribution_audit/README.md` for the full disclosure.\n"
+          )
+          addition = anchor + (
+              "      **Clean-lineage resolution (2026-08-21):** this lineage weakness is now independently\n"
+              "      audited under `audit/gse146889_clean_lineage/`. A protocol was committed before\n"
+              "      execution; the official GEO matrix was re-fetched and hashed; preprocessing, PCA, PH,\n"
+              "      Gaussian/permutation nulls, residualization, cocycle-support diagnostics, and bootstrap\n"
+              "      draws were regenerated without importing the reconstructed driver or its saved nulls.\n"
+              "      Under matched historical definitions, every deterministic real-data quantity reproduced\n"
+              "      exactly and the qualified GSE146889 verdict was sustained. The reconstructed driver is\n"
+              "      retained only as historical provenance, not as the authoritative verification path.\n"
+          )
+          if "Clean-lineage resolution (2026-08-21)" not in text:
+              if anchor not in text:
+                  raise SystemExit("README resolution anchor not found")
+              readme.write_text(text.replace(anchor, addition, 1), encoding="utf-8")
+
+          audit_readme = Path("code/confound_attribution_audit/README.md")
+          text = audit_readme.read_text(encoding="utf-8")
+          anchor = "  (near-exact); residualized z_gaussian in the right range at reduced draw counts.**\n"
+          addition = anchor + (
+              "  **Clean-lineage resolution (2026-08-21):** `audit/gse146889_clean_lineage/` now provides\n"
+              "  an independent from-raw-data rerun frozen before execution. It does not import this\n"
+              "  reconstructed driver or reuse its null pickles. The full declared Monte Carlo/bootstrap\n"
+              "  program completed successfully; matched deterministic quantities reproduced exactly and\n"
+              "  regenerated stochastic results preserved the same bounded interpretation.\n"
+          )
+          if "Clean-lineage resolution (2026-08-21)" not in text:
+              if anchor not in text:
+                  raise SystemExit("confound README resolution anchor not found")
+              audit_readme.write_text(text.replace(anchor, addition, 1), encoding="utf-8")
+
+          final_ci = '''name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
   reproduce:
     runs-on: ubuntu-latest
     steps:
@@ -30,8 +93,76 @@ jobs:
       - name: Run reproduce.py smoke test
         run: python reproduce.py
 
+      - name: Verify GSE146889 clean-lineage audit record
+        run: |
+          python -m py_compile audit/gse146889_clean_lineage/prepare.py audit/gse146889_clean_lineage/worker.py audit/gse146889_clean_lineage/aggregate.py audit/gse146889_clean_lineage/reconcile_results.py
+          (cd audit/gse146889_clean_lineage/results && sha256sum -c SHA256SUMS)
+
       - name: Install pip-audit
         run: python -m pip install "pip-audit==2.10.1"
 
       - name: Audit pinned dependencies
         run: python -m pip_audit -r requirements.txt --strict
+'''
+          Path(".github/workflows/ci.yml").write_text(final_ci, encoding="utf-8")
+          PY
+
+          rm -f .github/workflows/gse146889-clean-lineage.yml
+          rm -f .github/workflows/bootstrap-gse146889-integration.yml
+          git add -A
+
+          python - <<'PY'
+          from __future__ import annotations
+          import hashlib
+          from pathlib import Path
+          import subprocess
+
+          root = Path.cwd()
+          files = sorted(subprocess.check_output(["git", "ls-files"], text=True).splitlines())
+          checksum_paths = [p for p in files if p != "checksums.sha256"]
+          checksum_size = sum(64 + 2 + len(p.encode("utf-8")) + 1 for p in checksum_paths)
+          manifest_size = 0
+          for _ in range(30):
+              rows = ["# MANIFEST", "", "| File | Size (bytes) |", "|---|---|"]
+              for rel in files:
+                  if rel == "MANIFEST.md":
+                      size = manifest_size
+                  elif rel == "checksums.sha256":
+                      size = checksum_size
+                  else:
+                      size = (root / rel).stat().st_size
+                  rows.append(f"| {rel} | {size} |")
+              content = "\n".join(rows) + "\n"
+              new_size = len(content.encode("utf-8"))
+              if new_size == manifest_size:
+                  break
+              manifest_size = new_size
+          else:
+              raise SystemExit("manifest size did not converge")
+          (root / "MANIFEST.md").write_text(content, encoding="utf-8")
+          lines = [
+              f"{hashlib.sha256((root / rel).read_bytes()).hexdigest()}  {rel}"
+              for rel in checksum_paths
+          ]
+          (root / "checksums.sha256").write_text("\n".join(lines) + "\n", encoding="utf-8")
+          PY
+
+          sha256sum -c checksums.sha256
+          (cd audit/gse146889_clean_lineage/results && sha256sum -c SHA256SUMS)
+          python -m py_compile audit/gse146889_clean_lineage/prepare.py audit/gse146889_clean_lineage/worker.py audit/gse146889_clean_lineage/aggregate.py audit/gse146889_clean_lineage/reconcile_results.py
+
+          mkdir -p integration_bundle/.github/workflows integration_bundle/code/confound_attribution_audit
+          cp README.md integration_bundle/README.md
+          cp code/confound_attribution_audit/README.md integration_bundle/code/confound_attribution_audit/README.md
+          cp .github/workflows/ci.yml integration_bundle/.github/workflows/ci.yml
+          cp MANIFEST.md integration_bundle/MANIFEST.md
+          cp checksums.sha256 integration_bundle/checksums.sha256
+          printf '%s\n' '.github/workflows/gse146889-clean-lineage.yml' '.github/workflows/bootstrap-gse146889-integration.yml' > integration_bundle/DELETE_PATHS.txt
+
+      - name: Upload exact final bundle
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: gse146889-integration-bundle
+          path: integration_bundle/
+          if-no-files-found: error
+          retention-days: 7
