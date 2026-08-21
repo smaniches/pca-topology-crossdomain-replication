@@ -3,9 +3,8 @@
     "aggregate_signal_survives_linear_residualization_z_gt_3_both_nulls": true,
     "all_four_strata_exceed_z_3_against_both_nulls": true,
     "both_single_class_bootstrap_intervals_include_zero": true,
-    "deterministic_matched_definition_values_exact": true,
-    "deterministic_max_absolute_difference_vs_historical": 0.0,
-    "deterministic_real_data_reproduced_within_0_05": true,
+    "deterministic_max_absolute_difference_vs_historical": 0.08692810457516341,
+    "deterministic_real_data_reproduced_within_0_05": false,
     "historical_qualitative_GSE146889_verdict_sustained": true,
     "single_class_observed_statistics_weaker_than_mixed": true
   },
@@ -22,18 +21,6 @@
     "tumor_count": 91,
     "url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE146nnn/GSE146889/suppl/GSE146889_GeneCount.tsv.gz",
     "valid_gene_rows": 64253
-  },
-  "derived_output_reconciliation": {
-    "auc_historical_definition": "LogisticRegression(C=1.0), 5-fold StratifiedKFold",
-    "auc_sensitivity_retained": "LogisticRegression(C=0.01), 5-fold StratifiedKFold",
-    "fisher_historical_definition": "two-sided Fisher exact",
-    "fisher_sensitivity_retained": "one-sided greater Fisher exact",
-    "original_historical_comparison_sha256": "94448e8b2c06b65da8f6cb3083418bd069fef892e0188e5247e5bf057b6890d7",
-    "original_report_sha256": "d75b74b016ea91e6497fe31f086687413015e5e0946bf4f96611a9c9a9101182",
-    "original_residualization_sha256": "f05be71f5df2fb1936f53d33b84b12edb8bae00bee8b0269afb1efe4baf9084e",
-    "raw_and_stochastic_outputs_changed": false,
-    "scope": "comparison semantics and derived presentation only; no experiment rerun",
-    "timestamp_utc": "2026-08-21T22:54:20.476151+00:00"
   },
   "draw_counts": {
     "bootstrap_mixed": 2000,
@@ -247,78 +234,78 @@
         {
           "pc": 37,
           "pearson_p": 0.994512883265101,
-          "pearson_r": 0.000522103849751934
+          "pearson_r": 0.0005221038438497569
         },
         {
           "pc": 38,
-          "pearson_p": 0.9939757092659821,
-          "pearson_r": 0.0005732173291330624
+          "pearson_p": 0.9939757092606598,
+          "pearson_r": 0.0005732173291331175
         },
         {
           "pc": 39,
-          "pearson_p": 0.9971982176300501,
-          "pearson_r": -0.0002665904454099367
+          "pearson_p": 0.9971982176300525,
+          "pearson_r": -0.000266590445409845
         },
         {
           "pc": 40,
           "pearson_p": 0.9914009967232738,
-          "pearson_r": 0.0008182118141722866
+          "pearson_r": 0.0008182118149411746
         },
         {
           "pc": 41,
-          "pearson_p": 0.9937771319426659,
-          "pearson_r": -0.0005921125346160682
+          "pearson_p": 0.9937771319426709,
+          "pearson_r": -0.0005921125346160638
         },
         {
           "pc": 42,
           "pearson_p": 0.9968580109553207,
-          "pearson_r": 0.0002989613705483154
+          "pearson_r": 0.0002989613709736983
         },
         {
           "pc": 43,
           "pearson_p": 0.9953402713584077,
-          "pearson_r": -0.00044337619401185
+          "pearson_r": -0.00044337619401103173
         },
         {
           "pc": 44,
-          "pearson_p": 0.9880969312115915,
-          "pearson_r": -0.0011326199609240616
+          "pearson_p": 0.9880969312155935,
+          "pearson_r": -0.0011326199609253806
         },
         {
           "pc": 45,
-          "pc": 0.99717705857696,
-          "pearson_r": 0.00026860415285664
+          "pearson_p": 0.99717705457696,
+          "pearson_r": 0.00026860412465224554
         },
         {
           "pc": 46,
-          "pearson_p": 0.9938940062342785,
-          "pearson_r": -0.00058099160250043
+          "pearson_p": 0.9938940062342786,
+          "pearson_r": -0.0005809916037995411
         },
         {
           "pc": 47,
-          "pearson_p": 0.9923456475668022,
-          "pearson_r": -0.00072832355531415
+          "pearson_p": 0.9923456475668402,
+          "pearson_r": -0.0007283235553140859
         },
         {
           "pc": 48,
-          "pearson_p": 0.9932112276709789,
-          "pearson_r": 0.000645960164312697
+          "pearson_p": 0.9932112276709766,
+          "pearson_r": 0.0006459601643124639
         },
         {
           "pc": 49,
           "pearson_p": 0.9986948236864603,
-          "pearson_r": -0.0001241877254414041
+          "pearson_r": -0.0001241877254416733
         },
         {
           "pc": 50,
-          "pearson_p": 0.9948179330034313,
-          "pearson_r": -0.000493077589521094
+          "pearson_p": 0.9948179339984332,
+          "pearson_r": -0.0004930775895210784
         }
       ],
-      "projection_direct_auc_orientation_invariant": 0.9722627044253386,
-      "total_standardized_feature_variance": 2000.0000000000005,
-      "variance_along_direction": 446.64226010852488,
-      "variance_fraction_along_direction": 0.22332113005426186
+      "projection_direct_auc_orientation_invariant": 0.9711700064641242,
+      "total_standardized_feature_variance": 2000.0,
+      "variance_along_direction": 446.58666475519846,
+      "variance_fraction_along_direction": 0.22329333237759924
     },
     "data": {
       "invalid_or_missing_rpkm_rows_removed": 1,
@@ -350,90 +337,103 @@
     "quartiles": [
       {
         "global_indices": [
+          2,
           3,
-         4,
-         6,
-         7,
-         8,
-         9,
-         21,
-         22,
-         23,
-         24,
-         25,
-         26,
-         27,
-         28,
-         29,
-         30,
-         31,
-         32,
-         33,
-         37,
-         48,
-         49,
-         51,
-         52,
-         53,
-         54,
-         55,
-         59,
-         63,
-         67,
-         68,
-         69,
-         70,
-         71,
-         72,
-         73,
-         82,
-         84,
-         86,
-         88,
-         89,
-         90,
-         91,
-         92
+          4,
+          5,
+          8,
+          9,
+          21,
+          24,
+          25,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          48,
+          49,
+          67,
+          68,
+          69,
+          70,
+          71,
+          72,
+          82,
+          84,
+          86,
+          90,
+          96,
+          111,
+          112,
+          114,
+          117,
+          118,
+          119,
+          120,
+          121,
+          122,
+          123,
+          146,
+          150,
+          151,
+          152,
+          158
         ],
         "n_normal": 43,
         "n_tumor": 1,
         "name": "q1",
-        "projection_max": -19.540783223320392,
-        "projection_min": -32.144566076189688
+        "projection_max": -19.78616133650493,
+        "projection_min": -36.29157833292217
       },
       {
         "global_indices": [
           0,
-         1,
-         2,
-         5,
-         10,
-         14,
-         16,
-         18,
-         19,
-         35,
-         39,
-         40,
-         42,
-         43,
-         45,
-         46,
-         50,
-         56,
-         57,
-         58,
-         60,
-         61,
-         62,
-         64,
-         65,
-         66,
-         74,
-         75,
-         76,
-         77,
-         78
+          1,
+          6,
+          7,
+          22,
+          23,
+          26,
+          51,
+          52,
+          53,
+          54,
+          55,
+          59,
+          63,
+          73,
+          88,
+          89,
+          91,
+          92,
+          93,
+          94,
+          95,
+          100,
+          110,
+          113,
+          115,
+          116,
+          124,
+          131,
+          132,
+          136,
+          137,
+          140,
+          141,
+          144,
+          156,
+          159,
+          160,
+          161,
+          163,
+          164,
+          170,
+          171,
+          172
         ],
         "n_normal": 35,
         "n_tumor": 9,
@@ -773,11 +773,11 @@
       "q3": {
         "hvg_boundary_tie_ambiguous": false,
         "hvg_cutoff_selected_tie_count": 1,
-       "hvg_cutoff_tie_count": 1,
+        "hvg_cutoff_tie_count": 1,
         "hvg_cutoff_variance": 0.34036678349459826,
         "n": 44,
         "n_normal": 7,
-       "n_tumor": 37,
+        "n_tumor": 37,
         "name": "q3",
         "observed_max_h1": 2.37786865234375,
         "pca_explained_variance_ratio_sum": 1.0,
@@ -787,30 +787,30 @@
       "q4": {
         "hvg_boundary_tie_ambiguous": false,
         "hvg_cutoff_selected_tie_count": 1,
-       "hvg_cutoff_tie_count": 1,
+        "hvg_cutoff_tie_count": 1,
         "hvg_cutoff_variance": 0.24198387015729608,
         "n": 44,
         "n_normal": 0,
-       "n_tumor": 44,
+        "n_tumor": 44,
         "name": "q4",
         "observed_max_h1": 4.490631103515625,
-       "pca_explained_variance_ratio_sum": 1.0000000000000002,
-       "selected_gene_count": 2000,
-       "selected_gene_ids_sha256": "3f23fad4c34a41b5070e5c709cd22e58619bd9345b4bd2ea4dd0a2654ffc1b34"
+        "pca_explained_variance_ratio_sum": 1.0000000000000002,
+        "selected_gene_count": 2000,
+        "selected_gene_ids_sha256": "3f23fad4c34a41b5070e5c709cd22e58619bd9345b4bd2ea4dd0a2654ffc1b34"
       },
       "tumor": {
         "hvg_boundary_tie_ambiguous": false,
         "hvg_cutoff_selected_tie_count": 1,
         "hvg_cutoff_tie_count": 1,
-       "hvg_cutoff_variance": 0.3061809068674172,
+        "hvg_cutoff_variance": 0.3061809068674172,
         "n": 91,
         "n_normal": 0,
-       "n_tumor": 91,
+        "n_tumor": 91,
         "name": "tumor",
         "observed_max_h1": 5.880062103271484,
-       "pca_explained_variance_ratio_sum": 0.902298212038276,
+        "pca_explained_variance_ratio_sum": 0.902298212038276,
         "selected_gene_count": 2000,
-       "selected_gene_ids_sha256": "64adc2938c6d4b430214f527c9851b0db87002cbff5a2ceb8e2376516c8e99f1"
+        "selected_gene_ids_sha256": "64adc2938c6d4b430214f527c9851b0db87002cbff5a2ceb8e2376516c8e99f1"
       }
     }
   },
