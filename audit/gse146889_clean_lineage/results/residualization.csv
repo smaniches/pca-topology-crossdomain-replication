@@ -1,0 +1,3 @@
+space,observed_max_H1,z_gaussian,z_permutation,cv_auc_tumor_normal,cv_auc_sd,top_loop_n_participants,top_loop_n_tumor,top_loop_n_normal,fisher_p_tumor_enrichment,loop_diagnostic_definition
+Full HVG->PCA50 (class-mean intact),7.56427001953125,11.392637407237746,11.763098693410894,0.9493636050911594,0.027897434517183645,45,40,5,1.9404557406986345e-09,ripser representative H1 cocycle support vertices
+Class-mean-residualized HVG->PCA50,8.4149169921875,13.63449351269691,13.984946535748769,0.11909184726522189,0.06149595228211052,22,10,12,0.8036978438399758,ripser representative H1 cocycle support vertices
