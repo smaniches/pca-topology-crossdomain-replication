@@ -1,19 +1,19 @@
 section,key,metric,metric_type,historical,new,absolute_difference,relative_difference,status
 within_class,Mixed (tumor+normal),observed_max_H1,deterministic,7.56427001953125,7.56427001953125,0.0,0.0,exact
 within_class,Mixed (tumor+normal),z_gaussian,monte_carlo,12.015284946738172,11.392637407237746,0.6226475395004254,0.05182128782301226,within_10pct
-within_class,Mixed (tumor+normal),p_gaussian,monte_carlo,0.0019960079840319,0.001996007984031936,3.599551212651875e-17,1.803375157538622e-14,exact
+within_class,Mixed (tumor+normal),p_gaussian,monte_carlo,0.0019960079840319,0.0019960079840319,0.0,0.0,exact
 within_class,Mixed (tumor+normal),z_permutation,monte_carlo,11.368229586264569,11.763098693410894,0.3948691071463255,0.03473444164282344,within_10pct
-within_class,Mixed (tumor+normal),p_permutation,monte_carlo,0.0004997501249375,0.0004997501249375312,3.122502256758253e-17,6.248127015773654e-14,exact
+within_class,Mixed (tumor+normal),p_permutation,monte_carlo,0.0004997501249375,0.0004997501249375,0.0,0.0,exact
 within_class,Normal-only,observed_max_H1,deterministic,6.402069091796875,6.402069091796875,0.0,0.0,exact
 within_class,Normal-only,z_gaussian,monte_carlo,5.346877714545766,5.488666421586777,0.14178870704101154,0.026518038116953073,within_10pct
-within_class,Normal-only,p_gaussian,monte_carlo,0.0033222591362126,0.0033222591362126247,2.47198095326695e-17,7.440662669333575e-15,exact
+within_class,Normal-only,p_gaussian,monte_carlo,0.0033222591362126,0.0033222591362126,0.0,0.0,exact
 within_class,Normal-only,z_permutation,monte_carlo,5.0856820373543234,5.27575277768972,0.19007074033539695,0.037373697163788015,within_10pct
-within_class,Normal-only,p_permutation,monte_carlo,0.0033222591362126,0.0033222591362126247,2.47198095326695e-17,7.440662669333575e-15,exact
+within_class,Normal-only,p_permutation,monte_carlo,0.0033222591362126,0.0033222591362126,0.0,0.0,exact
 within_class,Tumor-only,observed_max_H1,deterministic,5.880062103271484,5.880062103271484,0.0,0.0,exact
 within_class,Tumor-only,z_gaussian,monte_carlo,4.598413447052343,4.479209067990933,0.11920437906140968,0.02592293634184234,within_10pct
-within_class,Tumor-only,p_gaussian,monte_carlo,0.0033222591362126,0.006644518272425249,0.0033222591362126494,1.0000000000000149,different
+within_class,Tumor-only,p_gaussian,monte_carlo,0.0033222591362126,0.0066445182724252,0.0033222591362126,1.0,different
 within_class,Tumor-only,z_permutation,monte_carlo,4.242442008459693,4.087063157377761,0.15537885108193183,0.03662486152364529,within_10pct
-within_class,Tumor-only,p_permutation,monte_carlo,0.0033222591362126,0.0033222591362126247,2.47198095326695e-17,7.440662669333575e-15,exact
+within_class,Tumor-only,p_permutation,monte_carlo,0.0033222591362126,0.0033222591362126,0.0,0.0,exact
 within_stratum,Q1,observed_max_H1,deterministic,1.9853477478027344,1.9853477478027344,0.0,0.0,exact
 within_stratum,Q1,z_gauss,monte_carlo,7.4103970909701795,7.055688007190206,0.3547090837799738,0.047866407079884946,within_10pct
 within_stratum,Q1,z_perm,monte_carlo,6.069570402654205,6.616612003414823,0.5470416007606183,0.09012855350049134,within_10pct
@@ -29,27 +29,27 @@ within_stratum,Q4,z_perm,monte_carlo,19.549571728545367,20.24616457671585,0.6965
 residualization,Class-mean-residualized HVG->PCA50,observed_max_H1,deterministic,8.4149169921875,8.4149169921875,0.0,0.0,exact
 residualization,Class-mean-residualized HVG->PCA50,z_gaussian,monte_carlo,14.348652617400496,13.63449351269691,0.7141591047035867,0.049771858288459196,within_10pct
 residualization,Class-mean-residualized HVG->PCA50,z_permutation,monte_carlo,13.5166535935221,13.984946535748769,0.4682929422266682,0.034645627261698786,within_10pct
-residualization,Class-mean-residualized HVG->PCA50,cv_auc_tumor_normal,deterministic,0.2060199518403853,0.11909184726522189,0.08692810457516341,0.4219402237435298,different
+residualization,Class-mean-residualized HVG->PCA50,cv_auc_tumor_normal,deterministic,0.2060199518403853,0.2060199518403853,0.0,0.0,exact
 residualization,Class-mean-residualized HVG->PCA50,top_loop_n_participants,diagnostic,22.0,22.0,0.0,0.0,exact
 residualization,Class-mean-residualized HVG->PCA50,top_loop_n_tumor,diagnostic,10.0,10.0,0.0,0.0,exact
 residualization,Class-mean-residualized HVG->PCA50,top_loop_n_normal,diagnostic,12.0,12.0,0.0,0.0,exact
-residualization,Class-mean-residualized HVG->PCA50,fisher_p_tumor_enrichment,diagnostic,0.649564557108609,0.8036978438399758,0.15413328673136673,0.2372870949385793,different
+residualization,Class-mean-residualized HVG->PCA50,fisher_p_tumor_enrichment,diagnostic,0.649564557108609,0.649564557108609,0.0,0.0,exact
 residualization,Full HVG->PCA50 (class-mean intact),observed_max_H1,deterministic,7.56427001953125,7.56427001953125,0.0,0.0,exact
 residualization,Full HVG->PCA50 (class-mean intact),z_gaussian,monte_carlo,12.015284946738172,11.392637407237746,0.6226475395004254,0.05182128782301226,within_10pct
 residualization,Full HVG->PCA50 (class-mean intact),z_permutation,monte_carlo,11.368229586264569,11.763098693410894,0.3948691071463255,0.03473444164282344,within_10pct
-residualization,Full HVG->PCA50 (class-mean intact),cv_auc_tumor_normal,deterministic,0.9253525971792228,0.9493636050911594,0.024011007911936555,0.025947955390334405,different
+residualization,Full HVG->PCA50 (class-mean intact),cv_auc_tumor_normal,deterministic,0.9253525971792228,0.9253525971792228,0.0,0.0,exact
 residualization,Full HVG->PCA50 (class-mean intact),top_loop_n_participants,diagnostic,45.0,45.0,0.0,0.0,exact
 residualization,Full HVG->PCA50 (class-mean intact),top_loop_n_tumor,diagnostic,40.0,40.0,0.0,0.0,exact
 residualization,Full HVG->PCA50 (class-mean intact),top_loop_n_normal,diagnostic,5.0,5.0,0.0,0.0,exact
-residualization,Full HVG->PCA50 (class-mean intact),fisher_p_tumor_enrichment,diagnostic,2.870407781613946e-09,1.9404557406986345e-09,9.299520409153114e-10,0.3239790690618971,exact
+residualization,Full HVG->PCA50 (class-mean intact),fisher_p_tumor_enrichment,diagnostic,2.870407781613946e-09,2.870407781613946e-09,0.0,0.0,exact
 bootstrap,mixed (tumor+normal),point_delta,bootstrap,4.380263725280762,4.322807559967041,0.05745616531372111,0.013117056167671351,within_10pct
 bootstrap,mixed (tumor+normal),delta_ci95_lo,bootstrap,2.546864906311036,2.5583231544494627,0.011458248138426885,0.004498961884485422,within_10pct
 bootstrap,mixed (tumor+normal),delta_ci95_hi,bootstrap,9.175498405456544,9.013519773483262,0.1619786319732821,0.01765338783961377,within_10pct
 bootstrap,mixed (tumor+normal),point_z,bootstrap,12.015284946738172,11.392637407237746,0.6226475395004254,0.05182128782301226,within_10pct
-bootstrap,mixed (tumor+normal),z_ci95_lo,bootstrap,6.986179255271498,6.7423885206228436,0.24379073464865453,0.03489614648302927,within_10pct
+bootstrap,mixed (tumor+normal),z_ci95_lo,bootstrap,6.986179255271498,6.742388520622844,0.24379073464865364,0.03489614648302914,within_10pct
 bootstrap,mixed (tumor+normal),z_ci95_hi,bootstrap,25.16885621146833,23.754877152811645,1.413979058656686,0.056179710622384124,within_10pct
 bootstrap,mixed (tumor+normal),excludes_zero,bootstrap,1.0,1.0,0.0,0.0,exact
-bootstrap,normal-only,point_delta,bootstrap,2.7806114451090496,2.8394422785441082,0.05883083343505868,0.021157516825495,within_10pct
+bootstrap,normal-only,point_delta,bootstrap,2.7806114451090496,2.839442278544108,0.05883083343505824,0.02115751682549484,within_10pct
 bootstrap,normal-only,delta_ci95_lo,bootstrap,-1.6448284848531087,-1.5095376714070636,0.1352908134460451,0.0822522315803202,within_10pct
 bootstrap,normal-only,delta_ci95_hi,bootstrap,4.123361994425456,4.182192827860515,0.05883083343505913,0.014267685814293038,within_10pct
 bootstrap,normal-only,point_z,bootstrap,5.346877714545766,5.488666421586777,0.14178870704101154,0.026518038116953073,within_10pct
@@ -61,5 +61,5 @@ bootstrap,tumor-only,delta_ci95_lo,bootstrap,-0.694826800028483,-0.6389286931355
 bootstrap,tumor-only,delta_ci95_hi,bootstrap,3.974808972676595,4.030707079569499,0.055898106892903865,0.014063092661095273,within_10pct
 bootstrap,tumor-only,point_z,bootstrap,4.598413447052343,4.479209067990933,0.11920437906140968,0.02592293634184234,within_10pct
 bootstrap,tumor-only,z_ci95_lo,bootstrap,-1.3927660567852878,-1.2178449881569853,0.17492106862830248,0.12559257010617164,different
-bootstrap,tumor-only,z_ci95_hi,bootstrap,7.967422988178675,7.682823558122721,0.28459943005595356,0.035720386689424656,within_10pct
+bootstrap,tumor-only,z_ci95_hi,bootstrap,7.967422988178675,7.68282358122721,0.28459943005595356,0.035720386689424656,within_10pct
 bootstrap,tumor-only,excludes_zero,bootstrap,0.0,0.0,0.0,,exact
