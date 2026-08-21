@@ -23,8 +23,6 @@ jobs:
         run: |
           set -euo pipefail
 
-          # Preserve the exact workflow definition used by the successful full run,
-          # but keep it outside .github/workflows so it cannot execute after merge.
           git show 157f10759a48ff8b43a4bf9c887aeb29ee45135c:.github/workflows/gse146889-clean-lineage.yml \
             > audit/gse146889_clean_lineage/EXECUTION_WORKFLOW.yml
 
@@ -102,8 +100,9 @@ jobs:
               "",
               "      - name: Verify GSE146889 clean-lineage audit record",
               "        run: |",
-              "          python -m py_compile audit/gse146889_clean_lineage/prepare.py audit/gse146889_clean_lineage/worker.py audit/gse146889_clean_lineage/aggregate.py audit/gse146889_clean_lineage/reconcile_results.py",
+              "          python -m py_compile audit/gse146889_clean_lineage/prepare.py audit/gse146889_clean_lineage/worker.py audit/gse146889_clean_lineage/aggregate.py audit/gse146889_clean_lineage/verify_reconciliation.py",
               "          (cd audit/gse146889_clean_lineage/results && sha256sum -c SHA256SUMS)",
+              "          python audit/gse146889_clean_lineage/verify_reconciliation.py --repo-root .",
               "",
               "      - name: Install pip-audit",
               "        run: python -m pip install \"pip-audit==2.10.1\"",
@@ -114,9 +113,6 @@ jobs:
           Path(".github/workflows/ci.yml").write_text("\n".join(final_ci_lines) + "\n", encoding="utf-8")
           PY
 
-          # The reconciliation changed two derived files after the first local
-          # registry was drafted. Recompute the audit-directory registry from
-          # the final, reviewed files and then verify it immediately.
           python - <<'PY'
           import hashlib
           from pathlib import Path
@@ -127,6 +123,7 @@ jobs:
           (results / "SHA256SUMS").write_text("\n".join(lines) + "\n", encoding="utf-8")
           PY
           (cd audit/gse146889_clean_lineage/results && sha256sum -c SHA256SUMS)
+          python audit/gse146889_clean_lineage/verify_reconciliation.py --repo-root .
 
           git add -A
           python - <<'PY'
@@ -169,7 +166,8 @@ jobs:
 
           sha256sum -c checksums.sha256
           (cd audit/gse146889_clean_lineage/results && sha256sum -c SHA256SUMS)
-          python -m py_compile audit/gse146889_clean_lineage/prepare.py audit/gse146889_clean_lineage/worker.py audit/gse146889_clean_lineage/aggregate.py audit/gse146889_clean_lineage/reconcile_results.py
+          python -m py_compile audit/gse146889_clean_lineage/prepare.py audit/gse146889_clean_lineage/worker.py audit/gse146889_clean_lineage/aggregate.py audit/gse146889_clean_lineage/verify_reconciliation.py
+          python audit/gse146889_clean_lineage/verify_reconciliation.py --repo-root .
 
           mkdir -p \
             integration_bundle/.github/workflows \
