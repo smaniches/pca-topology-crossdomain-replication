@@ -1,11 +1,14 @@
 name: GSE146889 clean-lineage confound audit
 
 on:
-  push:
+  pull_request:
     branches:
-      - audit/gse146889-clean-lineage
+      - main
     paths:
-      - "audit/gse146889_clean_lineage/**"
+      - "audit/gse146889_clean_lineage/PROTOCOL.md"
+      - "audit/gse146889_clean_lineage/prepare.py"
+      - "audit/gse146889_clean_lineage/worker.py"
+      - "audit/gse146889_clean_lineage/aggregate.py"
       - ".github/workflows/gse146889-clean-lineage.yml"
   workflow_dispatch:
 
@@ -283,5 +286,5 @@ jobs:
             echo "No result changes to commit."
             exit 0
           fi
-          git commit -m "audit: record GSE146889 clean-lineage rerun"
+          git commit -m "audit: record GSE146889 clean-lineage rerun [skip ci]"
           git push origin HEAD:audit/gse146889-clean-lineage
