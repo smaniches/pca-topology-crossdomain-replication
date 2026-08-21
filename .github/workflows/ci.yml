@@ -22,6 +22,12 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+
+          # Preserve the exact workflow definition used by the successful full run,
+          # but keep it outside .github/workflows so it cannot execute after merge.
+          git show 157f10759a48ff8b43a4bf9c887aeb29ee45135c:.github/workflows/gse146889-clean-lineage.yml \
+            > audit/gse146889_clean_lineage/EXECUTION_WORKFLOW.yml
+
           python - <<'PY'
           from pathlib import Path
 
@@ -108,6 +114,20 @@ jobs:
           Path(".github/workflows/ci.yml").write_text("\n".join(final_ci_lines) + "\n", encoding="utf-8")
           PY
 
+          # The reconciliation changed two derived files after the first local
+          # registry was drafted. Recompute the audit-directory registry from
+          # the final, reviewed files and then verify it immediately.
+          python - <<'PY'
+          import hashlib
+          from pathlib import Path
+
+          results = Path("audit/gse146889_clean_lineage/results")
+          files = sorted(p for p in results.iterdir() if p.is_file() and p.name != "SHA256SUMS")
+          lines = [f"{hashlib.sha256(path.read_bytes()).hexdigest()}  {path.name}" for path in files]
+          (results / "SHA256SUMS").write_text("\n".join(lines) + "\n", encoding="utf-8")
+          PY
+          (cd audit/gse146889_clean_lineage/results && sha256sum -c SHA256SUMS)
+
           git add -A
           python - <<'PY'
           from __future__ import annotations
@@ -151,12 +171,17 @@ jobs:
           (cd audit/gse146889_clean_lineage/results && sha256sum -c SHA256SUMS)
           python -m py_compile audit/gse146889_clean_lineage/prepare.py audit/gse146889_clean_lineage/worker.py audit/gse146889_clean_lineage/aggregate.py audit/gse146889_clean_lineage/reconcile_results.py
 
-          mkdir -p integration_bundle/.github/workflows integration_bundle/code/confound_attribution_audit
+          mkdir -p \
+            integration_bundle/.github/workflows \
+            integration_bundle/code/confound_attribution_audit \
+            integration_bundle/audit/gse146889_clean_lineage/results
           cp README.md integration_bundle/README.md
           cp code/confound_attribution_audit/README.md integration_bundle/code/confound_attribution_audit/README.md
           cp .github/workflows/ci.yml integration_bundle/.github/workflows/ci.yml
           cp MANIFEST.md integration_bundle/MANIFEST.md
           cp checksums.sha256 integration_bundle/checksums.sha256
+          cp audit/gse146889_clean_lineage/EXECUTION_WORKFLOW.yml integration_bundle/audit/gse146889_clean_lineage/EXECUTION_WORKFLOW.yml
+          cp audit/gse146889_clean_lineage/results/SHA256SUMS integration_bundle/audit/gse146889_clean_lineage/results/SHA256SUMS
 
       - name: Upload exact final bundle
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
