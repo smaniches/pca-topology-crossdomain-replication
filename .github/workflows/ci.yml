@@ -61,56 +61,54 @@ jobs:
                   raise SystemExit("confound README resolution anchor not found")
               audit_readme.write_text(text.replace(anchor, addition, 1), encoding="utf-8")
 
-          final_ci = '''name: CI
-
-on:
-  push:
-    branches: [main]
-  pull_request:
-  workflow_dispatch:
-
-permissions:
-  contents: read
-
-jobs:
-  reproduce:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-
-      - name: Verify checksums
-        run: sha256sum -c checksums.sha256
-
-      - name: Set up Python
-        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
-        with:
-          python-version: "3.11"
-
-      - name: Install dependencies
-        run: python -m pip install -r requirements.txt
-
-      - name: Run reproduce.py smoke test
-        run: python reproduce.py
-
-      - name: Verify GSE146889 clean-lineage audit record
-        run: |
-          python -m py_compile audit/gse146889_clean_lineage/prepare.py audit/gse146889_clean_lineage/worker.py audit/gse146889_clean_lineage/aggregate.py audit/gse146889_clean_lineage/reconcile_results.py
-          (cd audit/gse146889_clean_lineage/results && sha256sum -c SHA256SUMS)
-
-      - name: Install pip-audit
-        run: python -m pip install "pip-audit==2.10.1"
-
-      - name: Audit pinned dependencies
-        run: python -m pip_audit -r requirements.txt --strict
-'''
-          Path(".github/workflows/ci.yml").write_text(final_ci, encoding="utf-8")
+          final_ci_lines = [
+              "name: CI",
+              "",
+              "on:",
+              "  push:",
+              "    branches: [main]",
+              "  pull_request:",
+              "  workflow_dispatch:",
+              "",
+              "permissions:",
+              "  contents: read",
+              "",
+              "jobs:",
+              "  reproduce:",
+              "    runs-on: ubuntu-latest",
+              "    steps:",
+              "      - name: Checkout repository",
+              "        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1",
+              "",
+              "      - name: Verify checksums",
+              "        run: sha256sum -c checksums.sha256",
+              "",
+              "      - name: Set up Python",
+              "        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0",
+              "        with:",
+              "          python-version: \"3.11\"",
+              "",
+              "      - name: Install dependencies",
+              "        run: python -m pip install -r requirements.txt",
+              "",
+              "      - name: Run reproduce.py smoke test",
+              "        run: python reproduce.py",
+              "",
+              "      - name: Verify GSE146889 clean-lineage audit record",
+              "        run: |",
+              "          python -m py_compile audit/gse146889_clean_lineage/prepare.py audit/gse146889_clean_lineage/worker.py audit/gse146889_clean_lineage/aggregate.py audit/gse146889_clean_lineage/reconcile_results.py",
+              "          (cd audit/gse146889_clean_lineage/results && sha256sum -c SHA256SUMS)",
+              "",
+              "      - name: Install pip-audit",
+              "        run: python -m pip install \"pip-audit==2.10.1\"",
+              "",
+              "      - name: Audit pinned dependencies",
+              "        run: python -m pip_audit -r requirements.txt --strict",
+          ]
+          Path(".github/workflows/ci.yml").write_text("\n".join(final_ci_lines) + "\n", encoding="utf-8")
           PY
 
-          rm -f .github/workflows/gse146889-clean-lineage.yml
-          rm -f .github/workflows/bootstrap-gse146889-integration.yml
           git add -A
-
           python - <<'PY'
           from __future__ import annotations
           import hashlib
@@ -140,11 +138,13 @@ jobs:
           else:
               raise SystemExit("manifest size did not converge")
           (root / "MANIFEST.md").write_text(content, encoding="utf-8")
-          lines = [
-              f"{hashlib.sha256((root / rel).read_bytes()).hexdigest()}  {rel}"
-              for rel in checksum_paths
-          ]
-          (root / "checksums.sha256").write_text("\n".join(lines) + "\n", encoding="utf-8")
+          (root / "checksums.sha256").write_text(
+              "\n".join(
+                  f"{hashlib.sha256((root / rel).read_bytes()).hexdigest()}  {rel}"
+                  for rel in checksum_paths
+              ) + "\n",
+              encoding="utf-8",
+          )
           PY
 
           sha256sum -c checksums.sha256
@@ -157,7 +157,6 @@ jobs:
           cp .github/workflows/ci.yml integration_bundle/.github/workflows/ci.yml
           cp MANIFEST.md integration_bundle/MANIFEST.md
           cp checksums.sha256 integration_bundle/checksums.sha256
-          printf '%s\n' '.github/workflows/gse146889-clean-lineage.yml' '.github/workflows/bootstrap-gse146889-integration.yml' > integration_bundle/DELETE_PATHS.txt
 
       - name: Upload exact final bundle
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
