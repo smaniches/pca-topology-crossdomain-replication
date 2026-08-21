@@ -1,0 +1,287 @@
+name: GSE146889 clean-lineage confound audit
+
+on:
+  push:
+    branches:
+      - audit/gse146889-clean-lineage
+    paths:
+      - "audit/gse146889_clean_lineage/**"
+      - ".github/workflows/gse146889-clean-lineage.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gse146889-clean-lineage-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  PYTHONUNBUFFERED: "1"
+  MPLBACKEND: Agg
+  AUDIT_DIR: audit/gse146889_clean_lineage
+
+jobs:
+  prepare:
+    name: Prepare raw GEO data and deterministic results
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Check out exact execution commit
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: requirements.txt
+
+      - name: Install pinned environment
+        run: python -m pip install -r requirements.txt
+
+      - name: Run independent preparation
+        run: |
+          python "$AUDIT_DIR/prepare.py" \
+            --output-dir "$RUNNER_TEMP/prepared" \
+            --data-dir "$RUNNER_TEMP/data" \
+            --protocol-path "$AUDIT_DIR/PROTOCOL.md"
+
+      - name: Upload prepared matrices and deterministic results
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: gse146889-prepared
+          path: ${{ runner.temp }}/prepared/
+          if-no-files-found: error
+          retention-days: 14
+
+  compute:
+    name: ${{ matrix.task }} start ${{ matrix.start }} count ${{ matrix.count }}
+    needs: prepare
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix:
+        include:
+          - task: mixed_gauss
+            start: 0
+            count: 100
+          - task: mixed_gauss
+            start: 100
+            count: 100
+          - task: mixed_gauss
+            start: 200
+            count: 100
+          - task: mixed_gauss
+            start: 300
+            count: 100
+          - task: mixed_gauss
+            start: 400
+            count: 100
+          - task: mixed_perm
+            start: 0
+            count: 400
+          - task: mixed_perm
+            start: 400
+            count: 400
+          - task: mixed_perm
+            start: 800
+            count: 400
+          - task: mixed_perm
+            start: 1200
+            count: 400
+          - task: mixed_perm
+            start: 1600
+            count: 400
+          - task: tumor_gauss
+            start: 0
+            count: 300
+          - task: tumor_perm
+            start: 0
+            count: 300
+          - task: normal_gauss
+            start: 0
+            count: 300
+          - task: normal_perm
+            start: 0
+            count: 300
+          - task: q1_gauss
+            start: 0
+            count: 300
+          - task: q1_perm
+            start: 0
+            count: 300
+          - task: q2_gauss
+            start: 0
+            count: 300
+          - task: q2_perm
+            start: 0
+            count: 300
+          - task: q3_gauss
+            start: 0
+            count: 300
+          - task: q3_perm
+            start: 0
+            count: 300
+          - task: q4_gauss
+            start: 0
+            count: 300
+          - task: q4_perm
+            start: 0
+            count: 300
+          - task: bootstrap_mixed
+            start: 0
+            count: 500
+          - task: bootstrap_mixed
+            start: 500
+            count: 500
+          - task: bootstrap_mixed
+            start: 1000
+            count: 500
+          - task: bootstrap_mixed
+            start: 1500
+            count: 500
+          - task: bootstrap_tumor
+            start: 0
+            count: 500
+          - task: bootstrap_tumor
+            start: 500
+            count: 500
+          - task: bootstrap_tumor
+            start: 1000
+            count: 500
+          - task: bootstrap_tumor
+            start: 1500
+            count: 500
+          - task: bootstrap_normal
+            start: 0
+            count: 500
+          - task: bootstrap_normal
+            start: 500
+            count: 500
+          - task: bootstrap_normal
+            start: 1000
+            count: 500
+          - task: bootstrap_normal
+            start: 1500
+            count: 500
+    steps:
+      - name: Check out exact execution commit
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: requirements.txt
+
+      - name: Install pinned environment
+        run: python -m pip install -r requirements.txt
+
+      - name: Download prepared artifact
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: gse146889-prepared
+          path: ${{ runner.temp }}/prepared
+
+      - name: Compute deterministic shard
+        run: |
+          python "$AUDIT_DIR/worker.py" \
+            --prepared "${{ runner.temp }}/prepared/prepared.npz" \
+            --task "${{ matrix.task }}" \
+            --start "${{ matrix.start }}" \
+            --count "${{ matrix.count }}" \
+            --output-dir "${{ runner.temp }}/shard"
+
+      - name: Upload shard
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: gse146889-shard-${{ matrix.task }}-${{ matrix.start }}
+          path: ${{ runner.temp }}/shard/
+          if-no-files-found: error
+          retention-days: 14
+
+  aggregate:
+    name: Aggregate, compare, and preserve results
+    needs:
+      - prepare
+      - compute
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    permissions:
+      contents: write
+    steps:
+      - name: Check out audit branch for result commit
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: audit/gse146889-clean-lineage
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: requirements.txt
+
+      - name: Install pinned environment
+        run: python -m pip install -r requirements.txt
+
+      - name: Download prepared artifact
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: gse146889-prepared
+          path: ${{ runner.temp }}/prepared
+
+      - name: Download every shard
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          pattern: gse146889-shard-*
+          path: ${{ runner.temp }}/shards
+          merge-multiple: true
+
+      - name: Record exact environment
+        run: |
+          python --version > "${{ runner.temp }}/environment.txt"
+          python -m pip freeze >> "${{ runner.temp }}/environment.txt"
+
+      - name: Aggregate without forcing agreement
+        run: |
+          rm -rf "$AUDIT_DIR/results"
+          python "$AUDIT_DIR/aggregate.py" \
+            --repo-root "$GITHUB_WORKSPACE" \
+            --prepare-dir "${{ runner.temp }}/prepared" \
+            --shards-dir "${{ runner.temp }}/shards" \
+            --output-dir "$AUDIT_DIR/results" \
+            --environment-file "${{ runner.temp }}/environment.txt" \
+            --protocol-anchor-sha "5bedc6c0f1e55764e2b8683eed91a975ed25191f"
+
+      - name: Upload final audit artifact
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: gse146889-clean-lineage-results
+          path: ${{ env.AUDIT_DIR }}/results/
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Commit immutable result record to audit branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$AUDIT_DIR/results"
+          if git diff --cached --quiet; then
+            echo "No result changes to commit."
+            exit 0
+          fi
+          git commit -m "audit: record GSE146889 clean-lineage rerun"
+          git push origin HEAD:audit/gse146889-clean-lineage
