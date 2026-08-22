@@ -62,52 +62,7 @@ jobs:
           cp "$B/audit/gse146889_clean_lineage/EXECUTION_WORKFLOW.yml" audit/gse146889_clean_lineage/EXECUTION_WORKFLOW.yml
           cp "$B/audit/gse146889_clean_lineage/results/SHA256SUMS" audit/gse146889_clean_lineage/results/SHA256SUMS
 
-          cat > .github/workflows/ci.yml <<'YAML'
-          name: CI
-
-          on:
-            push:
-              branches: [main]
-            pull_request:
-            workflow_dispatch:
-
-          permissions:
-            contents: read
-
-          jobs:
-            reproduce:
-              runs-on: ubuntu-latest
-              steps:
-                - name: Checkout repository
-                  uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-
-                - name: Verify checksums
-                  run: sha256sum -c checksums.sha256
-
-                - name: Set up Python
-                  uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
-                  with:
-                    python-version: "3.11"
-
-                - name: Install dependencies
-                  run: python -m pip install -r requirements.txt
-
-                - name: Run reproduce.py smoke test
-                  run: python reproduce.py
-
-                - name: Verify GSE146889 clean-lineage audit record
-                  run: |
-                    python -m py_compile audit/gse146889_clean_lineage/prepare.py audit/gse146889_clean_lineage/worker.py audit/gse146889_clean_lineage/aggregate.py audit/gse146889_clean_lineage/verify_reconciliation.py
-                    (cd audit/gse146889_clean_lineage/results && sha256sum -c SHA256SUMS)
-                    python audit/gse146889_clean_lineage/verify_reconciliation.py --repo-root .
-
-                - name: Install pip-audit
-                  run: python -m pip install "pip-audit==2.10.1"
-
-                - name: Audit pinned dependencies
-                  run: python -m pip_audit -r requirements.txt --strict
-          YAML
-          sed -i 's/^          //' .github/workflows/ci.yml
+          echo 'bmFtZTogQ0kKCm9uOgogIHB1c2g6CiAgICBicmFuY2hlczogW21haW5dCiAgcHVsbF9yZXF1ZXN0OgogIHdvcmtmbG93X2Rpc3BhdGNoOgoKcGVybWlzc2lvbnM6CiAgY29udGVudHM6IHJlYWQKCmpvYnM6CiAgcmVwcm9kdWNlOgogICAgcnVucy1vbjogdWJ1bnR1LWxhdGVzdAogICAgc3RlcHM6CiAgICAgIC0gbmFtZTogQ2hlY2tvdXQgcmVwb3NpdG9yeQogICAgICAgIHVzZXM6IGFjdGlvbnMvY2hlY2tvdXRAM2QzYzQyZTVhYWM1YmE4MDU4MjVkYTc2NDEwYzE4MTI3M2JhOTBiMSAjIHY3LjAuMQoKICAgICAgLSBuYW1lOiBWZXJpZnkgY2hlY2tzdW1zCiAgICAgICAgcnVuOiBzaGEyNTZzdW0gLWMgY2hlY2tzdW1zLnNoYTI1NgoKICAgICAgLSBuYW1lOiBTZXQgdXAgUHl0aG9uCiAgICAgICAgdXNlczogYWN0aW9ucy9zZXR1cC1weXRob25ANWZkYTNiOTVhNGVhOTEyOTlhMzRlODk0NTgzYzM4NjIxNTNlNGI5NyAjIHY3LjAuMAogICAgICAgIHdpdGg6CiAgICAgICAgICBweXRob24tdmVyc2lvbjogIjMuMTEiCgogICAgICAtIG5hbWU6IEluc3RhbGwgZGVwZW5kZW5jaWVzCiAgICAgICAgcnVuOiBweXRob24gLW0gcGlwIGluc3RhbGwgLXIgcmVxdWlyZW1lbnRzLnR4dAoKICAgICAgLSBuYW1lOiBSdW4gcmVwcm9kdWNlLnB5IHNtb2tlIHRlc3QKICAgICAgICBydW46IHB5dGhvbiByZXByb2R1Y2UucHkKCiAgICAgIC0gbmFtZTogVmVyaWZ5IEdTRTE0Njg4OSBjbGVhbi1saW5lYWdlIGF1ZGl0IHJlY29yZAogICAgICAgIHJ1bjogfAogICAgICAgICAgcHl0aG9uIC1tIHB5X2NvbXBpbGUgYXVkaXQvZ3NlMTQ2ODg5X2NsZWFuX2xpbmVhZ2UvcHJlcGFyZS5weSBhdWRpdC9nc2UxNDY4ODlfY2xlYW5fbGluZWFnZS93b3JrZXIucHkgYXVkaXQvZ3NlMTQ2ODg5X2NsZWFuX2xpbmVhZ2UvYWdncmVnYXRlLnB5IGF1ZGl0L2dzZTE0Njg4OV9jbGVhbl9saW5lYWdlL3ZlcmlmeV9yZWNvbmNpbGlhdGlvbi5weQogICAgICAgICAgKGNkIGF1ZGl0L2dzZTE0Njg4OV9jbGVhbl9saW5lYWdlL3Jlc3VsdHMgJiYgc2hhMjU2c3VtIC1jIFNIQTI1NlNVTVMpCiAgICAgICAgICBweXRob24gYXVkaXQvZ3NlMTQ2ODg5X2NsZWFuX2xpbmVhZ2UvdmVyaWZ5X3JlY29uY2lsaWF0aW9uLnB5IC0tcmVwby1yb290IC4KCiAgICAgIC0gbmFtZTogSW5zdGFsbCBwaXAtYXVkaXQKICAgICAgICBydW46IHB5dGhvbiAtbSBwaXAgaW5zdGFsbCAicGlwLWF1ZGl0PT0yLjEwLjEiCgogICAgICAtIG5hbWU6IEF1ZGl0IHBpbm5lZCBkZXBlbmRlbmNpZXMKICAgICAgICBydW46IHB5dGhvbiAtbSBwaXBfYXVkaXQgLXIgcmVxdWlyZW1lbnRzLnR4dCAtLXN0cmljdAo=' | base64 -d > .github/workflows/ci.yml
           echo "adbfb224d2806a852c9e43520609c6cc999ad63298a82cdc49105c86c790c52e  .github/workflows/ci.yml" | sha256sum -c -
 
           rm .github/workflows/apply-gse146889-integration.yml
