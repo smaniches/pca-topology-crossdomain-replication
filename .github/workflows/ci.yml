@@ -30,6 +30,12 @@ jobs:
       - name: Run reproduce.py smoke test
         run: python reproduce.py
 
+      - name: Verify GSE146889 clean-lineage audit record
+        run: |
+          python -m py_compile audit/gse146889_clean_lineage/prepare.py audit/gse146889_clean_lineage/worker.py audit/gse146889_clean_lineage/aggregate.py audit/gse146889_clean_lineage/verify_reconciliation.py
+          (cd audit/gse146889_clean_lineage/results && sha256sum -c SHA256SUMS)
+          python audit/gse146889_clean_lineage/verify_reconciliation.py --repo-root .
+
       - name: Install pip-audit
         run: python -m pip install "pip-audit==2.10.1"
 

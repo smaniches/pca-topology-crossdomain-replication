@@ -114,6 +114,14 @@ matched the pre-registered value exactly, well within the 1e-3 tolerance in
       lineage chain) and carries materially higher reconstruction risk than the other 3, though its
       real-data statistics were verified to match the committed report closely -- see
       `code/confound_attribution_audit/README.md` for the full disclosure.
+      **Clean-lineage resolution (2026-08-21):** this lineage weakness is now independently
+      audited under `audit/gse146889_clean_lineage/`. A protocol was committed before
+      execution; the official GEO matrix was re-fetched and hashed; preprocessing, PCA, PH,
+      Gaussian/permutation nulls, residualization, cocycle-support diagnostics, and bootstrap
+      draws were regenerated without importing the reconstructed driver or its saved nulls.
+      Under matched historical definitions, every deterministic real-data quantity reproduced
+      exactly and the qualified GSE146889 verdict was sustained. The reconstructed driver is
+      retained only as historical provenance, not as the authoritative verification path.
 - [x] ~~Figures 2, 3, and 4 (cross-dataset replication, ablation sweep, confound audit) existed only
       as static PNGs with no committed generation script~~ -- **resolved.** Recovered via
       `host.lineage` and repackaged as `code/replication_cross_dataset/04c_figure_cross_dataset_replication.py`,
