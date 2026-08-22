@@ -10,191 +10,34 @@ permissions:
   contents: read
 
 jobs:
-  integration-preview:
+  reproduce:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          fetch-depth: 0
+
+      - name: Verify checksums
+        run: sha256sum -c checksums.sha256
 
       - name: Set up Python
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: "3.11"
-          cache: pip
-          cache-dependency-path: requirements.txt
 
-      - name: Install pinned environment
+      - name: Install dependencies
         run: python -m pip install -r requirements.txt
 
-      - name: Build exact final integration bundle without writing GitHub
-        shell: bash
+      - name: Run reproduce.py smoke test
+        run: python reproduce.py
+
+      - name: Verify GSE146889 clean-lineage audit record
         run: |
-          set -euo pipefail
-
-          git show 157f10759a48ff8b43a4bf9c887aeb29ee45135c:.github/workflows/gse146889-clean-lineage.yml \
-            > audit/gse146889_clean_lineage/EXECUTION_WORKFLOW.yml
-
-          python - <<'PY'
-          from pathlib import Path
-
-          readme = Path("README.md")
-          text = readme.read_text(encoding="utf-8")
-          anchor = (
-              "      real-data statistics were verified to match the committed report closely -- see\n"
-              "      `code/confound_attribution_audit/README.md` for the full disclosure.\n"
-          )
-          addition = anchor + (
-              "      **Clean-lineage resolution (2026-08-21):** this lineage weakness is now independently\n"
-              "      audited under `audit/gse146889_clean_lineage/`. A protocol was committed before\n"
-              "      execution; the official GEO matrix was re-fetched and hashed; preprocessing, PCA, PH,\n"
-              "      Gaussian/permutation nulls, residualization, cocycle-support diagnostics, and bootstrap\n"
-              "      draws were regenerated without importing the reconstructed driver or its saved nulls.\n"
-              "      Under matched historical definitions, every deterministic real-data quantity reproduced\n"
-              "      exactly and the qualified GSE146889 verdict was sustained. The reconstructed driver is\n"
-              "      retained only as historical provenance, not as the authoritative verification path.\n"
-          )
-          if "Clean-lineage resolution (2026-08-21)" not in text:
-              if anchor not in text:
-                  raise SystemExit("README resolution anchor not found")
-              readme.write_text(text.replace(anchor, addition, 1), encoding="utf-8")
-
-          audit_readme = Path("code/confound_attribution_audit/README.md")
-          text = audit_readme.read_text(encoding="utf-8")
-          anchor = "  (near-exact); residualized z_gaussian in the right range at reduced draw counts.**\n"
-          addition = anchor + (
-              "  **Clean-lineage resolution (2026-08-21):** `audit/gse146889_clean_lineage/` now provides\n"
-              "  an independent from-raw-data rerun frozen before execution. It does not import this\n"
-              "  reconstructed driver or reuse its null pickles. The full declared Monte Carlo/bootstrap\n"
-              "  program completed successfully; matched deterministic quantities reproduced exactly and\n"
-              "  regenerated stochastic results preserved the same bounded interpretation.\n"
-          )
-          if "Clean-lineage resolution (2026-08-21)" not in text:
-              if anchor not in text:
-                  raise SystemExit("confound README resolution anchor not found")
-              audit_readme.write_text(text.replace(anchor, addition, 1), encoding="utf-8")
-
-          final_ci_lines = [
-              "name: CI",
-              "",
-              "on:",
-              "  push:",
-              "    branches: [main]",
-              "  pull_request:",
-              "  workflow_dispatch:",
-              "",
-              "permissions:",
-              "  contents: read",
-              "",
-              "jobs:",
-              "  reproduce:",
-              "    runs-on: ubuntu-latest",
-              "    steps:",
-              "      - name: Checkout repository",
-              "        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1",
-              "",
-              "      - name: Verify checksums",
-              "        run: sha256sum -c checksums.sha256",
-              "",
-              "      - name: Set up Python",
-              "        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0",
-              "        with:",
-              "          python-version: \"3.11\"",
-              "",
-              "      - name: Install dependencies",
-              "        run: python -m pip install -r requirements.txt",
-              "",
-              "      - name: Run reproduce.py smoke test",
-              "        run: python reproduce.py",
-              "",
-              "      - name: Verify GSE146889 clean-lineage audit record",
-              "        run: |",
-              "          python -m py_compile audit/gse146889_clean_lineage/prepare.py audit/gse146889_clean_lineage/worker.py audit/gse146889_clean_lineage/aggregate.py audit/gse146889_clean_lineage/verify_reconciliation.py",
-              "          (cd audit/gse146889_clean_lineage/results && sha256sum -c SHA256SUMS)",
-              "          python audit/gse146889_clean_lineage/verify_reconciliation.py --repo-root .",
-              "",
-              "      - name: Install pip-audit",
-              "        run: python -m pip install \"pip-audit==2.10.1\"",
-              "",
-              "      - name: Audit pinned dependencies",
-              "        run: python -m pip_audit -r requirements.txt --strict",
-          ]
-          Path(".github/workflows/ci.yml").write_text("\n".join(final_ci_lines) + "\n", encoding="utf-8")
-          PY
-
-          python - <<'PY'
-          import hashlib
-          from pathlib import Path
-
-          results = Path("audit/gse146889_clean_lineage/results")
-          files = sorted(p for p in results.iterdir() if p.is_file() and p.name != "SHA256SUMS")
-          lines = [f"{hashlib.sha256(path.read_bytes()).hexdigest()}  {path.name}" for path in files]
-          (results / "SHA256SUMS").write_text("\n".join(lines) + "\n", encoding="utf-8")
-          PY
-          (cd audit/gse146889_clean_lineage/results && sha256sum -c SHA256SUMS)
-          python audit/gse146889_clean_lineage/verify_reconciliation.py --repo-root .
-
-          git add -A
-          python - <<'PY'
-          from __future__ import annotations
-          import hashlib
-          from pathlib import Path
-          import subprocess
-
-          root = Path.cwd()
-          files = sorted(subprocess.check_output(["git", "ls-files"], text=True).splitlines())
-          checksum_paths = [p for p in files if p != "checksums.sha256"]
-          checksum_size = sum(64 + 2 + len(p.encode("utf-8")) + 1 for p in checksum_paths)
-          manifest_size = 0
-          for _ in range(30):
-              rows = ["# MANIFEST", "", "| File | Size (bytes) |", "|---|---|"]
-              for rel in files:
-                  if rel == "MANIFEST.md":
-                      size = manifest_size
-                  elif rel == "checksums.sha256":
-                      size = checksum_size
-                  else:
-                      size = (root / rel).stat().st_size
-                  rows.append(f"| {rel} | {size} |")
-              content = "\n".join(rows) + "\n"
-              new_size = len(content.encode("utf-8"))
-              if new_size == manifest_size:
-                  break
-              manifest_size = new_size
-          else:
-              raise SystemExit("manifest size did not converge")
-          (root / "MANIFEST.md").write_text(content, encoding="utf-8")
-          (root / "checksums.sha256").write_text(
-              "\n".join(
-                  f"{hashlib.sha256((root / rel).read_bytes()).hexdigest()}  {rel}"
-                  for rel in checksum_paths
-              ) + "\n",
-              encoding="utf-8",
-          )
-          PY
-
-          sha256sum -c checksums.sha256
-          (cd audit/gse146889_clean_lineage/results && sha256sum -c SHA256SUMS)
           python -m py_compile audit/gse146889_clean_lineage/prepare.py audit/gse146889_clean_lineage/worker.py audit/gse146889_clean_lineage/aggregate.py audit/gse146889_clean_lineage/verify_reconciliation.py
+          (cd audit/gse146889_clean_lineage/results && sha256sum -c SHA256SUMS)
           python audit/gse146889_clean_lineage/verify_reconciliation.py --repo-root .
 
-          mkdir -p \
-            integration_bundle/.github/workflows \
-            integration_bundle/code/confound_attribution_audit \
-            integration_bundle/audit/gse146889_clean_lineage/results
-          cp README.md integration_bundle/README.md
-          cp code/confound_attribution_audit/README.md integration_bundle/code/confound_attribution_audit/README.md
-          cp .github/workflows/ci.yml integration_bundle/.github/workflows/ci.yml
-          cp MANIFEST.md integration_bundle/MANIFEST.md
-          cp checksums.sha256 integration_bundle/checksums.sha256
-          cp audit/gse146889_clean_lineage/EXECUTION_WORKFLOW.yml integration_bundle/audit/gse146889_clean_lineage/EXECUTION_WORKFLOW.yml
-          cp audit/gse146889_clean_lineage/results/SHA256SUMS integration_bundle/audit/gse146889_clean_lineage/results/SHA256SUMS
+      - name: Install pip-audit
+        run: python -m pip install "pip-audit==2.10.1"
 
-      - name: Upload exact final bundle
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-        with:
-          name: gse146889-integration-bundle
-          path: integration_bundle/
-          if-no-files-found: error
-          retention-days: 7
+      - name: Audit pinned dependencies
+        run: python -m pip_audit -r requirements.txt --strict
