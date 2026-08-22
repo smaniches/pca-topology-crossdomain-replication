@@ -1,0 +1,87 @@
+name: Apply GSE146889 validated evidence bundle
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/apply-gse146889-evidence.yml"
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  apply-evidence:
+    if: github.head_ref == 'audit/gse146889-clean-lineage'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout exact audit branch
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: audit/gse146889-clean-lineage
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: requirements.txt
+
+      - name: Install pinned environment
+        run: python -m pip install -r requirements.txt
+
+      - name: Download validated integration bundle
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: gse146889-integration-bundle
+          path: ${{ runner.temp }}/bundle
+          github-token: ${{ github.token }}
+          repository: smaniches/pca-topology-crossdomain-replication
+          run-id: 32538379367
+
+      - name: Verify and apply non-workflow evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          B="${{ runner.temp }}/bundle"
+          echo "004f2403fa1633f7e38354b4be4db8a92e755781ce0583f1fac3edee9c0aaf44  $B/MANIFEST.md" | sha256sum -c -
+          echo "730f7fc76f33232d139c931b1f41350753a8e398ef332059512a9216dd8c4863  $B/README.md" | sha256sum -c -
+          echo "fdc363979b9abe976927556da1315934fa7e7540aa58d2c385350d8dbae6e8e3  $B/audit/gse146889_clean_lineage/EXECUTION_WORKFLOW.yml" | sha256sum -c -
+          echo "6aa8c320b5e1fb2f308f46ff698c08b51761ef2781dccde5d693831ec4cca0da  $B/audit/gse146889_clean_lineage/results/SHA256SUMS" | sha256sum -c -
+          echo "138a55b0739d0c33e07fbe3f67800a88a8888fecebde53eec932daf578807407  $B/checksums.sha256" | sha256sum -c -
+          echo "67d9d944606fd53057d3c636f8b2b48eea86db413916ccb95df38d6d6a6c87f5  $B/code/confound_attribution_audit/README.md" | sha256sum -c -
+
+          cp "$B/MANIFEST.md" MANIFEST.md
+          cp "$B/README.md" README.md
+          cp "$B/checksums.sha256" checksums.sha256
+          cp "$B/code/confound_attribution_audit/README.md" code/confound_attribution_audit/README.md
+          cp "$B/audit/gse146889_clean_lineage/EXECUTION_WORKFLOW.yml" audit/gse146889_clean_lineage/EXECUTION_WORKFLOW.yml
+          cp "$B/audit/gse146889_clean_lineage/results/SHA256SUMS" audit/gse146889_clean_lineage/results/SHA256SUMS
+
+          (cd audit/gse146889_clean_lineage/results && sha256sum -c SHA256SUMS)
+          python -m py_compile audit/gse146889_clean_lineage/prepare.py audit/gse146889_clean_lineage/worker.py audit/gse146889_clean_lineage/aggregate.py audit/gse146889_clean_lineage/verify_reconciliation.py
+          python audit/gse146889_clean_lineage/verify_reconciliation.py --repo-root .
+          python reproduce.py
+          python -m pip install "pip-audit==2.10.1"
+          python -m pip_audit -r requirements.txt --strict
+
+      - name: Commit validated evidence only
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            MANIFEST.md \
+            README.md \
+            checksums.sha256 \
+            code/confound_attribution_audit/README.md \
+            audit/gse146889_clean_lineage/EXECUTION_WORKFLOW.yml \
+            audit/gse146889_clean_lineage/results/SHA256SUMS
+          git diff --cached --check
+          git diff --cached --stat
+          git commit -m "audit: record validated GSE146889 integration evidence"
+          git push origin HEAD:audit/gse146889-clean-lineage
