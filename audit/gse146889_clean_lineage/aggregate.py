@@ -13,6 +13,9 @@ from typing import Any
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+from scipy.stats import fisher_exact
+
+from worker import TASK_BASE_SEEDS
 
 EXPECTED_COUNTS: dict[str, int] = {
     "mixed_gauss": 500,
@@ -68,32 +71,45 @@ def jsonable(value: Any) -> Any:
     return value
 
 
-def load_shards(shards_dir: Path) -> tuple[dict[str, np.ndarray], list[dict[str, Any]]]:
+def load_shards(
+    shards_dir: Path,
+    *,
+    expected_prepared_sha256: str,
+    expected_worker_sha256: str,
+) -> tuple[dict[str, np.ndarray], list[dict[str, Any]]]:
     grouped: dict[str, list[tuple[np.ndarray, np.ndarray]]] = {}
     provenance: list[dict[str, Any]] = []
     paths = sorted(shards_dir.rglob("*.npz"))
     if not paths:
         raise RuntimeError(f"No shard npz files found below {shards_dir}")
     for path in paths:
-        data = np.load(path, allow_pickle=False)
-        task = str(data["task"].item())
-        indices = np.asarray(data["indices"], dtype=np.int64)
-        values = np.asarray(data["values"], dtype=np.float64)
-        if len(indices) != len(values):
-            raise RuntimeError(f"{path}: index/value length mismatch")
+        with np.load(path, allow_pickle=False) as data:
+            task = str(data["task"].item())
+            if task not in EXPECTED_COUNTS or task not in TASK_BASE_SEEDS:
+                raise RuntimeError(f"{path}: unexpected task {task!r}")
+            indices = np.asarray(data["indices"], dtype=np.int64)
+            values = np.asarray(data["values"], dtype=np.float64)
+            start = int(data["start"].item())
+            count = int(data["count"].item())
+            base_seed = int(data["base_seed"].item())
+            prepared_sha256 = str(data["prepared_sha256"].item())
+            worker_sha256 = str(data["worker_sha256"].item())
+        if len(indices) != len(values) or count != len(indices):
+            raise RuntimeError(f"{path}: index/value/count length mismatch")
+        if not np.array_equal(indices, np.arange(start, start + count, dtype=np.int64)):
+            raise RuntimeError(f"{path}: shard indices do not match start/count metadata")
+        if base_seed != TASK_BASE_SEEDS[task]:
+            raise RuntimeError(f"{path}: base seed {base_seed} != expected {TASK_BASE_SEEDS[task]}")
+        if prepared_sha256 != expected_prepared_sha256:
+            raise RuntimeError(f"{path}: prepared artifact hash mismatch")
+        if worker_sha256 != expected_worker_sha256:
+            raise RuntimeError(f"{path}: worker hash mismatch")
         grouped.setdefault(task, []).append((indices, values))
-        provenance.append(
-            {
-                "path": str(path),
-                "sha256": sha256_file(path),
-                "task": task,
-                "start": int(data["start"].item()),
-                "count": int(data["count"].item()),
-                "base_seed": int(data["base_seed"].item()),
-                "prepared_sha256": str(data["prepared_sha256"].item()),
-                "worker_sha256": str(data["worker_sha256"].item()),
-            }
-        )
+        provenance.append({
+            "path": str(path), "sha256": sha256_file(path), "task": task,
+            "start": start, "count": count, "base_seed": base_seed,
+            "prepared_sha256": prepared_sha256, "worker_sha256": worker_sha256,
+        })
 
     completed: dict[str, np.ndarray] = {}
     missing = sorted(set(EXPECTED_COUNTS) - set(grouped))
@@ -101,23 +117,16 @@ def load_shards(shards_dir: Path) -> tuple[dict[str, np.ndarray], list[dict[str,
     if missing or extra:
         raise RuntimeError(f"Shard task mismatch: missing={missing}, extra={extra}")
     for task, expected_count in EXPECTED_COUNTS.items():
-        pairs = grouped[task]
-        indices = np.concatenate([pair[0] for pair in pairs])
-        values = np.concatenate([pair[1] for pair in pairs])
+        indices = np.concatenate([pair[0] for pair in grouped[task]])
+        values = np.concatenate([pair[1] for pair in grouped[task]])
         order = np.argsort(indices, kind="mergesort")
-        indices = indices[order]
-        values = values[order]
-        expected_indices = np.arange(expected_count, dtype=np.int64)
-        if not np.array_equal(indices, expected_indices):
-            raise RuntimeError(
-                f"{task}: expected draw indices 0..{expected_count - 1}; got "
-                f"{indices[:5]}...{indices[-5:]}"
-            )
+        indices, values = indices[order], values[order]
+        if not np.array_equal(indices, np.arange(expected_count, dtype=np.int64)):
+            raise RuntimeError(f"{task}: non-contiguous or duplicate draw indices")
         if not np.isfinite(values).all():
             raise RuntimeError(f"{task}: non-finite values")
         completed[task] = values
     return completed, provenance
-
 
 def null_stats(observed: float, draws: np.ndarray) -> dict[str, float]:
     values = np.asarray(draws, dtype=float)
@@ -384,7 +393,11 @@ def main() -> None:
     with (prepare_dir / "provenance_base.json").open("r", encoding="utf-8") as handle:
         provenance_base = json.load(handle)
     prepared_path = prepare_dir / "prepared.npz"
-    draws, shard_provenance = load_shards(shards_dir)
+    draws, shard_provenance = load_shards(
+        shards_dir,
+        expected_prepared_sha256=sha256_file(prepared_path),
+        expected_worker_sha256=sha256_file(Path(__file__).with_name("worker.py")),
+    )
 
     subset_key = {
         "Mixed (tumor+normal)": "mixed",
@@ -454,38 +467,62 @@ def main() -> None:
     residual_perm = null_stats(residual_observed, draws["mixed_perm"])
     intact_cocycle = real["residualization"]["intact_cocycle_support"]
     residual_cocycle = real["residualization"]["residualized_cocycle_support"]
-    intact_auc = real["residualization"]["auc_C_0_01_intact"]
-    residual_auc = real["residualization"]["auc_C_0_01_residualized"]
-    residualization = pd.DataFrame(
-        [
-            {
-                "space": "Full HVG->PCA50 (class-mean intact)",
-                "observed_max_H1": mixed_observed,
-                "z_gaussian": mixed_gauss["z"],
-                "z_permutation": mixed_perm["z"],
-                "cv_auc_tumor_normal": float(intact_auc["mean"]),
-                "cv_auc_sd": float(intact_auc["sd_population"]),
-                "top_loop_n_participants": int(intact_cocycle["support_n"]),
-                "top_loop_n_tumor": int(intact_cocycle["support_tumor"]),
-                "top_loop_n_normal": int(intact_cocycle["support_normal"]),
-                "fisher_p_tumor_enrichment": float(intact_cocycle["fisher_p_tumor_enrichment"]),
-                "loop_diagnostic_definition": "ripser representative H1 cocycle support vertices",
-            },
-            {
-                "space": "Class-mean-residualized HVG->PCA50",
-                "observed_max_H1": residual_observed,
-                "z_gaussian": residual_gauss["z"],
-                "z_permutation": residual_perm["z"],
-                "cv_auc_tumor_normal": float(residual_auc["mean"]),
-                "cv_auc_sd": float(residual_auc["sd_population"]),
-                "top_loop_n_participants": int(residual_cocycle["support_n"]),
-                "top_loop_n_tumor": int(residual_cocycle["support_tumor"]),
-                "top_loop_n_normal": int(residual_cocycle["support_normal"]),
-                "fisher_p_tumor_enrichment": float(residual_cocycle["fisher_p_tumor_enrichment"]),
-                "loop_diagnostic_definition": "ripser representative H1 cocycle support vertices",
-            },
-        ]
-    )
+    intact_auc_primary = real["residualization"]["auc_C_1_intact"]
+    residual_auc_primary = real["residualization"]["auc_C_1_residualized"]
+    intact_auc_sensitivity = real["residualization"]["auc_C_0_01_intact"]
+    residual_auc_sensitivity = real["residualization"]["auc_C_0_01_residualized"]
+
+    def fisher_values(support: dict[str, Any]) -> tuple[float, float]:
+        a = int(support["support_tumor"])
+        b = int(support["support_normal"])
+        c = int(real["data"]["tumor_count"]) - a
+        d = int(real["data"]["normal_count"]) - b
+        table = [[a, b], [c, d]]
+        return (
+            float(fisher_exact(table, alternative="two-sided").pvalue),
+            float(fisher_exact(table, alternative="greater").pvalue),
+        )
+
+    intact_fisher_two, intact_fisher_one = fisher_values(intact_cocycle)
+    residual_fisher_two, residual_fisher_one = fisher_values(residual_cocycle)
+    residualization = pd.DataFrame([
+        {
+            "space": "Full HVG->PCA50 (class-mean intact)",
+            "observed_max_H1": mixed_observed,
+            "z_gaussian": mixed_gauss["z"],
+            "z_permutation": mixed_perm["z"],
+            "cv_auc_tumor_normal": float(intact_auc_primary["mean"]),
+            "cv_auc_sd": float(intact_auc_primary["sd_population"]),
+            "top_loop_n_participants": int(intact_cocycle["support_n"]),
+            "top_loop_n_tumor": int(intact_cocycle["support_tumor"]),
+            "top_loop_n_normal": int(intact_cocycle["support_normal"]),
+            "fisher_p_tumor_enrichment": intact_fisher_two,
+            "loop_diagnostic_definition": "ripser representative H1 cocycle support vertices",
+            "cv_auc_C_0_01_sensitivity": float(intact_auc_sensitivity["mean"]),
+            "cv_auc_C_0_01_sd": float(intact_auc_sensitivity["sd_population"]),
+            "fisher_p_tumor_enrichment_one_sided_sensitivity": intact_fisher_one,
+            "auc_historical_comparator": "LogisticRegression(C=1.0), 5-fold StratifiedKFold",
+            "fisher_historical_comparator": "Fisher exact, two-sided",
+        },
+        {
+            "space": "Class-mean-residualized HVG->PCA50",
+            "observed_max_H1": residual_observed,
+            "z_gaussian": residual_gauss["z"],
+            "z_permutation": residual_perm["z"],
+            "cv_auc_tumor_normal": float(residual_auc_primary["mean"]),
+            "cv_auc_sd": float(residual_auc_primary["sd_population"]),
+            "top_loop_n_participants": int(residual_cocycle["support_n"]),
+            "top_loop_n_tumor": int(residual_cocycle["support_tumor"]),
+            "top_loop_n_normal": int(residual_cocycle["support_normal"]),
+            "fisher_p_tumor_enrichment": residual_fisher_two,
+            "loop_diagnostic_definition": "ripser representative H1 cocycle support vertices",
+            "cv_auc_C_0_01_sensitivity": float(residual_auc_sensitivity["mean"]),
+            "cv_auc_C_0_01_sd": float(residual_auc_sensitivity["sd_population"]),
+            "fisher_p_tumor_enrichment_one_sided_sensitivity": residual_fisher_one,
+            "auc_historical_comparator": "LogisticRegression(C=1.0), 5-fold StratifiedKFold",
+            "fisher_historical_comparator": "Fisher exact, two-sided",
+        },
+    ])
     residualization.to_csv(output_dir / "residualization.csv", index=False)
 
     bootstrap_rows: list[dict[str, Any]] = []
@@ -573,6 +610,7 @@ def main() -> None:
     deterministic_max_abs = float(
         pd.to_numeric(deterministic_rows["absolute_difference"], errors="coerce").max()
     )
+    deterministic_exact = bool(deterministic_max_abs <= 1e-12)
     deterministic_reproduced = bool(deterministic_max_abs <= 0.05)
 
     primary_results = {
@@ -584,6 +622,7 @@ def main() -> None:
         "real_results": real,
         "draw_counts": EXPECTED_COUNTS,
         "claims": {
+            "deterministic_matched_definition_values_exact": deterministic_exact,
             "deterministic_real_data_reproduced_within_0_05": deterministic_reproduced,
             "deterministic_max_absolute_difference_vs_historical": deterministic_max_abs,
             "aggregate_signal_survives_linear_residualization_z_gt_3_both_nulls": aggregate_survives,
@@ -597,6 +636,7 @@ def main() -> None:
             "not_a_new_preregistration_of_the_original_study": True,
             "cocycle_support_is_not_a_canonical_cycle": True,
             "mixed_tissue_cohort_remains_a_limit": True,
+            "residualized_auc_permutation_pvalue_not_promoted": True,
         },
     }
     with (output_dir / "primary_results.json").open("w", encoding="utf-8") as handle:
@@ -681,7 +721,7 @@ def main() -> None:
         "",
         "## Residualization",
         "",
-        markdown_table(residualization[["space", "observed_max_H1", "z_gaussian", "z_permutation", "cv_auc_tumor_normal", "top_loop_n_participants", "top_loop_n_tumor", "top_loop_n_normal", "fisher_p_tumor_enrichment"]]),
+        markdown_table(residualization[["space", "observed_max_H1", "z_gaussian", "z_permutation", "cv_auc_tumor_normal", "cv_auc_C_0_01_sensitivity", "top_loop_n_participants", "top_loop_n_tumor", "top_loop_n_normal", "fisher_p_tumor_enrichment"]]),
         "",
         "The loop-composition columns use support vertices of ripser's representative H1 cocycle. They are not a canonical cycle identity and are reported only as a descriptive sensitivity diagnostic.",
         "",

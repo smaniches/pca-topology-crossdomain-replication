@@ -34,6 +34,24 @@ def require(condition: bool, message: str) -> None:
         raise SystemExit(message)
 
 
+def load_json_strict(path: Path) -> dict:
+    def reject_duplicates(pairs):
+        result = {}
+        for key, value in pairs:
+            if key in result:
+                raise ValueError(f"duplicate JSON key {key!r} in {path}")
+            result[key] = value
+        return result
+
+    return json.loads(path.read_text(encoding="utf-8"), object_pairs_hook=reject_duplicates)
+
+
+def require_exact_rows(frame: pd.DataFrame, column: str, expected: set[str], label: str) -> None:
+    values = [str(value) for value in frame[column].tolist()]
+    require(len(values) == len(set(values)), f"{label}: duplicate {column} rows")
+    require(set(values) == expected, f"{label}: expected {sorted(expected)}, got {sorted(values)}")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--repo-root", default=".")
@@ -42,20 +60,41 @@ def main() -> None:
     repo = Path(args.repo_root).resolve()
     out = (repo / args.results_dir).resolve() if not Path(args.results_dir).is_absolute() else Path(args.results_dir)
 
-    primary = json.loads((out / "primary_results.json").read_text(encoding="utf-8"))
+    primary = load_json_strict(out / "primary_results.json")
     require(primary["data"]["sha256"] == EXPECTED_INPUT_SHA256, "unexpected GSE146889 input digest")
     require(primary["data"]["sample_count"] == 176, "unexpected sample count")
     require(primary["data"]["tumor_count"] == 91 and primary["data"]["normal_count"] == 85, "unexpected class counts")
+    quartiles = primary["real_results"]["quartiles"]
+    require(len(quartiles) == 4, "expected four quartiles")
+    all_indices: list[int] = []
+    for expected_name, quartile in zip(["q1", "q2", "q3", "q4"], quartiles, strict=True):
+        require(str(quartile["name"]) == expected_name, f"unexpected quartile name {quartile['name']}")
+        indices = [int(value) for value in quartile["global_indices"]]
+        require(len(indices) == 44 and len(set(indices)) == 44, f"{expected_name}: invalid quartile membership")
+        require(int(quartile["n_tumor"]) + int(quartile["n_normal"]) == 44, f"{expected_name}: class counts do not sum to 44")
+        all_indices.extend(indices)
+    require(len(all_indices) == 176 and len(set(all_indices)) == 176, "quartiles overlap or omit samples")
+    require(set(all_indices) == set(range(176)), "quartiles do not partition sample indices 0..175")
+    require(
+        "auc_C_0_01_residualized_permutation_test" not in primary["real_results"]["residualization"],
+        "invalid label-dependent residualized AUC permutation p-value is still present",
+    )
 
     wc_new = pd.read_csv(out / "within_class.csv")
     wc_hist = pd.read_csv(repo / HISTORICAL["within_class"])
-    for condition in sorted(set(wc_new.condition) & set(wc_hist.condition)):
+    expected_conditions = {"Mixed (tumor+normal)", "Tumor-only", "Normal-only"}
+    require_exact_rows(wc_new, "condition", expected_conditions, "new within_class")
+    require_exact_rows(wc_hist, "condition", expected_conditions, "historical within_class")
+    for condition in sorted(expected_conditions):
         new = wc_new.loc[wc_new.condition == condition].iloc[0]
         hist = wc_hist.loc[wc_hist.condition == condition].iloc[0]
         require(close(new.observed_max_H1, hist.observed_max_H1), f"max-H1 mismatch for {condition}")
 
     ws_new = pd.read_csv(out / "within_stratum.csv")
     ws_hist = pd.read_csv(repo / HISTORICAL["within_stratum"])
+    expected_quartiles = {"Q1", "Q2", "Q3", "Q4"}
+    require_exact_rows(ws_new, "quartile", expected_quartiles, "new within_stratum")
+    require_exact_rows(ws_hist, "quartile", expected_quartiles, "historical within_stratum")
     for quartile in ["Q1", "Q2", "Q3", "Q4"]:
         new = ws_new.loc[ws_new.quartile == quartile].iloc[0]
         hist = ws_hist.loc[ws_hist.quartile == quartile].iloc[0]
@@ -64,6 +103,12 @@ def main() -> None:
 
     rz = pd.read_csv(out / "residualization.csv")
     hist_rz = pd.read_csv(repo / HISTORICAL["residualization"])
+    expected_spaces = {
+        "Full HVG->PCA50 (class-mean intact)",
+        "Class-mean-residualized HVG->PCA50",
+    }
+    require_exact_rows(rz, "space", expected_spaces, "new residualization")
+    require_exact_rows(hist_rz, "space", expected_spaces, "historical residualization")
     real = primary["real_results"]["residualization"]
     mapping = {
         "Full HVG->PCA50 (class-mean intact)": (

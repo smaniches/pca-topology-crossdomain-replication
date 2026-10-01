@@ -2,17 +2,17 @@
 
 | File | Size (bytes) |
 |---|---|
-| .github/workflows/ci.yml | 1328 |
+| .github/workflows/ci.yml | 1400 |
 | .gitignore | 102 |
 | CITATION.cff | 693 |
 | LICENSE | 1301 |
-| MANIFEST.md | 10528 |
+| MANIFEST.md | 10594 |
 | README.md | 11190 |
 | audit/gse146889_clean_lineage/EXECUTION_WORKFLOW.yml | 8895 |
 | audit/gse146889_clean_lineage/PROTOCOL.md | 7455 |
-| audit/gse146889_clean_lineage/RECONCILIATION.md | 2442 |
-| audit/gse146889_clean_lineage/aggregate.py | 32409 |
-| audit/gse146889_clean_lineage/prepare.py | 21399 |
+| audit/gse146889_clean_lineage/RECONCILIATION.md | 5677 |
+| audit/gse146889_clean_lineage/aggregate.py | 35078 |
+| audit/gse146889_clean_lineage/prepare.py | 20680 |
 | audit/gse146889_clean_lineage/results/REPORT.md | 5907 |
 | audit/gse146889_clean_lineage/results/SHA256SUMS | 1069 |
 | audit/gse146889_clean_lineage/results/bootstrap.csv | 560 |
@@ -21,14 +21,15 @@
 | audit/gse146889_clean_lineage/results/gse146889_clean_lineage_audit_reconciled.svg | 6097 |
 | audit/gse146889_clean_lineage/results/historical_comparison.csv | 8084 |
 | audit/gse146889_clean_lineage/results/null_and_bootstrap_draws.npz | 38916 |
-| audit/gse146889_clean_lineage/results/primary_results.json | 21776 |
+| audit/gse146889_clean_lineage/results/primary_results.json | 21985 |
 | audit/gse146889_clean_lineage/results/residualization.csv | 1028 |
 | audit/gse146889_clean_lineage/results/run_provenance.json | 18740 |
 | audit/gse146889_clean_lineage/results/within_class.csv | 778 |
 | audit/gse146889_clean_lineage/results/within_stratum.csv | 1056 |
-| audit/gse146889_clean_lineage/verify_reconciliation.py | 7208 |
+| audit/gse146889_clean_lineage/test_integrity_guards.py | 3824 |
+| audit/gse146889_clean_lineage/verify_reconciliation.py | 9761 |
 | audit/gse146889_clean_lineage/worker.py | 5006 |
-| checksums.sha256 | 19023 |
+| checksums.sha256 | 19144 |
 | code/.gitignore | 929 |
 | code/03_statistics_and_results_table.py | 10271 |
 | code/04a_figure_persistence_diagrams.py | 5807 |

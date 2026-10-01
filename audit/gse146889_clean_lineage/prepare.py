@@ -42,6 +42,7 @@ EXPECTED_NORMAL = 85
 N_HVG = 2000
 N_PCS = 50
 PCA_SEED = 42
+EXPECTED_INPUT_SHA256 = "16e22f1285cb3960cc30151e67f8bf1ccc94a5d2e42051de9cc47ca1bbba3fa4"
 
 
 @dataclass(frozen=True)
@@ -175,33 +176,6 @@ def cv_auc(X: np.ndarray, labels: np.ndarray, *, c_value: float) -> dict[str, An
     }
 
 
-def auc_permutation_test(
-    X: np.ndarray,
-    labels: np.ndarray,
-    *,
-    c_value: float,
-    n_perm: int,
-    seed: int,
-) -> dict[str, Any]:
-    observed = cv_auc(X, labels, c_value=c_value)
-    rng = np.random.default_rng(seed)
-    null_values = np.empty(n_perm, dtype=float)
-    for i in range(n_perm):
-        permuted = rng.permutation(labels)
-        null_values[i] = cv_auc(X, permuted, c_value=c_value)["mean"]
-    obs_dev = abs(observed["mean"] - 0.5)
-    null_dev = np.abs(null_values - 0.5)
-    p_value = (1 + int(np.sum(null_dev >= obs_dev))) / (n_perm + 1)
-    return {
-        "observed": observed,
-        "null_mean": float(null_values.mean()),
-        "null_sd_population": float(null_values.std(ddof=0)),
-        "p_two_sided_distance_from_0_5": float(p_value),
-        "n_permutations": n_perm,
-        "seed": seed,
-    }
-
-
 def direct_projection_auc(projection: np.ndarray, labels: np.ndarray) -> float:
     auc = float(roc_auc_score(labels.astype(int), projection))
     return max(auc, 1.0 - auc)
@@ -308,6 +282,7 @@ def main() -> None:
     parser.add_argument("--output-dir", required=True)
     parser.add_argument("--data-dir", required=True)
     parser.add_argument("--protocol-path", required=True)
+    parser.add_argument("--expected-sha256", default=EXPECTED_INPUT_SHA256)
     args = parser.parse_args()
 
     output_dir = Path(args.output_dir)
@@ -321,6 +296,10 @@ def main() -> None:
         print(f"Downloading {GEO_URL}", flush=True)
         urllib.request.urlretrieve(GEO_URL, data_path)
     data_sha = sha256_file(data_path)
+    if data_sha.lower() != args.expected_sha256.lower():
+        raise RuntimeError(
+            f"Input digest mismatch: expected {args.expected_sha256}, got {data_sha}"
+        )
     data_size = data_path.stat().st_size
     print(f"Input bytes={data_size} sha256={data_sha}", flush=True)
 
@@ -402,13 +381,6 @@ def main() -> None:
     auc_resid_c001 = cv_auc(residualized_pca, labels, c_value=0.01)
     auc_intact_c1 = cv_auc(mixed.pca, labels, c_value=1.0)
     auc_resid_c1 = cv_auc(residualized_pca, labels, c_value=1.0)
-    auc_perm = auc_permutation_test(
-        residualized_pca,
-        labels,
-        c_value=0.01,
-        n_perm=200,
-        seed=14689300,
-    )
 
     pc_correlations: list[dict[str, Any]] = []
     for index in range(mixed.pca.shape[1]):
@@ -498,7 +470,6 @@ def main() -> None:
             "auc_C_0_01_residualized": auc_resid_c001,
             "auc_C_1_intact": auc_intact_c1,
             "auc_C_1_residualized": auc_resid_c1,
-            "auc_C_0_01_residualized_permutation_test": auc_perm,
             "intact_cocycle_support": intact_cocycle,
             "residualized_cocycle_support": residualized_cocycle,
         },
