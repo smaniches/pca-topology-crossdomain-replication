@@ -56,6 +56,11 @@ with 4 controls, applied identically across all 4 cohorts:
   (fetched by artifact id) rather than regenerating them, matching what the original run
   did. **Verified: mixed=7.564 and tumor-only=5.880 match the committed report closely
   (near-exact); residualized z_gaussian in the right range at reduced draw counts.**
+  **Clean-lineage resolution (2026-08-21):** `audit/gse146889_clean_lineage/` now provides
+  an independent from-raw-data rerun frozen before execution. It does not import this
+  reconstructed driver or reuse its null pickles. The full declared Monte Carlo/bootstrap
+  program completed successfully; matched deterministic quantities reproduced exactly and
+  regenerated stochastic results preserved the same bounded interpretation.
 
 ## Data provenance
 
