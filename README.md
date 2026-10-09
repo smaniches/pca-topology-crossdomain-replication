@@ -32,7 +32,7 @@ A successful run prints `REPRODUCE: SUCCESS` and leaves two nonempty image files
 
 ## Where it breaks
 
-The default path unpickles committed checkpoints and must not be used with untrusted replacements. Full-data paths depend on external Gene Expression Omnibus, Genomic Data Commons, or Proteomic Data Commons services and can fail when data or metadata change. Reducing null draws changes reported tail probabilities. The methylation branch changes its distance metric, and historical label-conditioned residualization is not a valid held-out predictive evaluation; the later CPTAC sensitivity analysis fixes only one distinct null-comparison question. See the documented failure modes before using results as evidence.
+The default path unpickles committed checkpoints and must not be used with untrusted replacements. Full-data paths depend on external Gene Expression Omnibus, Genomic Data Commons, or Proteomic Data Commons services and can fail when data or metadata change. Reducing null draws changes reported tail probabilities. The methylation branch changes its distance metric, and historical label-conditioned residualization is not a valid held-out predictive evaluation; the later CPTAC sensitivity analysis fixes only one distinct null-comparison question. See the documented failure modes before using results as evidence. **Before citing the existing manuscript or conclusions, read the [2026-10-09 methodological correction](paper/METHODOLOGICAL_CORRECTIONS_2026-10-09.md).**
 
 ## Documentation
 
