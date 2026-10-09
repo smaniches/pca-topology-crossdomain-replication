@@ -1,0 +1,90 @@
+name: CPTAC residualization matched-null sensitivity
+
+on:
+  pull_request:
+    paths:
+      - "audit/cptac_resid_null/**"
+      - ".github/workflows/cptac-residualization-null.yml"
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "Pilot (24 draws) or gated sensitivity (499 draws)"
+        required: true
+        default: pilot
+        type: choice
+        options: [pilot, confirm]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: cptac-resid-null-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  OPENBLAS_NUM_THREADS: "1"
+  OMP_NUM_THREADS: "1"
+  MKL_NUM_THREADS: "1"
+  PYTHONHASHSEED: "0"
+
+jobs:
+  controls:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Check original input integrity
+        run: sha256sum -c checksums.sha256
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.11"
+      - name: Install pinned research environment
+        run: python -m pip install -r requirements.txt
+      - name: Run synthetic and invariance tests
+        run: python -m unittest discover -s audit/cptac_resid_null -p 'test_*.py' -v
+
+  pilot:
+    needs: controls
+    if: github.event_name == 'pull_request' || (github.event_name == 'workflow_dispatch' && inputs.mode == 'pilot')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.11"
+      - name: Install pinned research environment
+        run: python -m pip install -r requirements.txt
+      - name: Run bounded exploratory pilot
+        run: python audit/cptac_resid_null/experiment.py --mode pilot --draws 24 --out artifacts/cptac_resid_null_pilot.json
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+        if: always()
+        with:
+          name: cptac-resid-null-pilot-${{ github.run_id }}
+          path: artifacts/*.json
+          if-no-files-found: warn
+          retention-days: 7
+
+  confirm:
+    needs: controls
+    # Explicit dispatch only. Never run 499 draws automatically from a PR.
+    # Review pilot result and conditional exchangeability before dispatch.
+    if: github.event_name == 'workflow_dispatch' && inputs.mode == 'confirm'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 125
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.11"
+      - name: Install pinned research environment
+        run: python -m pip install -r requirements.txt
+      - name: Run prospective conditional-permutation sensitivity
+        run: python audit/cptac_resid_null/experiment.py --mode confirm --draws 499 --out artifacts/cptac_resid_null_sensitivity.json
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+        if: always()
+        with:
+          name: cptac-resid-null-sensitivity-${{ github.run_id }}
+          path: artifacts/*.json
+          if-no-files-found: warn
+          retention-days: 30
