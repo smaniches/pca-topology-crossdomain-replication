@@ -67,9 +67,9 @@ jobs:
 
   confirm:
     needs: controls
-    # Explicit dispatch only. Never run 499 draws automatically from a PR.
-    # Review pilot result and conditional exchangeability before dispatch.
-    if: github.event_name == 'workflow_dispatch' && inputs.mode == 'confirm'
+    # One-time, SHA-reviewable confirmation on this isolated research PR after successful pilot 37946528833.
+    # Restore dispatch-only gating before promoting the permanent workflow.
+    if: (github.event_name == 'pull_request' && github.head_ref == 'research/cptac-residualization-null-gate-20261009') || (github.event_name == 'workflow_dispatch' && inputs.mode == 'confirm')
     runs-on: ubuntu-24.04
     timeout-minutes: 125
     steps:
