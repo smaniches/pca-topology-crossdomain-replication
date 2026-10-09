@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="515" viewBox="0 0 1000 515" role="img" aria-labelledby="title description">
+  <title id="title">CPTAC tumor-only covariance-null distribution</title>
+  <desc id="description">Histogram of 499 real covariance-preserving null draws. Observed maximum H1 persistence is 5.354; 45 null draws meet or exceed it. The one-sided plus-one Monte Carlo p-value is 0.092. This does not meet a threshold of 0.05.</desc>
+  <rect width="1000" height="515" fill="#ffffff"/>
+  <text x="82" y="44" font-family="Arial,Helvetica,sans-serif" font-size="24" font-weight="700" fill="#172b45">Does the observed loop exceed a covariance-preserving null?</text>
+  <text x="82" y="77" font-family="Arial,Helvetica,sans-serif" font-size="17" fill="#4d6076">CPTAC-CCRCC · 110 tumor samples · PCA(50) · 499 null draws</text>
+  <rect x="605.20" y="132" width="348.80" height="262" fill="#fff6e9"/>
+  <line x1="82" y1="394.00" x2="954" y2="394.00" stroke="#dbe4ec" stroke-width="1"/>
+  <text x="68" y="399.00" text-anchor="end" font-family="Arial,Helvetica,sans-serif" font-size="14" fill="#4d6076">0</text>
+  <line x1="82" y1="328.50" x2="954" y2="328.50" stroke="#dbe4ec" stroke-width="1"/>
+  <text x="68" y="333.50" text-anchor="end" font-family="Arial,Helvetica,sans-serif" font-size="14" fill="#4d6076">25</text>
+  <line x1="82" y1="263.00" x2="954" y2="263.00" stroke="#dbe4ec" stroke-width="1"/>
+  <text x="68" y="268.00" text-anchor="end" font-family="Arial,Helvetica,sans-serif" font-size="14" fill="#4d6076">50</text>
+  <line x1="82" y1="197.50" x2="954" y2="197.50" stroke="#dbe4ec" stroke-width="1"/>
+  <text x="68" y="202.50" text-anchor="end" font-family="Arial,Helvetica,sans-serif" font-size="14" fill="#4d6076">75</text>
+  <line x1="82" y1="132.00" x2="954" y2="132.00" stroke="#dbe4ec" stroke-width="1"/>
+  <text x="68" y="137.00" text-anchor="end" font-family="Arial,Helvetica,sans-serif" font-size="14" fill="#4d6076">100</text>
+  <rect x="83.70" y="394.00" width="40.20" height="0.00" fill="#4b81b5"/>
+  <rect x="127.30" y="391.38" width="40.20" height="2.62" fill="#4b81b5"/>
+  <rect x="170.90" y="386.14" width="40.20" height="7.86" fill="#4b81b5"/>
+  <rect x="214.50" y="380.90" width="40.20" height="13.10" fill="#4b81b5"/>
+  <rect x="258.10" y="323.26" width="40.20" height="70.74" fill="#4b81b5"/>
+  <rect x="301.70" y="291.82" width="40.20" height="102.18" fill="#4b81b5"/>
+  <rect x="345.30" y="210.60" width="40.20" height="183.40" fill="#4b81b5"/>
+  <rect x="388.90" y="152.96" width="40.20" height="241.04" fill="#4b81b5"/>
+  <rect x="432.50" y="194.88" width="40.20" height="199.12" fill="#4b81b5"/>
+  <rect x="476.10" y="236.80" width="40.20" height="157.20" fill="#4b81b5"/>
+  <rect x="519.70" y="265.62" width="40.20" height="128.38" fill="#4b81b5"/>
+  <rect x="563.30" y="310.16" width="40.20" height="83.84" fill="#4b81b5"/>
+  <rect x="606.90" y="338.98" width="40.20" height="55.02" fill="#d58a32"/>
+  <rect x="650.50" y="365.18" width="40.20" height="28.82" fill="#d58a32"/>
+  <rect x="694.10" y="380.90" width="40.20" height="13.10" fill="#d58a32"/>
+  <rect x="737.70" y="383.52" width="40.20" height="10.48" fill="#d58a32"/>
+  <rect x="781.30" y="388.76" width="40.20" height="5.24" fill="#d58a32"/>
+  <rect x="824.90" y="394.00" width="40.20" height="0.00" fill="#d58a32"/>
+  <rect x="868.50" y="388.76" width="40.20" height="5.24" fill="#d58a32"/>
+  <rect x="912.10" y="394.00" width="40.20" height="0.00" fill="#d58a32"/>
+  <line x1="82" y1="394" x2="954" y2="394" stroke="#738399" stroke-width="1.4"/>
+  <line x1="194.61" y1="394" x2="194.61" y2="399" stroke="#738399"/>
+  <text x="194.61" y="418" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="15" fill="#34485d">3</text>
+  <line x1="369.01" y1="394" x2="369.01" y2="399" stroke="#738399"/>
+  <text x="369.01" y="418" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="15" fill="#34485d">4</text>
+  <line x1="543.41" y1="394" x2="543.41" y2="399" stroke="#738399"/>
+  <text x="543.41" y="418" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="15" fill="#34485d">5</text>
+  <line x1="717.81" y1="394" x2="717.81" y2="399" stroke="#738399"/>
+  <text x="717.81" y="418" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="15" fill="#34485d">6</text>
+  <line x1="892.21" y1="394" x2="892.21" y2="399" stroke="#738399"/>
+  <text x="892.21" y="418" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="15" fill="#34485d">7</text>
+  <line x1="450.86" y1="132" x2="450.86" y2="394" stroke="#53657a" stroke-width="2.4" stroke-dasharray="7 6"/>
+  <line x1="605.20" y1="132" x2="605.20" y2="394" stroke="#a65e18" stroke-width="3.2"/>
+  <text x="441.86" y="148" text-anchor="end" font-family="Arial,Helvetica,sans-serif" font-size="15" fill="#34485d">Null mean 4.469</text>
+  <text x="615.20" y="148" font-family="Arial,Helvetica,sans-serif" font-size="15" font-weight="700" fill="#925012">Observed 5.354</text>
+  <text x="615.20" y="171" font-family="Arial,Helvetica,sans-serif" font-size="14" fill="#925012">45/499 nulls as large or larger</text>
+  <text x="615.20" y="191" font-family="Arial,Helvetica,sans-serif" font-size="14" fill="#925012">Monte Carlo p = 0.092</text>
+  <text x="518" y="452" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="17" fill="#34485d">Maximum finite H1 persistence (Euclidean PCA score space)</text>
+  <text x="82" y="491" font-family="Arial,Helvetica,sans-serif" font-size="14" fill="#4d6076">Post-preregistration sensitivity. Did not meet the 0.05 threshold; biology remains unresolved.</text>
+</svg>
