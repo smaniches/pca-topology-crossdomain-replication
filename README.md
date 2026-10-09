@@ -10,7 +10,7 @@ Comparing the observed H1 persistence before and after PCA alone cannot distingu
 
 ## What is genuinely new and what is inherited
 
-The project-specific contribution is a locked, cross-cohort comparison protocol and its executable reproduction and audit records, including a separate class-conditional CPTAC sensitivity experiment. The implementation inherits PCA and classification from scikit-learn, numerical processing from NumPy and pandas, persistent-homology computation from ripser and GUDHI, and public cohort data from the source archives identified in the scripts. It does not introduce a new PCA algorithm, homology algorithm, or proof that observed loops are biological. The original protocol is at [prereg/PREREGISTRATION.md](prereg/PREREGISTRATION.md); later experiments are labeled separately.
+The project-specific contribution is a locked, cross-cohort comparison protocol and its executable reproduction and audit records, including a separate class-conditional sensitivity analysis of Clinical Proteomic Tumor Analysis Consortium (CPTAC) data. The implementation inherits PCA and classification from scikit-learn, numerical processing from NumPy and pandas, persistent-homology computation from ripser and GUDHI, and public cohort data from the source archives identified in the scripts. It does not introduce a new PCA algorithm, homology algorithm, or proof that observed loops are biological. The original protocol is at [prereg/PREREGISTRATION.md](prereg/PREREGISTRATION.md); later experiments are labeled separately.
 
 ## Quickstart
 
