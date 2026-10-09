@@ -1,6 +1,6 @@
 # Design decisions
 
-This document separates **implemented choices** from **inferred engineering trade-offs**. The files named in each section show what was chosen. They generally do **not** record a contemporaneous meeting in which alternatives were evaluated. The alternative and its disadvantage below are an engineering comparison, not a claim about the author's private reasoning.
+This document separates **implemented choices** from **inferred engineering trade-offs**. The files named in each section show what was chosen. They generally do **not** record a contemporaneous meeting in which alternatives were evaluated. The alternative and its disadvantage below are an engineering comparison, not a claim about the author's private reasoning. The primary methods are principal component analysis (PCA) and first-dimensional homology (H1).
 
 ## Why keep a locked hypothesis and a separate pilot?
 
@@ -16,7 +16,7 @@ This document separates **implemented choices** from **inferred engineering trad
 
 ## Why maintain distinct preprocessing drivers?
 
-**Constraint.** The public sources supply different measurement units, missing-value conventions, and sample metadata. **Chosen.** GEO GSE146889, Proteomic Data Commons (PDC) CPTAC-CCRCC, and Genomic Data Commons (GDC) TCGA-LUAD are handled by separate scripts in `code/replication_*/`. **Alternative not chosen.** Force every input through one common loader and one universal transformation. **Because.** The CPTAC code requires median-centering existing log2 ratios rather than an additional log; TCGA methylation clips beta values to define its logit transform; the TCGA RNA sequencing branch excludes zero-variance features for the bottom-variance control. **Cost.** Source-specific parsing and tests are duplicated, so a fix in one driver need not fix another.
+**Constraint.** The public sources supply different measurement units, missing-value conventions, and sample metadata. **Chosen.** Gene Expression Omnibus (GEO) GSE146889, Proteomic Data Commons (PDC) CPTAC-CCRCC, and Genomic Data Commons (GDC) TCGA-LUAD are handled by separate scripts in `code/replication_*/`. **Alternative not chosen.** Force every input through one common loader and one universal transformation. **Because.** The CPTAC code requires median-centering existing log2 ratios rather than an additional log; TCGA methylation clips beta values to define its logit transform; the TCGA RNA sequencing branch excludes zero-variance features for the bottom-variance control. **Cost.** Source-specific parsing and tests are duplicated, so a fix in one driver need not fix another.
 
 ## Why cap PCA dimensions and change the metric for methylation?
 
@@ -32,7 +32,7 @@ This document separates **implemented choices** from **inferred engineering trad
 
 ## Why checkpoint the sweep and shard the independent audit?
 
-**Constraint.** Null generation is repeated independently across configurations or subsets. **Chosen.** `code/ablation_sweep/02_run_sweep.py` writes a JSON checkpoint after each configuration and uses a worker pool. The GSE146889 clean-lineage audit separates `prepare.py`, `worker.py`, and `aggregate.py`, using hashes to bind shards to their input and producing script. **Alternatives not chosen.** Restart every configuration after an interruption, or store only a final aggregate number. **Because.** Intermediate records make interrupted runs inspectable and allow verification of the shard provenance. **Cost.** Partial outputs need manual review; the sweep records a failed configuration as completed by tag, so an automatic restart can skip failure records unless the checkpoint is corrected.
+**Constraint.** Null generation is repeated independently across configurations or subsets. **Chosen.** `code/ablation_sweep/02_run_sweep.py` writes a JavaScript Object Notation (JSON) checkpoint after each configuration and uses a worker pool. The GSE146889 clean-lineage audit separates `prepare.py`, `worker.py`, and `aggregate.py`, using hashes to bind shards to their input and producing script. **Alternatives not chosen.** Restart every configuration after an interruption, or store only a final aggregate number. **Because.** Intermediate records make interrupted runs inspectable and allow verification of the shard provenance. **Cost.** Partial outputs need manual review; the sweep records a failed configuration as completed by tag, so an automatic restart can skip failure records unless the checkpoint is corrected.
 
 ## Why add a separate class-conditional CPTAC null?
 
