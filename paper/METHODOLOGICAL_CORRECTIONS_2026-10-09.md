@@ -2,7 +2,7 @@
 
 **Status:** Post-analysis correction notice. This is **not** a change to the locked 2026-07-08 preregistration, a new confirmatory result, or a replacement of recorded null draws.
 
-**Read this before citing** `paper/paper.pdf`, `paper/sections/*.tex`, `results/final_verdict.md`, or the original manuscript's confound-independence conclusions. Those files were prepared before the issues below were established. The original PDF and numerical outputs remain in the repository as historical evidence. This notice does not update any external archival deposit; readers of a previously downloaded PDF may not see it.
+**Read this before citing** `paper/paper.pdf`, `paper/sections/*.tex`, `results/final_verdict.md`, or the original manuscript's confound-independence conclusions. Those files were prepared before the issues below were established. The original PDF and numerical outputs remain in the repository as historical evidence. This notice does not update any external archival deposit; readers of a previously downloaded PDF may not see it. See the [archive provenance and DOI reconciliation](../docs/ARCHIVAL_PROVENANCE.md) before referring to Zenodo versions.
 
 ## 1. The reported residualized-classifier permutation p-value is not valid
 
