@@ -4,6 +4,10 @@
 
 This is a research codebase for checking whether a change in the longest-lived one-dimensional homology (H1) feature after PCA reflects the data or also appears in generated controls. It contains a pilot analysis, cohort-specific replication scripts, a parameter sweep, confound checks, and independently recorded follow-up audits. The command-line entry point is `reproduce.py`; it is not a hosted service or a reusable inference library.
 
+**Latest executed sensitivity:** In 110 kidney-cancer tumor samples, the maximum first-homology persistence was **5.354** versus a mean of **4.469** across 499 covariance-preserving controls. **45 controls equaled or exceeded the observation (one-sided p = 0.092)**, so this analysis did **not** meet its prespecified 0.05 threshold. This neither proves nor disproves biological topology. [Read the experiment explained](docs/EXPERIMENT_EXPLAINED.md), including why an earlier 194-sample test reported p = 0.002 without being directly comparable.
+
+![Actual histogram of 499 covariance-preserving null results; the observed statistic, null mean, and 45-draw right tail are labeled.](results/cptac_tumor_covariance_null_20261009/null_distribution.svg)
+
 ## Why existing approaches fall short
 
 Comparing the observed H1 persistence before and after PCA alone cannot distinguish a data-specific change from one induced by the projection. The scripts therefore compare the observed statistic with Gaussian and column-permutation controls processed through corresponding analysis steps. Those controls have their own assumptions; agreement or disagreement does not identify biological mechanisms.
@@ -32,7 +36,7 @@ A successful run prints `REPRODUCE: SUCCESS` and leaves two nonempty image files
 
 ## Where it breaks
 
-The default path unpickles committed checkpoints and must not be used with untrusted replacements. Full-data paths depend on external Gene Expression Omnibus, Genomic Data Commons, or Proteomic Data Commons services and can fail when data or metadata change. Reducing null draws changes reported tail probabilities. The methylation branch changes its distance metric, and historical label-conditioned residualization is not a valid held-out predictive evaluation; the later CPTAC sensitivity analysis fixes only one distinct null-comparison question. See the documented failure modes before using results as evidence. **Before citing the existing manuscript or conclusions, read the [2026-10-09 methodological correction](paper/METHODOLOGICAL_CORRECTIONS_2026-10-09.md).** A separate [tumor-only covariance-preserving sensitivity](results/cptac_tumor_covariance_null_20261009/REPORT.md) did not reject its conditional null (499 draws; one-sided p=0.092).
+The default path unpickles committed checkpoints and must not be used with untrusted replacements. Full-data paths depend on external Gene Expression Omnibus, Genomic Data Commons, or Proteomic Data Commons services and can fail when data or metadata change. Reducing null draws changes reported tail probabilities. The methylation branch changes its distance metric, and historical label-conditioned residualization is not a valid held-out predictive evaluation; the later CPTAC sensitivity analysis fixes only one distinct null-comparison question. See the documented failure modes before using results as evidence. **Before citing the existing manuscript or conclusions, read the [2026-10-09 methodological correction](paper/METHODOLOGICAL_CORRECTIONS_2026-10-09.md).**
 
 ## Documentation
 
