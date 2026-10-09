@@ -1,0 +1,188 @@
+name: Research CPTAC full null replication 2026-10-09
+
+# One bounded reproduction of a previously locked scientific result.
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/research-cptac-full-null-20261009.yml'
+      - 'experiments/cptac_full_null_20261009/PROTOCOL.md'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: cptac-full-null-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+
+jobs:
+  reproduce-one-cohort:
+    name: CPTAC PDC000127 N500 N2000 (standard runner)
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      OMP_NUM_THREADS: '1'
+      OPENBLAS_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+      NUMEXPR_NUM_THREADS: '1'
+      VECLIB_MAXIMUM_THREADS: '1'
+      PYTHONUNBUFFERED: '1'
+    steps:
+      - name: Checkout PR content
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Initialize output directory
+        run: |
+          mkdir -p "$RUNNER_TEMP/cptac-full-null"
+          date -u +%Y-%m-%dT%H:%M:%SZ > "$RUNNER_TEMP/cptac-full-null/started.txt"
+      - name: Python 3.11
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.11'
+          cache: pip
+          cache-dependency-path: requirements.txt
+      - name: Install pinned dependencies and record environment
+        run: |
+          python -m pip install -r requirements.txt
+          python -m pip freeze > "$RUNNER_TEMP/cptac-full-null/pip-freeze.txt"
+      - name: Preflight checksums and sample identity
+        run: |
+          sha256sum -c checksums.sha256 > "$RUNNER_TEMP/cptac-full-null/checksums-verified.txt"
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          import pandas as pd
+          root = Path('code/replication_CPTAC_CCRCC/data')
+          matrix = pd.read_csv(root / 'cptac_ccrcc_log2ratio_raw.csv', usecols=[0])
+          labels = pd.read_csv(root / 'cptac_ccrcc_labels.csv', index_col=0).iloc[:, 0]
+          ids = matrix.iloc[:, 0].astype(str).tolist()
+          if len(ids) != 194 or len(set(ids)) != 194:
+              raise SystemExit('FAIL-CLOSED: unexpected sample count or duplicate matrix IDs')
+          if ids != labels.index.astype(str).tolist():
+              raise SystemExit('FAIL-CLOSED: matrix and label ordering differ')
+          counts = labels.value_counts().to_dict()
+          if counts != {'Primary Tumor': 110, 'Solid Tissue Normal': 84}:
+              raise SystemExit(f'FAIL-CLOSED: unexpected label distribution: {counts}')
+          print('PASS: 194 exact sample IDs, label order, tumor/normal counts')
+          dst = Path(os.environ['RUNNER_TEMP']) / 'cptac-full-null' / 'input-structure.json'
+          dst.write_text(json.dumps({'n_samples': 194, 'n_tumor': 110,
+              'n_normal': 84, 'label_alignment': 'exact order'}, indent=2) + '\n')
+          PY
+      - name: Two-draw functional preflight
+        run: |
+          set -o pipefail
+          python -u code/replication_CPTAC_CCRCC/01_fetch_preprocess_and_results_table.py \
+            --n-gauss 2 --n-perm 2 \
+            2>&1 | tee "$RUNNER_TEMP/cptac-full-null/preflight.log"
+      - name: Full original frozen Monte Carlo reproduction
+        run: |
+          set -o pipefail
+          python -u code/replication_CPTAC_CCRCC/01_fetch_preprocess_and_results_table.py \
+            --n-gauss 500 --n-perm 2000 --skip-assert \
+            2>&1 | tee "$RUNNER_TEMP/cptac-full-null/full-run.log"
+          cp code/replication_CPTAC_CCRCC/cptac_final_results_table.csv \
+            "$RUNNER_TEMP/cptac-full-null/results.csv"
+      - name: Validate four outputs and record provenance
+        run: |
+          python - <<'PY'
+          import hashlib, json, math, os, platform
+          from pathlib import Path
+          import numpy as np
+          import pandas as pd
+          import scipy, sklearn, gudhi
+          out = Path(os.environ['RUNNER_TEMP']) / 'cptac-full-null'
+          result = pd.read_csv(out / 'results.csv')
+          expected = {
+              'Real raw-HVG vs Gaussian null': 500,
+              'Real PCA50 vs Gaussian null': 500,
+              'Real raw-HVG vs pipeline-symmetric null': 2000,
+              'Real PCA50 vs pipeline-symmetric null': 2000,
+          }
+          if len(result) != 4 or set(result['comparison']) != set(expected):
+              raise SystemExit('FAIL: missing/duplicate comparison row')
+          for row in result.itertuples():
+              if int(row.n_null) != expected[row.comparison]:
+                  raise SystemExit(f'FAIL: wrong null count for {row.comparison}')
+              values = [row.observed, row.null_mean, row.null_sd, row.z_score, row.p_value]
+              if not all(math.isfinite(float(v)) for v in values):
+                  raise SystemExit(f'FAIL: nonfinite statistic for {row.comparison}')
+              if row.null_sd <= 0 or not 0 < row.p_value <= 1:
+                  raise SystemExit(f'FAIL: invalid distribution for {row.comparison}')
+          observations = {row.comparison: row._asdict() for row in result.itertuples(index=False)}
+          historic = pd.read_csv('results/replication_CPTAC_CCRCC/cptac_final_results_table.csv')
+          labels = {
+              'Real raw-HVG vs Gaussian null': 'raw HVG vs Gaussian null',
+              'Real PCA50 vs Gaussian null': 'PCA50 vs Gaussian null',
+              'Real raw-HVG vs pipeline-symmetric null': 'raw HVG vs pipeline-symmetric null',
+              'Real PCA50 vs pipeline-symmetric null': 'PCA50 vs pipeline-symmetric null',
+          }
+          comparisons = {}
+          for name, old_label in labels.items():
+              matching = historic[historic.comparison == old_label]
+              if len(matching) != 1:
+                  raise SystemExit(f'FAIL: missing historical comparator {old_label}')
+              prior = matching.iloc[0]
+              now = observations[name]
+              comparisons[name] = {
+                  key: {'rerun': float(now[key]), 'historic': float(prior[old]),
+                        'delta': float(now[key]) - float(prior[old])}
+                  for key, old in [('observed', 'observed'), ('null_mean', 'null_mean'),
+                      ('null_sd', 'null_sd'), ('z_score', 'z_score'), ('p_value', 'p_raw')]
+              }
+          def sha(path):
+              return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+          source = Path('code/replication_CPTAC_CCRCC')
+          real_delta = float(observations['Real PCA50 vs Gaussian null']['observed']) - float(observations['Real raw-HVG vs Gaussian null']['observed'])
+          deltas = {
+              'Gaussian': float(observations['Real PCA50 vs Gaussian null']['null_mean']) - float(observations['Real raw-HVG vs Gaussian null']['null_mean']),
+              'Permutation': float(observations['Real PCA50 vs pipeline-symmetric null']['null_mean']) - float(observations['Real raw-HVG vs pipeline-symmetric null']['null_mean']),
+          }
+          record = {
+              'experiment': 'CPTAC-FULLNULL-20261009',
+              'type': 'reexecution_of_existing_locked_study',
+              'source_sha': os.environ.get('GITHUB_SHA', 'unknown'),
+              'python': platform.python_version(),
+              'versions': {'numpy': np.__version__, 'pandas': pd.__version__,
+                  'scipy': scipy.__version__, 'sklearn': sklearn.__version__,
+                  'gudhi': getattr(gudhi, '__version__', 'unknown')},
+              'parameters': {'seed': 42, 'gaussian_draws': 500,
+                  'permutation_draws': 2000, 'hvg': 2000, 'pca': 50},
+              'sha256': {
+                  'data': sha(source / 'data/cptac_ccrcc_log2ratio_raw.csv'),
+                  'labels': sha(source / 'data/cptac_ccrcc_labels.csv'),
+                  'script': sha(source / '01_fetch_preprocess_and_results_table.py'),
+                  'preregistration': sha('prereg/PREREGISTRATION.md'),
+              },
+              'observations': observations,
+              'historical_differences': comparisons,
+              'real_delta': real_delta,
+              'null_deltas': deltas,
+              'H0_z_above_3': all(float(row.z_score) > 3 for row in result.itertuples()),
+              'H1_null_delta_at_least_real': {k: v >= real_delta for k,v in deltas.items()},
+              'limitations': [
+                  'Preexisting method; TwoNN and metric cascade not reexecuted.',
+                  'BH 20-test family not recomputed; manuscript unchanged.',
+                  'Uses archived PDC data rather than new download.',
+                  'Unexpected scientific results retained as evidence, not CI failures.'
+              ],
+          }
+          (out / 'summary.json').write_text(json.dumps(record, indent=2, default=float) + '\n')
+          with (out / 'OUTPUT_SHA256SUMS').open('w') as f:
+              for name in ('results.csv', 'summary.json', 'full-run.log',
+                           'preflight.log', 'pip-freeze.txt', 'input-structure.json',
+                           'checksums-verified.txt'):
+                  f.write(f'{sha(out / name)}  {name}\n')
+          print('PASS: all four full-count output rows meet schema and numerical invariants')
+          print('OBSERVED H0 threshold:', record['H0_z_above_3'])
+          print('OBSERVED H1:', record['H1_null_delta_at_least_real'])
+          PY
+      - name: Preserve evidence regardless of outcome
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: cptac-full-null-20261009-${{ github.run_id }}
+          path: ${{ runner.temp }}/cptac-full-null/
+          if-no-files-found: warn
+          retention-days: 30
