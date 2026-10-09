@@ -18,7 +18,7 @@ The original `submission/biorxiv/` files contain statements such as “no Zenodo
 
 **No.** Zenodo's optional GitHub integration, when enabled, archives **new GitHub releases**, not each commit on `main`. A changed README, a merged pull request, and a newly committed scientific result do **not** prove that any existing Zenodo deposit has changed. See the official [GitHub integration guidance](https://help.zenodo.org/docs/github/enable-repository/).
 
-A Zenodo **version DOI** identifies a specific archived version. A **concept DOI** refers to a version family and can resolve to its latest version. Metadata-only edits generally do not require a new version, but replacing or adding archived files does. See the official [DOI versioning guidance](https://zenodo.org/help/versioning).
+A Zenodo **version DOI** identifies a specific archived version. A **concept DOI** refers to a version family and can resolve to its latest version. Metadata-only edits generally do not require a new version, but replacing or adding archived files does. See the official [DOI versioning guidance](https://help.zenodo.org/docs/deposit/manage-versions/).
 
 **Unverified for this project:** the live DOI landing page and files, its publication date, the DOI's concept-versus-version status, all other versions or independently made mirrors, Zenodo account ownership, file hashes, and whether the GitHub integration is enabled. No direct Zenodo/API record could be retrieved during this review. This repository exposes **one DOI in its tracked citation metadata**, but that cannot establish how many separate Zenodo records exist.
 
