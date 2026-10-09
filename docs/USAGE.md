@@ -1,6 +1,6 @@
 # Usage
 
-This file documents the commands present in the repository. This is a command-line research program, not a web service. The Python functions and generated tables are **internal interfaces**, not a versioned public application programming interface (API).
+This file documents the commands present in the repository. This is a command-line research program, not a web service. The Python functions and generated tables are **internal interfaces**, not a versioned public application programming interface (API). Principal component analysis (PCA) and one-dimensional homology (H1) are the primary methods. Cohorts include Clinical Proteomic Tumor Analysis Consortium (CPTAC) clear-cell renal cell carcinoma (CCRCC) and The Cancer Genome Atlas lung adenocarcinoma (TCGA-LUAD).
 
 ## How do I obtain a first successful run?
 
@@ -77,7 +77,7 @@ python code/ablation_sweep/verify_default.py
 
 The preprocessing stage creates `code/ablation_sweep/data/imputation_variants.pkl`. The config builder creates `code/ablation_sweep/configs.json`. The sweep writes `code/ablation_sweep/results/sweep_results.json` and one `nulldist_<tag>.pkl` per completed config. Aggregation writes CSV reports there. The sweep supports `--tags` for a comma-separated subset of configuration names and `--workers` to adjust its multiprocessing pool. **Inspect all checkpoint entries for `FAILED: true` before trusting its completion message.** An existing failed tag is skipped on resume because the resume logic treats all saved tags as done.
 
-The historical confound scripts reside in `code/confound_attribution_audit/`, one per cohort. Their `--quick N` caps Gaussian, permutation, and bootstrap draws. They also accept `--data-dir` and `--results-dir`; the GSE146889 driver additionally accepts `--local-null-dir`. They generate CSV summaries and strata tables, **not** a corrected cross-validated analysis. See [LIMITATIONS.md](LIMITATIONS.md) before interpreting residualization values.
+The historical confound scripts reside in `code/confound_attribution_audit/`, one per cohort. Their `--quick N` caps Gaussian, permutation, and bootstrap draws. They also accept `--data-dir` and `--results-dir`; the GSE146889 driver additionally accepts `--local-null-dir`. They generate comma-separated values (CSV) summaries and strata tables, **not** a corrected cross-validated analysis. See [LIMITATIONS.md](LIMITATIONS.md) before interpreting residualization values.
 
 ## How do I reproduce or inspect the newer CPTAC sensitivity test?
 
@@ -98,7 +98,7 @@ The `experiment.py` command accepts:
 | `--seed N` | Seeds NumPy's generator; default 20261009 |
 | `--out PATH` | Required JSON output path; parent directories are created |
 
-The JSON contains observed max-H1, every null draw, mean, sample standard deviation, descriptive z-score, plus-one empirical tail probability, seed, runtime, software versions, and input hashes. `confirm` is the program's **execution-mode name**; scientifically the result is a *post-preregistration sensitivity analysis*, not a new preregistered confirmation. The archived complete result and its limitations are in `results/cptac_resid_null_sensitivity_20261009/`.
+The JavaScript Object Notation (JSON) output contains observed max-H1, every null draw, mean, sample standard deviation, descriptive z-score, plus-one empirical tail probability, seed, runtime, software versions, and input hashes. `confirm` is the program's **execution-mode name**; scientifically the result is a *post-preregistration sensitivity analysis*, not a new preregistered confirmation. The archived complete result and its limitations are in `results/cptac_resid_null_sensitivity_20261009/`.
 
 On GitHub, `.github/workflows/cptac-residualization-null.yml` runs unit checks and a 24-draw pilot on relevant pull requests. The 499-draw mode runs only after manual workflow dispatch with `mode=confirm`, on a standard hosted runner. The pipeline limits execution time but does not establish an unconditional cost or runtime guarantee for every environment.
 
