@@ -1,13 +1,13 @@
 # Limitations and failure modes
 
-This is a research reproduction repository. A passing command is evidence that the executed assertions held; it is not evidence that every biological or statistical interpretation is justified.
+This is a research reproduction repository. A passing command is evidence that the executed assertions held; it is not evidence that every biological or statistical interpretation is justified. Here, PCA means principal component analysis and H1 means first-dimensional homology.
 
 ## What breaks in a clean checkout?
 
 - **Missing tools or dependencies.** The documented Linux quickstart requires Git, Python 3.11, a working `venv` installation, `pip`, `sha256sum`, and connectivity to GitHub and package indexes. The `requirements.txt` pins packages but not operating-system libraries. Installation outside the GitHub Actions environment is not benchmarked.
 - **Untrusted serialized checkpoints.** The two pilot figure scripts call `pickle.load` on files under `results/pilot_GSE81089/checkpoints/`. Python pickle deserialization can execute code. Do not replace these files with data from an untrusted source or treat them as a public upload format.
 - **Damaged inputs.** `sha256sum -c checksums.sha256` detects byte changes only for paths listed in that registry. A missing or changed registered file makes verification fail; a successfully hashed file is not proof that the scientific protocol is sound. The CPTAC conditional-null experiment independently checks two explicit input hashes.
-- **External data access.** `--full`, `--replication`, `--ablation`, and `--confound` can fetch from GEO, PDC, or GDC. Network failures, changed API responses, insufficient permissions, or a changed upstream matrix can prevent completion or change a result. The default figure path does not fetch upstream data.
+- **External data access.** `--full`, `--replication`, `--ablation`, and `--confound` can fetch from the Gene Expression Omnibus (GEO), Proteomic Data Commons (PDC), or Genomic Data Commons (GDC). Network failures, changed API responses, insufficient permissions, or a changed upstream matrix can prevent completion or change a result. The default figure path does not fetch upstream data.
 - **Generated files in different places.** The pilot writes to `reproduce_output/`, while cohort scripts write alongside their own code and audit scripts accept explicit result directories. `reproduce.py` does not consolidate all outputs into one folder.
 
 ## Which statistical comparisons do not justify stronger claims?
@@ -23,7 +23,7 @@ This is a research reproduction repository. A passing command is evidence that t
 ## What are the runtime and scaling ceilings?
 
 - **Expensive branches are opt-in.** `reproduce.py --full` runs the full pilot null counts regardless of `--n-draws`. Other phases accept `--n-draws` as a reduced-draw cap, which changes Monte Carlo resolution and can substantially change tail estimates.
-- **The parameter sweep creates a worker pool.** `code/ablation_sweep/02_run_sweep.py` defaults to four workers, uses per-configuration pickles, and accumulates a JSON checkpoint. There is no automatic memory budget or cross-platform performance guarantee. Existing results include measured per-configuration time, but fresh hardware performance is not benchmarked here.
+- **The parameter sweep creates a worker pool.** `code/ablation_sweep/02_run_sweep.py` defaults to four workers, uses per-configuration pickles, and accumulates a JavaScript Object Notation (JSON) checkpoint. There is no automatic memory budget or cross-platform performance guarantee. Existing results include measured per-configuration time, but fresh hardware performance is not benchmarked here.
 - **Failed sweep tags can be skipped after restart.** The sweep persists an entry with `FAILED: true` on an exception and later constructs `done_tags` from every saved entry. A resumed run will skip that tag until its checkpoint record is repaired. Do not treat `SWEEP COMPLETE` as proof that no entries failed.
 - **Persistent homology cost grows with sample count.** These scripts form Vietoris–Rips constructions with `ripser` or GUDHI and perform repeated null draws. The repository does not provide a demonstrated large-cohort scaling bound, memory ceiling, or distributed general-purpose scheduler. Performance beyond the recorded cohorts is **not benchmarked**.
 - **Conditional-null runtime guards are partial.** `experiment.py` checks a wall-clock limit between draws; it cannot interrupt a single long-running ripser call. Its GitHub Actions workflow also has a job timeout. No parallel 499-draw execution is implemented in that script.
