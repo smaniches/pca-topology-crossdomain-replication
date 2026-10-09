@@ -19,6 +19,11 @@ The 499-draw run used the predeclared **independent seed 20261010**. The 24-draw
 
 ## Primary results
 
+![Histogram calculated from all 499 archived covariance-preserving null draws, showing the observed result at 5.3543 and the 45-draw upper tail.](null_distribution.svg)
+
+The chart above is generated directly from the [archived values](499_draws.json) by [`plot_null_distribution.py`](../../audit/cptac_covariance_null/plot_null_distribution.py). The observed cutoff is an exact bin boundary, so all 45 orange-tail observations are counted. The mean and observed values **alone** do not convey the width of the null distribution; the histogram is the primary visual reference. Run `python audit/cptac_covariance_null/plot_null_distribution.py --check` from the repository root to verify the checked-in image.
+
+
 | Quantity | Result |
 | --- | ---: |
 | Observed tumor-only PCA(50) max-H1 | **5.3542976379** |
