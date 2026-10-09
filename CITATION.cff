@@ -1,5 +1,5 @@
 cff-version: 1.2.0
-message: "If you use this repository or its results, please cite it as below."
+message: "The DOI below was recorded for the original July 2026 work. For corrections and later experiments, also cite the relevant GitHub report and commit; see docs/ARCHIVAL_PROVENANCE.md. Verify the Zenodo record and version before citation."
 title: "Does PCA Reveal or Fabricate Topological Structure in Omics Data? A Pre-Registered, Cross-Domain Replication with Matched Null Models"
 authors:
   - family-names: Maniches
