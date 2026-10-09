@@ -1,10 +1,13 @@
 # Final Verdict: Cross-Dataset Replication, Ablation, and Confound-Attribution Synthesis
 
-> **SUPERSEDED.** The manuscript (`paper/paper.pdf`, built from `paper/sections/*.tex`) is the
-> single source of truth for every specific number in this program. This file is kept for audit
-> history only — it predates the manuscript's final cohort-count terminology cleanup — and should
-> not be cited as a current restatement of results. See `GATE_FINAL_SUMMARY.md` for current
-> gate/commit/checksum status and the manuscript itself for all reported figures.
+> **SUPERSEDED HISTORICAL SYNTHESIS.** This report and the original
+> manuscript (`paper/paper.pdf`, built from `paper/sections/*.tex`) preserve the
+> recorded analyses, but some of the manuscript's statistical interpretations
+> have been corrected. **Read `paper/METHODOLOGICAL_CORRECTIONS_2026-10-09.md`
+> before quoting residualized-classifier AUC significance or interpreting the
+> TCGA-LUAD methylation PCA/spectral result.** Original numerical outputs,
+> the locked preregistration, and the archived PDF have not been altered.
+> See `GATE_FINAL_SUMMARY.md` for the historical completeness-gate record.
 
 **Project:** TOPOLOGICA PCA-topology cross-domain replication
 **Pre-registration:** locked 2026-07-08T13:50:55Z, SHA-256 `5e539309747188a2e77aa36bf1f9aecd3b50b8493803efa756ee4715773f0517`

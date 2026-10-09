@@ -102,6 +102,17 @@ The JavaScript Object Notation (JSON) output contains observed max-H1, every nul
 
 On GitHub, `.github/workflows/cptac-residualization-null.yml` runs unit checks and a 24-draw pilot on relevant pull requests. The 499-draw mode runs only after manual workflow dispatch with `mode=confirm`, on a standard hosted runner. The pipeline limits execution time but does not establish an unconditional cost or runtime guarantee for every environment.
 
+## How do I execute the covariance-preserving tumor-only sensitivity?
+
+The separate, *post-preregistration* [CPTAC covariance-null protocol](../audit/cptac_covariance_null/PROTOCOL.md) uses the committed CPTAC data, selects tumor samples only, and compares exact PCA(50) max-H1 against Haar rotations in sample space that preserve the full cross-protein covariance matrix.
+
+```bash
+python -m unittest discover -s audit/cptac_covariance_null -p 'test_*.py' -v
+python audit/cptac_covariance_null/experiment.py --mode pilot --out reproduce_output/cptac_tumor_cov_pilot.json
+```
+
+This pilot uses 24 draws with seed `20261009`. The `--mode confirm` option fixes 499 draws with independent seed `20261010`; `--draws` may change only the pilot count between 2 and 32, and `--out` is required. In GitHub Actions, the 499-draw mode requires explicit manual dispatch. The verified full-count result was a **non-rejection**, one-sided plus-one p=0.092; its [report and raw 499 values](../results/cptac_tumor_covariance_null_20261009/REPORT.md) identify the source run and limitations. Do not compare its p-value directly with the older mixed tumor/normal residualization test: both the input population and reference model differ.
+
 ## How do I check the archived independent GSE146889 results?
 
 The following **read-only** verification checks the committed reconciliation tables and their recorded input digest without rerunning its archived multi-shard computation:

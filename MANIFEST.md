@@ -1,17 +1,21 @@
 # Repository file inventory
 
-This table lists the Git-tracked paths and their byte sizes at the documentation update. It does not list untracked caches or locally generated results. The checksum registry checks every tracked path **except itself**, which is intentionally excluded to avoid a self-referential digest. Neither inventory nor hashing verifies a scientific interpretation.
+This table lists the Git-tracked paths and their byte sizes at the research correction update. It does not list untracked caches or locally generated results. The checksum registry checks every tracked path **except itself**, which is intentionally excluded to avoid a self-referential digest. Neither inventory nor hashing verifies a scientific interpretation.
 
 | Path | Size (bytes) |
 | --- | ---: |
 | `.github/workflows/ci.yml` | 2363 |
+| `.github/workflows/cptac-covariance-null.yml` | 3399 |
 | `.github/workflows/cptac-residualization-null.yml` | 3370 |
 | `.gitignore` | 102 |
 | `CITATION.cff` | 693 |
 | `LICENSE` | 1301 |
-| `MANIFEST.md` | 12180 |
-| `README.md` | 3575 |
+| `MANIFEST.md` | 12614 |
+| `README.md` | 3912 |
 | `audit/CPTAC_RESIDUALIZATION_NULL_GATE_20261009.md` | 3364 |
+| `audit/cptac_covariance_null/PROTOCOL.md` | 7721 |
+| `audit/cptac_covariance_null/experiment.py` | 8528 |
+| `audit/cptac_covariance_null/test_experiment.py` | 4370 |
 | `audit/cptac_resid_null/experiment.py` | 7105 |
 | `audit/cptac_resid_null/test_experiment.py` | 3817 |
 | `audit/gse146889_clean_lineage/EXECUTION_WORKFLOW.yml` | 8895 |
@@ -35,7 +39,7 @@ This table lists the Git-tracked paths and their byte sizes at the documentation
 | `audit/gse146889_clean_lineage/test_integrity_guards.py` | 3824 |
 | `audit/gse146889_clean_lineage/verify_reconciliation.py` | 9761 |
 | `audit/gse146889_clean_lineage/worker.py` | 5006 |
-| `checksums.sha256` | 20882 |
+| `checksums.sha256` | 21679 |
 | `code/.gitignore` | 929 |
 | `code/03_statistics_and_results_table.py` | 10271 |
 | `code/04a_figure_persistence_diagrams.py` | 5807 |
@@ -69,10 +73,10 @@ This table lists the Git-tracked paths and their byte sizes at the documentation
 | `code/replication_TCGA_LUAD/_common.py` | 5717 |
 | `code/replication_cross_dataset/04c_figure_cross_dataset_replication.py` | 22859 |
 | `code/replication_cross_dataset/README.md` | 2600 |
-| `docs/ARCHITECTURE.md` | 8182 |
-| `docs/DESIGN_DECISIONS.md` | 9030 |
-| `docs/LIMITATIONS.md` | 8237 |
-| `docs/USAGE.md` | 11788 |
+| `docs/ARCHITECTURE.md` | 8662 |
+| `docs/DESIGN_DECISIONS.md` | 10134 |
+| `docs/LIMITATIONS.md` | 9101 |
+| `docs/USAGE.md` | 13009 |
 | `experiments/cptac_full_null_20261009/EXECUTION_WORKFLOW.yml` | 9818 |
 | `experiments/cptac_full_null_20261009/PROTOCOL.md` | 3051 |
 | `experiments/cptac_full_null_20261009/REPORT.md` | 5797 |
@@ -80,6 +84,7 @@ This table lists the Git-tracked paths and their byte sizes at the documentation
 | `experiments/cptac_full_null_20261009/results.csv` | 599 |
 | `experiments/cptac_full_null_20261009/summary.json` | 5601 |
 | `paper/.gitignore` | 79 |
+| `paper/METHODOLOGICAL_CORRECTIONS_2026-10-09.md` | 9651 |
 | `paper/figures/fig1_pilot_motivation.png` | 252769 |
 | `paper/figures/fig2_cross_dataset_replication.png` | 318436 |
 | `paper/figures/fig3_ablation_sensitivity.png` | 403606 |
@@ -145,9 +150,11 @@ This table lists the Git-tracked paths and their byte sizes at the documentation
 | `results/confound_attribution_audit/table5_confound_spectrum_TCGA_LUAD.csv` | 2503 |
 | `results/cptac_resid_null_sensitivity_20261009/499_draws.json` | 12835 |
 | `results/cptac_resid_null_sensitivity_20261009/REPORT.md` | 5451 |
+| `results/cptac_tumor_covariance_null_20261009/499_draws.json` | 12866 |
+| `results/cptac_tumor_covariance_null_20261009/REPORT.md` | 8094 |
 | `results/cross_dataset_BH_family.csv` | 2184 |
 | `results/cross_dataset_checkpoint.md` | 11662 |
-| `results/final_verdict.md` | 17927 |
+| `results/final_verdict.md` | 18068 |
 | `results/pilot_GSE81089/checkpoints/diagrams.pkl` | 59154 |
 | `results/pilot_GSE81089/checkpoints/gaussian_null_dist.pkl` | 24440 |
 | `results/pilot_GSE81089/checkpoints/null_distributions.pkl` | 192714 |
