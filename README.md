@@ -4,6 +4,8 @@
 
 This is a research codebase for checking whether a change in the longest-lived one-dimensional homology (H1) feature after PCA reflects the data or also appears in generated controls. It contains a pilot analysis, cohort-specific replication scripts, a parameter sweep, confound checks, and independently recorded follow-up audits. The command-line entry point is `reproduce.py`; it is not a hosted service or a reusable inference library.
 
+**Publication and citation:** The [July 2026 submission package](https://github.com/smaniches/pca-topology-crossdomain-replication/releases/tag/v0.1.0-biorxiv) is the historical GitHub release. The manuscript was **not posted** on bioRxiv following its organizational-affiliation screening decision (submission `BIORXIV/2026/737609`). The repository records Zenodo DOI [10.5281/zenodo.21287944](https://doi.org/10.5281/zenodo.21287944) for the original work; its live record, files and version relationship have **not been independently verified** here. The October corrections and experiments on GitHub must not be represented as already included in that archive. See [archive provenance and citation guidance](docs/ARCHIVAL_PROVENANCE.md).
+
 **Latest executed sensitivity:** In 110 kidney-cancer tumor samples, the maximum first-homology persistence was **5.354** versus a mean of **4.469** across 499 covariance-preserving controls. **45 controls equaled or exceeded the observation (one-sided p = 0.092)**, so this analysis did **not** meet its prespecified 0.05 threshold. This neither proves nor disproves biological topology. [Read the experiment explained](docs/EXPERIMENT_EXPLAINED.md), including why an earlier 194-sample test reported p = 0.002 without being directly comparable.
 
 ![Actual histogram of 499 covariance-preserving null results; the observed statistic, null mean, and 45-draw right tail are labeled.](results/cptac_tumor_covariance_null_20261009/null_distribution.svg)
@@ -44,3 +46,4 @@ The default path unpickles committed checkpoints and must not be used with untru
 - [Design choices and costs](docs/DESIGN_DECISIONS.md)
 - [Limits and known failures](docs/LIMITATIONS.md)
 - [Commands, data sources, outputs, and troubleshooting](docs/USAGE.md)
+- [Publication status, DOI versions, and Zenodo provenance](docs/ARCHIVAL_PROVENANCE.md)

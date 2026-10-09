@@ -4,14 +4,14 @@ This table lists the Git-tracked paths and their byte sizes at this documentatio
 
 | Path | Size (bytes) |
 | --- | ---: |
-| `.github/workflows/ci.yml` | 2503 |
+| `.github/workflows/ci.yml` | 2639 |
 | `.github/workflows/cptac-covariance-null.yml` | 3399 |
 | `.github/workflows/cptac-residualization-null.yml` | 3370 |
 | `.gitignore` | 102 |
-| `CITATION.cff` | 693 |
+| `CITATION.cff` | 860 |
 | `LICENSE` | 1301 |
-| `MANIFEST.md` | 12798 |
-| `README.md` | 4481 |
+| `MANIFEST.md` | 12887 |
+| `README.md` | 5313 |
 | `audit/CPTAC_RESIDUALIZATION_NULL_GATE_20261009.md` | 3364 |
 | `audit/cptac_covariance_null/PROTOCOL.md` | 7721 |
 | `audit/cptac_covariance_null/experiment.py` | 8528 |
@@ -40,7 +40,8 @@ This table lists the Git-tracked paths and their byte sizes at this documentatio
 | `audit/gse146889_clean_lineage/test_integrity_guards.py` | 3824 |
 | `audit/gse146889_clean_lineage/verify_reconciliation.py` | 9761 |
 | `audit/gse146889_clean_lineage/worker.py` | 5006 |
-| `checksums.sha256` | 22027 |
+| `audit/verify_archive_provenance.py` | 2820 |
+| `checksums.sha256` | 22222 |
 | `code/.gitignore` | 929 |
 | `code/03_statistics_and_results_table.py` | 10271 |
 | `code/04a_figure_persistence_diagrams.py` | 5807 |
@@ -75,6 +76,7 @@ This table lists the Git-tracked paths and their byte sizes at this documentatio
 | `code/replication_cross_dataset/04c_figure_cross_dataset_replication.py` | 22859 |
 | `code/replication_cross_dataset/README.md` | 2600 |
 | `docs/ARCHITECTURE.md` | 8662 |
+| `docs/ARCHIVAL_PROVENANCE.md` | 6409 |
 | `docs/DESIGN_DECISIONS.md` | 10134 |
 | `docs/EXPERIMENT_EXPLAINED.md` | 6838 |
 | `docs/LIMITATIONS.md` | 9101 |
@@ -86,7 +88,7 @@ This table lists the Git-tracked paths and their byte sizes at this documentatio
 | `experiments/cptac_full_null_20261009/results.csv` | 599 |
 | `experiments/cptac_full_null_20261009/summary.json` | 5601 |
 | `paper/.gitignore` | 79 |
-| `paper/METHODOLOGICAL_CORRECTIONS_2026-10-09.md` | 9651 |
+| `paper/METHODOLOGICAL_CORRECTIONS_2026-10-09.md` | 9772 |
 | `paper/figures/fig1_pilot_motivation.png` | 252769 |
 | `paper/figures/fig2_cross_dataset_replication.png` | 318436 |
 | `paper/figures/fig3_ablation_sensitivity.png` | 403606 |
@@ -153,7 +155,7 @@ This table lists the Git-tracked paths and their byte sizes at this documentatio
 | `results/cptac_resid_null_sensitivity_20261009/499_draws.json` | 12835 |
 | `results/cptac_resid_null_sensitivity_20261009/REPORT.md` | 5451 |
 | `results/cptac_tumor_covariance_null_20261009/499_draws.json` | 12866 |
-| `results/cptac_tumor_covariance_null_20261009/REPORT.md` | 8804 |
+| `results/cptac_tumor_covariance_null_20261009/REPORT.md` | 9066 |
 | `results/cptac_tumor_covariance_null_20261009/null_distribution.svg` | 5688 |
 | `results/cross_dataset_BH_family.csv` | 2184 |
 | `results/cross_dataset_checkpoint.md` | 11662 |
