@@ -67,9 +67,9 @@ jobs:
 
   confirm:
     needs: controls
-    # One-time, SHA-reviewable confirmation on this isolated research PR after successful pilot 37946528833.
-    # Restore dispatch-only gating before promoting the permanent workflow.
-    if: (github.event_name == 'pull_request' && github.head_ref == 'research/cptac-residualization-null-gate-20261009') || (github.event_name == 'workflow_dispatch' && inputs.mode == 'confirm')
+    # 499 draws require explicit dispatch after review of pilot and null-model assumptions.
+    # Pull requests run the synthetic controls and bounded pilot only.
+    if: github.event_name == 'workflow_dispatch' && inputs.mode == 'confirm'
     runs-on: ubuntu-24.04
     timeout-minutes: 125
     steps:
