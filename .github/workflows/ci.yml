@@ -42,3 +42,28 @@ jobs:
 
       - name: Audit pinned dependencies
         run: python -m pip_audit -r requirements.txt --strict
+
+  docs-quickstart:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.11"
+
+      - name: Verify README quickstart in a new clone and virtual environment
+        shell: bash
+        run: |
+          git clone "$GITHUB_WORKSPACE" "$RUNNER_TEMP/pca-docs-clean-clone"
+          cd "$RUNNER_TEMP/pca-docs-clean-clone"
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          python3.11 -m venv .venv
+          . .venv/bin/activate
+          python -m pip install -r requirements.txt
+          sha256sum -c checksums.sha256
+          python reproduce.py
+          test -s reproduce_output/persistence_diagrams_real_vs_gaussian.png
+          test -s reproduce_output/barcode_and_null_distributions.png
