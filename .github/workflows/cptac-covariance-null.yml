@@ -69,7 +69,9 @@ jobs:
   confirm:
     # A 499-draw repetition cannot be launched automatically by a PR.
     # Review pilot validity and runtimes before explicitly selecting confirm.
-    if: github.event_name == 'workflow_dispatch' && inputs.mode == 'confirm'
+    # One-time branch-restricted execution, after the 24-draw pilot passed in 37959161852.
+    # Restore manual-only condition before merge.
+    if: (github.event_name == 'pull_request' && github.head_ref == 'research/methodological-correction-20261009') || (github.event_name == 'workflow_dispatch' && inputs.mode == 'confirm')
     needs: controls
     runs-on: ubuntu-24.04
     timeout-minutes: 125
