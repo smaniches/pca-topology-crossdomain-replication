@@ -1,0 +1,45 @@
+# Design decisions
+
+This document separates **implemented choices** from **inferred engineering trade-offs**. The files named in each section show what was chosen. They generally do **not** record a contemporaneous meeting in which alternatives were evaluated. The alternative and its disadvantage below are an engineering comparison, not a claim about the author's private reasoning.
+
+## Why keep a locked hypothesis and a separate pilot?
+
+**Constraint.** The original GSE81089 analysis was performed before the cross-cohort rules were fixed. **Chosen.** `prereg/PREREGISTRATION.md` explicitly excludes the pilot from the confirmatory cohorts and fixes maximum H1 persistence, the PCA component count, the two null families, draw counts, and acceptance criteria before later cohorts. **Alternative not chosen.** Count the motivating pilot as independent confirmation. **Because.** It would use the same evidence both to select and to confirm the question. **Cost.** The pilot remains exploratory even though its results appear in the multiple-testing reporting family; later sensitivity work must not be relabeled as preregistered.
+
+## Why use maximum finite H1 persistence?
+
+**Constraint.** The scripts need one statistic for comparing a real point cloud and many generated controls. **Chosen.** The functions in `code/03_statistics_and_results_table.py`, `code/confound_attribution_audit/confound_audit_common.py`, and `audit/cptac_resid_null/experiment.py` use the longest finite birth-to-death interval for first-dimensional homology (H1). **Alternative not chosen.** Use the number of bars or their total lifetime as the primary statistic. **Because.** The locked protocol states that maximum persistence was selected to avoid counting large numbers of short noise bars. **Cost.** This compresses the topology into one extreme value, which can be affected by a small number of observations and cannot describe all loops.
+
+## Why compare against two generated null families?
+
+**Constraint.** PCA can change distances in both real and random data. **Chosen.** The core replication scripts draw independent Gaussian matrices and independently permute feature columns, then apply their phase-specific projection and persistent-homology computation. **Alternatives not chosen.** Report only the real before/after PCA difference, or compare to a null that preserves every cross-feature correlation. **Because.** The preregistration specifically tests whether a corresponding inflation occurs in noise or marginal-preserving shuffled data. **Cost.** Independent feature shuffles destroy covariance; neither family rules out correlation, batch, or patient structure as an explanation for observed persistence. The pipeline details are cohort-specific and must be checked separately.
+
+## Why maintain distinct preprocessing drivers?
+
+**Constraint.** The public sources supply different measurement units, missing-value conventions, and sample metadata. **Chosen.** GEO GSE146889, Proteomic Data Commons (PDC) CPTAC-CCRCC, and Genomic Data Commons (GDC) TCGA-LUAD are handled by separate scripts in `code/replication_*/`. **Alternative not chosen.** Force every input through one common loader and one universal transformation. **Because.** The CPTAC code requires median-centering existing log2 ratios rather than an additional log; TCGA methylation clips beta values to define its logit transform; the TCGA RNA sequencing branch excludes zero-variance features for the bottom-variance control. **Cost.** Source-specific parsing and tests are duplicated, so a fix in one driver need not fix another.
+
+## Why cap PCA dimensions and change the metric for methylation?
+
+**Constraint.** TCGA-LUAD methylation has fewer samples than the fixed 50-component request, and the protocol has an intrinsic-dimension metric gate. **Chosen.** `code/replication_TCGA_LUAD/02_methylation_fetch_preprocess_and_results_table.py` caps the principal component count at `min(50, n_samples - 1)` and scores the primary reduced-space statistic using the spectral distance from `_common.py`. **Alternative not chosen.** Assert 50 components regardless of sample count or automatically treat Euclidean PCA as the counted comparison. **Because.** The former cannot represent 50 independent sample-centered directions in this data; the latter would bypass the specified metric gate. **Cost.** The reported zero max-H1 in PCA(35) is **metric-dependent**. At 35 sample-centered components, Euclidean PCA retains pairwise Euclidean geometry; the zero must not be described as loss of topology *caused by PCA alone*.
+
+## Why favor the bundled checkpoint path for first use?
+
+**Constraint.** End-to-end downloads and Monte Carlo experiments involve remote services and many null draws. **Chosen.** The no-flag `reproduce.py` calls figure scripts that unpickle committed pilot diagrams and null distributions; all full recomputation is opt-in. **Alternative not chosen.** Download and recalculate every cohort by default. **Because.** A maintainer can check installation and generate visible output without depending on GEO, GDC, or PDC availability. **Cost.** The default successful run verifies figure generation and file presence, not the raw-data pipeline or statistical claims. It also requires trusting the repository's pickle payloads.
+
+## Why route work through subprocesses?
+
+**Constraint.** The project accumulated standalone cohort and figure scripts with different current-working-directory and output conventions. **Chosen.** `reproduce.py` calls each with `sys.executable` and an explicit working directory. **Alternative not chosen.** Import all modules as a common library in one long-lived process. **Because.** Some original scripts execute downloads or computation on import, so importing them would itself have side effects. **Cost.** There is no shared object model or single result schema; errors are reported as subprocess failures and files are written in different locations.
+
+## Why checkpoint the sweep and shard the independent audit?
+
+**Constraint.** Null generation is repeated independently across configurations or subsets. **Chosen.** `code/ablation_sweep/02_run_sweep.py` writes a JSON checkpoint after each configuration and uses a worker pool. The GSE146889 clean-lineage audit separates `prepare.py`, `worker.py`, and `aggregate.py`, using hashes to bind shards to their input and producing script. **Alternatives not chosen.** Restart every configuration after an interruption, or store only a final aggregate number. **Because.** Intermediate records make interrupted runs inspectable and allow verification of the shard provenance. **Cost.** Partial outputs need manual review; the sweep records a failed configuration as completed by tag, so an automatic restart can skip failure records unless the checkpoint is corrected.
+
+## Why add a separate class-conditional CPTAC null?
+
+**Constraint.** In `confound_audit_common.residualization_control`, the observed matrix is residualized using tumor/normal labels, but the Gaussian and original permutation reference matrices are not passed through the same class-mean removal. **Chosen.** `audit/cptac_resid_null/experiment.py` independently permutes columns **within** each label class and applies residualization and PCA to both observed and each generated matrix. The source checks both cached input hashes. **Alternative not chosen.** Reuse the prior residualized-versus-unresidualized null comparison as a matched control. **Because.** A comparison with different transformations on each side does not isolate the intended effect. **Cost.** Within-class column permutation still removes cross-protein covariance and can disrupt dependent samples; it is not a covariance-preserving or patient-aware test. The file's `--mode confirm` label means the **499-draw execution mode**, not an additional preregistered hypothesis.
+
+## Why preserve historical results and make expensive reruns explicit?
+
+**Constraint.** A new analysis should not silently overwrite the result it is supposed to test. **Chosen.** The October 2026 CPTAC full-count reproduction is stored in `experiments/cptac_full_null_20261009/`, while the class-conditional sensitivity report and draw data are under `results/cptac_resid_null_sensitivity_20261009/`. Its GitHub Actions workflow permits bounded pull-request pilots and requires manual dispatch for the 499-draw run. **Alternative not chosen.** Replace the original results tables or automatically launch all historical multi-shard experiments after every change. **Because.** That would obscure evidence lineage and spend compute for unrelated edits. **Cost.** Reviewers must compare multiple reports and must deliberately trigger full scientific reruns.
+
+For the corresponding commands and outputs, see [USAGE.md](USAGE.md). For failures that remain unresolved, see [LIMITATIONS.md](LIMITATIONS.md).
