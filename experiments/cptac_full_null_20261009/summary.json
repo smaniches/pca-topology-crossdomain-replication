@@ -1,0 +1,190 @@
+{
+  "experiment": "CPTAC-FULLNULL-20261009",
+  "type": "reexecution_of_existing_locked_study",
+  "source_sha": "45f2aa0acee1262f3ae3e9cb4849d719fa16550d",
+  "python": "3.11.17",
+  "versions": {
+    "numpy": "2.4.6",
+    "pandas": "3.0.3",
+    "scipy": "1.17.1",
+    "sklearn": "1.9.0",
+    "gudhi": "3.13.0"
+  },
+  "parameters": {
+    "seed": 42,
+    "gaussian_draws": 500,
+    "permutation_draws": 2000,
+    "hvg": 2000,
+    "pca": 50
+  },
+  "sha256": {
+    "data": "d7d81d7297c0ebdc7ce7f2542e14d939f33d0853873c13e6f3bbb43cb6b238a3",
+    "labels": "5cc62f00952d608141e2e9e706e7f1cf271c5d443cdfcf7ddb35978bc1b77f6e",
+    "script": "767d32b200e9db3a4a9a9f2f038d51ac31fbbe9e93a58a569e6ea0deb9aa0700",
+    "preregistration": "4f802bd4487a2cca44dfd77f1e83d3cfbf108549b3bb1c76e2f3026bab60a854"
+  },
+  "observations": {
+    "Real raw-HVG vs Gaussian null": {
+      "comparison": "Real raw-HVG vs Gaussian null",
+      "observed": 3.8329471637905073,
+      "null_mean": 1.0269188610574251,
+      "null_sd": 0.1179936857274069,
+      "z_score": 23.78117341986981,
+      "p_value": 0.0019960079840319,
+      "n_null": 500
+    },
+    "Real PCA50 vs Gaussian null": {
+      "comparison": "Real PCA50 vs Gaussian null",
+      "observed": 4.683273677065394,
+      "null_mean": 3.111337284017512,
+      "null_sd": 0.3666425777488366,
+      "z_score": 4.28738092203987,
+      "p_value": 0.0019960079840319,
+      "n_null": 500
+    },
+    "Real raw-HVG vs pipeline-symmetric null": {
+      "comparison": "Real raw-HVG vs pipeline-symmetric null",
+      "observed": 3.8329471637905073,
+      "null_mean": 0.985231764068486,
+      "null_sd": 0.1313410388203925,
+      "z_score": 21.681840080587765,
+      "p_value": 0.0004997501249375,
+      "n_null": 2000
+    },
+    "Real PCA50 vs pipeline-symmetric null": {
+      "comparison": "Real PCA50 vs pipeline-symmetric null",
+      "observed": 4.683273677065394,
+      "null_mean": 2.998558294467037,
+      "null_sd": 0.3565310303367396,
+      "z_score": 4.725298050515159,
+      "p_value": 0.0004997501249375,
+      "n_null": 2000
+    }
+  },
+  "historical_differences": {
+    "Real raw-HVG vs Gaussian null": {
+      "observed": {
+        "rerun": 3.8329471637905073,
+        "historic": 3.8329471637905073,
+        "delta": 0.0
+      },
+      "null_mean": {
+        "rerun": 1.0269188610574251,
+        "historic": 1.0296325927493877,
+        "delta": -0.00271373169196254
+      },
+      "null_sd": {
+        "rerun": 0.1179936857274069,
+        "historic": 0.1209574275091218,
+        "delta": -0.002963741781714907
+      },
+      "z_score": {
+        "rerun": 23.78117341986981,
+        "historic": 23.17604324736248,
+        "delta": 0.6051301725073301
+      },
+      "p_value": {
+        "rerun": 0.0019960079840319,
+        "historic": 0.0019960079840319,
+        "delta": 0.0
+      }
+    },
+    "Real PCA50 vs Gaussian null": {
+      "observed": {
+        "rerun": 4.683273677065394,
+        "historic": 4.683273677065348,
+        "delta": 4.618527782440651e-14
+      },
+      "null_mean": {
+        "rerun": 3.111337284017512,
+        "historic": 3.125901850089835,
+        "delta": -0.014564566072322815
+      },
+      "null_sd": {
+        "rerun": 0.3666425777488366,
+        "historic": 0.3536080660298383,
+        "delta": 0.013034511718998276
+      },
+      "z_score": {
+        "rerun": 4.28738092203987,
+        "historic": 4.404231624185004,
+        "delta": -0.11685070214513438
+      },
+      "p_value": {
+        "rerun": 0.0019960079840319,
+        "historic": 0.0039920159680638,
+        "delta": -0.0019960079840319
+      }
+    },
+    "Real raw-HVG vs pipeline-symmetric null": {
+      "observed": {
+        "rerun": 3.8329471637905073,
+        "historic": 3.8329471637905073,
+        "delta": 0.0
+      },
+      "null_mean": {
+        "rerun": 0.985231764068486,
+        "historic": 0.982806460139857,
+        "delta": 0.0024253039286290523
+      },
+      "null_sd": {
+        "rerun": 0.1313410388203925,
+        "historic": 0.133229860822248,
+        "delta": -0.0018888220018555002
+      },
+      "z_score": {
+        "rerun": 21.681840080587765,
+        "historic": 21.392656916854683,
+        "delta": 0.2891831637330817
+      },
+      "p_value": {
+        "rerun": 0.0004997501249375,
+        "historic": 0.0004997501249375,
+        "delta": 0.0
+      }
+    },
+    "Real PCA50 vs pipeline-symmetric null": {
+      "observed": {
+        "rerun": 4.683273677065394,
+        "historic": 4.683273677065348,
+        "delta": 4.618527782440651e-14
+      },
+      "null_mean": {
+        "rerun": 2.998558294467037,
+        "historic": 2.992210701870669,
+        "delta": 0.006347592596367857
+      },
+      "null_sd": {
+        "rerun": 0.3565310303367396,
+        "historic": 0.3644761556256363,
+        "delta": -0.007945125288896682
+      },
+      "z_score": {
+        "rerun": 4.725298050515159,
+        "historic": 4.639708110100943,
+        "delta": 0.08558994041421553
+      },
+      "p_value": {
+        "rerun": 0.0004997501249375,
+        "historic": 0.0004997501249375,
+        "delta": 0.0
+      }
+    }
+  },
+  "real_delta": 0.8503265132748865,
+  "null_deltas": {
+    "Gaussian": 2.084418422960087,
+    "Permutation": 2.013326530398551
+  },
+  "H0_z_above_3": true,
+  "H1_null_delta_at_least_real": {
+    "Gaussian": true,
+    "Permutation": true
+  },
+  "limitations": [
+    "Preexisting method; TwoNN and metric cascade not reexecuted.",
+    "BH 20-test family not recomputed; manuscript unchanged.",
+    "Uses archived PDC data rather than new download.",
+    "Unexpected scientific results retained as evidence, not CI failures."
+  ]
+}
