@@ -113,6 +113,14 @@ python audit/cptac_covariance_null/experiment.py --mode pilot --out reproduce_ou
 
 This pilot uses 24 draws with seed `20261009`. The `--mode confirm` option fixes 499 draws with independent seed `20261010`; `--draws` may change only the pilot count between 2 and 32, and `--out` is required. In GitHub Actions, the 499-draw mode requires explicit manual dispatch. The verified full-count result was a **non-rejection**, one-sided plus-one p=0.092; its [report and raw 499 values](../results/cptac_tumor_covariance_null_20261009/REPORT.md) identify the source run and limitations. Do not compare its p-value directly with the older mixed tumor/normal residualization test: both the input population and reference model differ.
 
+The [plain-language experiment explanation](EXPERIMENT_EXPLAINED.md) includes the **real 499-draw histogram**, the recorded non-rejection, and the reason the earlier 194-sample p-value is not directly comparable. To verify the histogram from the committed numeric evidence, run:
+
+```bash
+python audit/cptac_covariance_null/plot_null_distribution.py --check
+```
+
+This check uses only the Python standard library and does not rerun costly scientific sampling. To regenerate the SVG deliberately, run the same command without `--check`.
+
 ## How do I check the archived independent GSE146889 results?
 
 The following **read-only** verification checks the committed reconciliation tables and their recorded input digest without rerunning its archived multi-shard computation:
