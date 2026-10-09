@@ -1,20 +1,21 @@
 # Repository file inventory
 
-This table lists the Git-tracked paths and their byte sizes at the research correction update. It does not list untracked caches or locally generated results. The checksum registry checks every tracked path **except itself**, which is intentionally excluded to avoid a self-referential digest. Neither inventory nor hashing verifies a scientific interpretation.
+This table lists the Git-tracked paths and their byte sizes at this documentation update. It does not list untracked caches or locally generated results. The checksum registry checks every tracked path **except itself**, which is intentionally excluded to avoid a self-referential digest. Neither inventory nor hashing verifies a scientific interpretation.
 
 | Path | Size (bytes) |
 | --- | ---: |
-| `.github/workflows/ci.yml` | 2363 |
+| `.github/workflows/ci.yml` | 2503 |
 | `.github/workflows/cptac-covariance-null.yml` | 3399 |
 | `.github/workflows/cptac-residualization-null.yml` | 3370 |
 | `.gitignore` | 102 |
 | `CITATION.cff` | 693 |
 | `LICENSE` | 1301 |
-| `MANIFEST.md` | 12614 |
-| `README.md` | 3912 |
+| `MANIFEST.md` | 12798 |
+| `README.md` | 4481 |
 | `audit/CPTAC_RESIDUALIZATION_NULL_GATE_20261009.md` | 3364 |
 | `audit/cptac_covariance_null/PROTOCOL.md` | 7721 |
 | `audit/cptac_covariance_null/experiment.py` | 8528 |
+| `audit/cptac_covariance_null/plot_null_distribution.py` | 6562 |
 | `audit/cptac_covariance_null/test_experiment.py` | 4370 |
 | `audit/cptac_resid_null/experiment.py` | 7105 |
 | `audit/cptac_resid_null/test_experiment.py` | 3817 |
@@ -39,7 +40,7 @@ This table lists the Git-tracked paths and their byte sizes at the research corr
 | `audit/gse146889_clean_lineage/test_integrity_guards.py` | 3824 |
 | `audit/gse146889_clean_lineage/verify_reconciliation.py` | 9761 |
 | `audit/gse146889_clean_lineage/worker.py` | 5006 |
-| `checksums.sha256` | 21679 |
+| `checksums.sha256` | 22027 |
 | `code/.gitignore` | 929 |
 | `code/03_statistics_and_results_table.py` | 10271 |
 | `code/04a_figure_persistence_diagrams.py` | 5807 |
@@ -75,8 +76,9 @@ This table lists the Git-tracked paths and their byte sizes at the research corr
 | `code/replication_cross_dataset/README.md` | 2600 |
 | `docs/ARCHITECTURE.md` | 8662 |
 | `docs/DESIGN_DECISIONS.md` | 10134 |
+| `docs/EXPERIMENT_EXPLAINED.md` | 6838 |
 | `docs/LIMITATIONS.md` | 9101 |
-| `docs/USAGE.md` | 13009 |
+| `docs/USAGE.md` | 13544 |
 | `experiments/cptac_full_null_20261009/EXECUTION_WORKFLOW.yml` | 9818 |
 | `experiments/cptac_full_null_20261009/PROTOCOL.md` | 3051 |
 | `experiments/cptac_full_null_20261009/REPORT.md` | 5797 |
@@ -151,7 +153,8 @@ This table lists the Git-tracked paths and their byte sizes at the research corr
 | `results/cptac_resid_null_sensitivity_20261009/499_draws.json` | 12835 |
 | `results/cptac_resid_null_sensitivity_20261009/REPORT.md` | 5451 |
 | `results/cptac_tumor_covariance_null_20261009/499_draws.json` | 12866 |
-| `results/cptac_tumor_covariance_null_20261009/REPORT.md` | 8094 |
+| `results/cptac_tumor_covariance_null_20261009/REPORT.md` | 8804 |
+| `results/cptac_tumor_covariance_null_20261009/null_distribution.svg` | 5688 |
 | `results/cross_dataset_BH_family.csv` | 2184 |
 | `results/cross_dataset_checkpoint.md` | 11662 |
 | `results/final_verdict.md` | 18068 |
