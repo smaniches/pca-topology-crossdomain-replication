@@ -44,6 +44,12 @@ See `results/replication_TCGA_LUAD/tcga_luad_report.md`, including its Euclidean
 - **No biological-topology mechanism has been established:** the principal original Gaussian and independently shuffled-feature null families remove cross-feature covariance. Their rejection is compatible with ordinary covariance structure. The next discriminating sensitivity is a covariance-preserving null with a frozen contract and validated invariants, ideally on a single-class subset to avoid label-conditioned residualization and patient-pairing complications.
 - **Original manuscript is historical:** `paper/paper.pdf` and `paper/sections/*.tex` contain wording predating this notice. Their original numbers are not silently rewritten here. The original preregistration and recorded results are unchanged. Any future revised manuscript must carry a version identifier and distinguish those revisions from the original archival PDF.
 
+## 5. Subsequent covariance-preserving sensitivity (run after this correction was frozen)
+
+The follow-up [CPTAC tumor-only covariance-preserving experiment](../results/cptac_tumor_covariance_null_20261009/REPORT.md) used 110 tumor samples, fixed original mixed-cohort feature selection, exact PCA(50) scores, and 499 Haar-rotated sample-space nulls preserving all tumor-only cross-protein covariance. The observed max-H1 was 5.3543 and 45/499 null values were at least as large (plus-one p=0.092), so the declared one-sided 0.05 threshold was **not** met. All 499 draw values and a deterministic independent replay are archived. This is an **outcome appended after the correction notice**, not a change to the pre-outcome correction rationale.
+
+It must not be contrasted as a causal experiment against the earlier p=0.002 from a **mixed tumor/normal class-residualized** independent-feature null; both the sample subset and null differ. The new result is a bounded conditional non-rejection, not a claim that biological structure is absent.
+
 ## Code and audit trail
 
 - Class-mean residualization, class-conditioned AUC and historical null code: [`code/confound_attribution_audit/confound_audit_common.py`](../code/confound_attribution_audit/confound_audit_common.py)
