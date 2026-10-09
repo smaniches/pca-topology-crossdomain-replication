@@ -10,7 +10,7 @@ This table lists the Git-tracked paths and their byte sizes at the documentation
 | `CITATION.cff` | 693 |
 | `LICENSE` | 1301 |
 | `MANIFEST.md` | 12180 |
-| `README.md` | 3522 |
+| `README.md` | 3575 |
 | `audit/CPTAC_RESIDUALIZATION_NULL_GATE_20261009.md` | 3364 |
 | `audit/cptac_resid_null/experiment.py` | 7105 |
 | `audit/cptac_resid_null/test_experiment.py` | 3817 |
@@ -69,10 +69,10 @@ This table lists the Git-tracked paths and their byte sizes at the documentation
 | `code/replication_TCGA_LUAD/_common.py` | 5717 |
 | `code/replication_cross_dataset/04c_figure_cross_dataset_replication.py` | 22859 |
 | `code/replication_cross_dataset/README.md` | 2600 |
-| `docs/ARCHITECTURE.md` | 7765 |
-| `docs/DESIGN_DECISIONS.md` | 8879 |
-| `docs/LIMITATIONS.md` | 8044 |
-| `docs/USAGE.md` | 11463 |
+| `docs/ARCHITECTURE.md` | 8182 |
+| `docs/DESIGN_DECISIONS.md` | 9030 |
+| `docs/LIMITATIONS.md` | 8237 |
+| `docs/USAGE.md` | 11788 |
 | `experiments/cptac_full_null_20261009/EXECUTION_WORKFLOW.yml` | 9818 |
 | `experiments/cptac_full_null_20261009/PROTOCOL.md` | 3051 |
 | `experiments/cptac_full_null_20261009/REPORT.md` | 5797 |
