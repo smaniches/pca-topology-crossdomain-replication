@@ -1,6 +1,6 @@
 # Limitations and failure modes
 
-This is a research reproduction repository. A passing command is evidence that the executed assertions held; it is not evidence that every biological or statistical interpretation is justified. Here, PCA means principal component analysis and H1 means first-dimensional homology.
+This is a research reproduction repository. A passing command is evidence that the executed assertions held; it is not evidence that every biological or statistical interpretation is justified. Here, PCA means principal component analysis and H1 means first-dimensional homology. **A [separate methodological correction notice](../paper/METHODOLOGICAL_CORRECTIONS_2026-10-09.md) explicitly withdraws unsupported residualized classifier significance claims and clarifies the metric-gated methylation result.**
 
 ## What breaks in a clean checkout?
 
