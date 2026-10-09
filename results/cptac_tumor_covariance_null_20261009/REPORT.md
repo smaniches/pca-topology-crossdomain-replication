@@ -2,6 +2,7 @@
 
 **Experiment:** `CPTAC-TUMOR-COV-NULL-001`  
 **Status:** verified *post-preregistration sensitivity*, **not** a new confirmatory cohort or a biological-topology claim.  
+**Archival scope:** this October 2026 experiment is archived in the Git repository; its presence in any published Zenodo version has **not** been established. See [archive and DOI provenance](../../docs/ARCHIVAL_PROVENANCE.md) before citing an external deposit.
 **Pre-outcome protocol:** [`audit/cptac_covariance_null/PROTOCOL.md`](../../audit/cptac_covariance_null/PROTOCOL.md) was committed before any covariance-preserving CPTAC null draw.  
 **Primary 499-draw run:** [GitHub Actions #37959356460](https://github.com/smaniches/pca-topology-crossdomain-replication/actions/runs/37959356460) (all jobs passed).  
 **Deterministic seeded replay:** [GitHub Actions #37959908996](https://github.com/smaniches/pca-topology-crossdomain-replication/actions/runs/37959908996) (all 499 null values exactly repeated).  
