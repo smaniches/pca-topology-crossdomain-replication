@@ -84,6 +84,13 @@ jobs:
         run: python -m pip install -r requirements.txt
       - name: Execute 499-draw sensitivity with independent seed
         run: python audit/cptac_covariance_null/experiment.py --mode confirm --out artifacts/cptac_tumor_cov_null_confirm.json
+      - name: Preserve exact numeric evidence in this one-off replay log
+        if: github.event_name == 'pull_request' && github.head_ref == 'research/methodological-correction-20261009'
+        run: |
+          echo 'RESULT_B64_BEGIN'
+          base64 -w0 artifacts/cptac_tumor_cov_null_confirm.json
+          echo
+          echo 'RESULT_B64_END'
       - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         if: always()
         with:
