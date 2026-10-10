@@ -126,7 +126,7 @@ def main():
                 "error": res.get("error"),
             })
             if kind == "badge" and res["ok"]:
-                match = re.search(r"zenodo[./](?:records/)?(\d+)", res["final_url"])
+                match = re.search(r"(?:zenodo\\.org/(?:records/)?|zenodo\\.)(\\d+)", res["final_url"])
                 if match:
                     extra = request("https://zenodo.org/api/records/" + match.group(1))
                     if extra.get("ok"):
