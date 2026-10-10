@@ -1,0 +1,62 @@
+name: Verify Zenodo v0.2.0 archive
+
+# This is a read-only evidence probe. No Zenodo secret, new release, DOI
+# creation, deposit mutation, or scheduled recurring compute is performed.
+on:
+  pull_request:
+    paths:
+      - 'audit/probe_zenodo_v0.2.0.py'
+      - '.github/workflows/verify-zenodo-v0.2.0.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'audit/probe_zenodo_v0.2.0.py'
+      - '.github/workflows/verify-zenodo-v0.2.0.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.11'
+      - name: Validate read-only archive probe syntax
+        run: python -m py_compile audit/probe_zenodo_v0.2.0.py
+      - name: Query public Zenodo DOI badge and archive records
+        env:
+          PROVENANCE_OUTPUT: artifacts/zenodo_v0.2.0_probe.json
+        run: python audit/probe_zenodo_v0.2.0.py
+      - name: Verify published original and new archive ZIP bytes
+        env:
+          ZENODO_BYTES_REPORT: artifacts/zenodo_v0.2.0_file_integrity.json
+        run: |
+          python -m py_compile audit/verify_zenodo_archive_bytes.py
+          python audit/verify_zenodo_archive_bytes.py
+      - name: Surface result without equating job success to archive success
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          d = json.loads(Path("artifacts/zenodo_v0.2.0_probe.json").read_text())
+          print("Archive provenance state:", d["status"])
+          archive = json.loads(Path("artifacts/zenodo_v0.2.0_file_integrity.json").read_text())
+          print("Archive ZIP byte verification:", archive["status"])
+          if archive["status"] != "VERIFIED":
+              print("::warning::Zenodo ZIP byte-level integrity remains unverified")
+          if d["status"] != "VERIFIED":
+              print("::warning::GitHub Release is published; matching Zenodo v0.2.0 record remains unverified")
+          else:
+              print("Version DOI:", d.get("version_doi"))
+              print("Same DOI version family as historical archive:", d["family_match_with_old"])
+          PY
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+        with:
+          name: zenodo-v0.2.0-public-verification-${{ github.run_id }}
+          path: artifacts/*.json
+          retention-days: 30
