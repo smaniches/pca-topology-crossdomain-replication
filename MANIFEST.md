@@ -79,7 +79,7 @@ This table lists the Git-tracked paths and their byte sizes after verified v0.2.
 | `code/replication_cross_dataset/04c_figure_cross_dataset_replication.py` | 22859 |
 | `code/replication_cross_dataset/README.md` | 2600 |
 | `docs/ARCHITECTURE.md` | 8662 |
-| `docs/ARCHIVAL_PROVENANCE.md` | 7582 |
+| `docs/ARCHIVAL_PROVENANCE.md` | 7704 |
 | `docs/DESIGN_DECISIONS.md` | 10134 |
 | `docs/EXPERIMENT_EXPLAINED.md` | 6838 |
 | `docs/LIMITATIONS.md` | 9101 |
