@@ -12,6 +12,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 ORIGINAL_DOI = "10.5281/zenodo.21287944"
+CURRENT_DOI = "10.5281/zenodo.23272317"
+CONCEPT_DOI = "10.5281/zenodo.21287943"
 ORIGINAL_PDF_SHA256 = "cfc2410130c5872979a62e08cecfb964aa5412d42192c0c632c22d48e1983aac"
 ORIGINAL_RELEASE = "v0.1.0-biorxiv"
 
@@ -46,6 +48,14 @@ def main() -> None:
         not bool(re.search(r'^doi:\s*["\']?10\.5281/zenodo\.21287944["\']?\s*$', citation, re.M)),
         "historical July DOI wrongly assigned to October citation",
     )
+    require(
+        bool(re.search(r'^doi:\\s*["\\']?10\\.5281/zenodo\\.23272317["\\']?\\s*$', citation, re.M)),
+        "the validated v0.2.0 Zenodo version DOI is missing from CITATION.cff",
+    )
+    require(CURRENT_DOI in readme and CONCEPT_DOI in readme,
+            "current version/concept DOI missing from README")
+    require(CURRENT_DOI in ledger and CONCEPT_DOI in ledger,
+            "current version/concept DOI missing from archive provenance")
     require(ORIGINAL_DOI in readme, "original DOI omitted from README")
     require("release/v0.2.0/RELEASE_NOTES.md" in readme,
             "README omits v0.2.0 release notes")
@@ -71,7 +81,7 @@ def main() -> None:
         require(digest == ORIGINAL_PDF_SHA256,
                 f"original sealed PDF unexpectedly changed: {relative}")
 
-    print("ARCHIVE PROVENANCE: PASS — historical DOI in docs, new version citation distinct, PDFs sealed")
+    print("ARCHIVE PROVENANCE: PASS — historical and v0.2.0 DOIs correct, concept linked, PDFs sealed")
     print("EXTERNAL ZENODO RECORD: UNKNOWN — this check cannot verify archive synchronization")
 
 
