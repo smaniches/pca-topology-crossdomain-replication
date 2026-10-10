@@ -47,6 +47,8 @@ jobs:
           test "$(gh release view v0.1.0-biorxiv --json tagName --jq .tagName)" = "v0.1.0-biorxiv"
           sha256sum -c checksums.sha256
           python audit/verify_archive_provenance.py
+          python -m pip install cffconvert==2.0.0
+          cffconvert --validate -i CITATION.cff
           test -s release/v0.2.0/RELEASE_NOTES.md
           grep -Eq '^version: 0[.]2[.]0$' CITATION.cff
           grep -Eq '^date-released: 2026-10-09$' CITATION.cff
