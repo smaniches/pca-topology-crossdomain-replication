@@ -1,5 +1,5 @@
 cff-version: 1.2.0
-message: "This release is v0.2.0 (2026-10-09). Cite its own Zenodo version DOI after publication. The original July version DOI is recorded in docs/ARCHIVAL_PROVENANCE.md. Read paper/METHODOLOGICAL_CORRECTIONS_2026-10-09.md before interpreting historical findings."
+message: "Cite the verified Zenodo v0.2.0 DOI below and consult paper/METHODOLOGICAL_CORRECTIONS_2026-10-09.md. The July v0.1.0 DOI and all-version concept DOI are recorded in docs/ARCHIVAL_PROVENANCE.md."
 title: "Does PCA Reveal or Fabricate Topological Structure in Omics Data? A Pre-Registered, Cross-Domain Replication with Matched Null Models"
 authors:
   - family-names: Maniches
@@ -8,6 +8,7 @@ authors:
     affiliation: "TOPOLOGICA LLC"
 type: software
 version: 0.2.0
+doi: "10.5281/zenodo.23272317"
 date-released: 2026-10-09
 abstract: "Computational research software and preserved evidence for cross-cohort PCA and persistent-homology analyses, including October 2026 post-preregistration statistical corrections and CPTAC follow-up null-model sensitivities. This release makes no claim of an established biological topology mechanism."
 repository-code: "https://github.com/smaniches/pca-topology-crossdomain-replication"
