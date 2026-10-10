@@ -12,7 +12,7 @@
 | New Zenodo version | [**10.5281/zenodo.23272317**](https://doi.org/10.5281/zenodo.23272317) | Zenodo record `23272317`, version `v0.2.0`, associated with this repository by its public record metadata |
 | **All-versions concept DOI** | [**10.5281/zenodo.21287943**](https://doi.org/10.5281/zenodo.21287943) | Both Zenodo versions report **`conceptrecid = 21287943`**. This is the same version family, **not** two unrelated deposits |
 
-The new Zenodo DOI was discovered and verified **after** the GitHub release was published. The original July DOI has not been repurposed. The v0.2.0 source tag is immutable and contains the citation file *as it existed before Zenodo minted the new DOI*. The current `main` branch's [`CITATION.cff`](../CITATION.cff) now correctly cites the subsequently verified **v0.2.0 version DOI**, so it differs from the earlier tagged source in this expected post-publication metadata field.
+The [v0.2.0 release notes](../release/v0.2.0/RELEASE_NOTES.md) document the scientific changes and limits at publication. The new Zenodo DOI was discovered and verified **after** the GitHub release was published. The original July DOI has not been repurposed. The v0.2.0 source tag is immutable and contains the citation file *as it existed before Zenodo minted the new DOI*. The current `main` branch's [`CITATION.cff`](../CITATION.cff) now correctly cites the subsequently verified **v0.2.0 version DOI**, so it differs from the earlier tagged source in this expected post-publication metadata field.
 
 ## Did automatic archiving really happen?
 
