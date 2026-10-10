@@ -1,17 +1,18 @@
 # Repository file inventory
 
-This table lists the Git-tracked paths and their byte sizes at this documentation update. It does not list untracked caches or locally generated results. The checksum registry checks every tracked path **except itself**, which is intentionally excluded to avoid a self-referential digest. Neither inventory nor hashing verifies a scientific interpretation.
+This table lists the Git-tracked paths and their byte sizes at v0.2.0 publication. It does not list untracked caches or locally generated results. The checksum registry checks every tracked path **except itself**, which is intentionally excluded to avoid a self-referential digest. Neither inventory nor hashing verifies a scientific interpretation.
 
 | Path | Size (bytes) |
 | --- | ---: |
-| `.github/workflows/ci.yml` | 2639 |
+| `.github/workflows/ci.yml` | 3092 |
 | `.github/workflows/cptac-covariance-null.yml` | 3399 |
 | `.github/workflows/cptac-residualization-null.yml` | 3370 |
+| `.github/workflows/publish-v0.2.0.yml` | 4274 |
 | `.gitignore` | 102 |
-| `CITATION.cff` | 860 |
+| `CITATION.cff` | 1192 |
 | `LICENSE` | 1301 |
-| `MANIFEST.md` | 12887 |
-| `README.md` | 5313 |
+| `MANIFEST.md` | 12976 |
+| `README.md` | 5506 |
 | `audit/CPTAC_RESIDUALIZATION_NULL_GATE_20261009.md` | 3364 |
 | `audit/cptac_covariance_null/PROTOCOL.md` | 7721 |
 | `audit/cptac_covariance_null/experiment.py` | 8528 |
@@ -40,8 +41,8 @@ This table lists the Git-tracked paths and their byte sizes at this documentatio
 | `audit/gse146889_clean_lineage/test_integrity_guards.py` | 3824 |
 | `audit/gse146889_clean_lineage/verify_reconciliation.py` | 9761 |
 | `audit/gse146889_clean_lineage/worker.py` | 5006 |
-| `audit/verify_archive_provenance.py` | 2820 |
-| `checksums.sha256` | 22222 |
+| `audit/verify_archive_provenance.py` | 3535 |
+| `checksums.sha256` | 22423 |
 | `code/.gitignore` | 929 |
 | `code/03_statistics_and_results_table.py` | 10271 |
 | `code/04a_figure_persistence_diagrams.py` | 5807 |
@@ -76,7 +77,7 @@ This table lists the Git-tracked paths and their byte sizes at this documentatio
 | `code/replication_cross_dataset/04c_figure_cross_dataset_replication.py` | 22859 |
 | `code/replication_cross_dataset/README.md` | 2600 |
 | `docs/ARCHITECTURE.md` | 8662 |
-| `docs/ARCHIVAL_PROVENANCE.md` | 6409 |
+| `docs/ARCHIVAL_PROVENANCE.md` | 7652 |
 | `docs/DESIGN_DECISIONS.md` | 10134 |
 | `docs/EXPERIMENT_EXPLAINED.md` | 6838 |
 | `docs/LIMITATIONS.md` | 9101 |
@@ -102,6 +103,7 @@ This table lists the Git-tracked paths and their byte sizes at this documentatio
 | `paper/sections/methods.tex` | 12539 |
 | `paper/sections/results.tex` | 23837 |
 | `prereg/PREREGISTRATION.md` | 7263 |
+| `release/v0.2.0/RELEASE_NOTES.md` | 7505 |
 | `reproduce.py` | 10630 |
 | `requirements.txt` | 145 |
 | `results/GATE5_number_provenance.md` | 8905 |
