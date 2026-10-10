@@ -32,6 +32,12 @@ jobs:
         env:
           PROVENANCE_OUTPUT: artifacts/zenodo_v0.2.0_probe.json
         run: python audit/probe_zenodo_v0.2.0.py
+      - name: Verify published original and new archive ZIP bytes
+        env:
+          ZENODO_BYTES_REPORT: artifacts/zenodo_v0.2.0_file_integrity.json
+        run: |
+          python -m py_compile audit/verify_zenodo_archive_bytes.py
+          python audit/verify_zenodo_archive_bytes.py
       - name: Surface result without equating job success to archive success
         run: |
           python - <<'PY'
@@ -39,6 +45,10 @@ jobs:
           from pathlib import Path
           d = json.loads(Path("artifacts/zenodo_v0.2.0_probe.json").read_text())
           print("Archive provenance state:", d["status"])
+          archive = json.loads(Path("artifacts/zenodo_v0.2.0_file_integrity.json").read_text())
+          print("Archive ZIP byte verification:", archive["status"])
+          if archive["status"] != "VERIFIED":
+              print("::warning::Zenodo ZIP byte-level integrity remains unverified")
           if d["status"] != "VERIFIED":
               print("::warning::GitHub Release is published; matching Zenodo v0.2.0 record remains unverified")
           else:
@@ -48,5 +58,5 @@ jobs:
       - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         with:
           name: zenodo-v0.2.0-public-verification-${{ github.run_id }}
-          path: artifacts/zenodo_v0.2.0_probe.json
+          path: artifacts/*.json
           retention-days: 30
