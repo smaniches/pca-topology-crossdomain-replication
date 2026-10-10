@@ -42,7 +42,7 @@ This table lists the Git-tracked paths and their byte sizes after verified v0.2.
 | `audit/gse146889_clean_lineage/verify_reconciliation.py` | 9761 |
 | `audit/gse146889_clean_lineage/worker.py` | 5006 |
 | `audit/probe_zenodo_v0.2.0.py` | 6902 |
-| `audit/verify_archive_provenance.py` | 4072 |
+| `audit/verify_archive_provenance.py` | 4044 |
 | `audit/verify_zenodo_archive_bytes.py` | 8598 |
 | `checksums.sha256` | 22627 |
 | `code/.gitignore` | 929 |
