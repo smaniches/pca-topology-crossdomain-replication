@@ -32,11 +32,25 @@ def main() -> None:
     correction = read("paper/METHODOLOGICAL_CORRECTIONS_2026-10-09.md")
     experiment = read("results/cptac_tumor_covariance_null_20261009/REPORT.md")
 
+    # Historical DOI belongs to the July record; v0.2.0 is a distinct
+    # source snapshot whose Zenodo DOI must be obtained after ingestion.
     require(
-        bool(re.search(r'^doi:\s*["\']?10\.5281/zenodo\.21287944["\']?\s*$', citation, re.M)),
-        "original DOI missing or changed in CITATION.cff",
+        bool(re.search(r'^version:\s*["\']?0\.2\.0["\']?\s*$', citation, re.M)),
+        "current CITATION.cff does not declare version 0.2.0",
+    )
+    require(
+        bool(re.search(r'^date-released:\s*["\']?2026-10-09["\']?\s*$', citation, re.M)),
+        "current citation date is not 2026-10-09",
+    )
+    require(
+        not bool(re.search(r'^doi:\s*["\']?10\.5281/zenodo\.21287944["\']?\s*$', citation, re.M)),
+        "historical July DOI wrongly assigned to October citation",
     )
     require(ORIGINAL_DOI in readme, "original DOI omitted from README")
+    require("release/v0.2.0/RELEASE_NOTES.md" in readme,
+            "README omits v0.2.0 release notes")
+    require("release/v0.2.0/RELEASE_NOTES.md" in ledger,
+            "archive provenance omits v0.2.0 release notes")
     require("docs/ARCHIVAL_PROVENANCE.md" in readme, "provenance ledger omitted from README")
     require(ORIGINAL_DOI in ledger, "ledger does not identify existing DOI")
     require(ORIGINAL_RELEASE in ledger, "ledger does not pin historical GitHub release")
@@ -57,7 +71,7 @@ def main() -> None:
         require(digest == ORIGINAL_PDF_SHA256,
                 f"original sealed PDF unexpectedly changed: {relative}")
 
-    print("ARCHIVE PROVENANCE: PASS — original DOI cited, version notice linked, PDFs sealed")
+    print("ARCHIVE PROVENANCE: PASS — historical DOI in docs, new version citation distinct, PDFs sealed")
     print("EXTERNAL ZENODO RECORD: UNKNOWN — this check cannot verify archive synchronization")
 
 
