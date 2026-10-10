@@ -1,0 +1,100 @@
+name: Publish verified v0.2.0 release
+
+# Publish only after CI passes on an actual push to main. This workflow is
+# intentionally version-specific and becomes a no-op after v0.2.0 exists.
+# The release_created webhook is the trigger for the owner's Zenodo integration.
+on:
+  workflow_run:
+    workflows: ["CI"]
+    types: [completed]
+    branches: [main]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publish-v0.2.0
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: >-
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.event == 'push' &&
+      github.event.workflow_run.head_branch == 'main' &&
+      github.event.workflow_run.repository.full_name == github.repository
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      RELEASE_TAG: v0.2.0
+      EXPECTED_SHA: ${{ github.event.workflow_run.head_sha }}
+    steps:
+      - name: Checkout precisely the CI-tested source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+          persist-credentials: false
+
+      - name: Prove release source is current main and retain old evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          actual="$(git rev-parse HEAD)"
+          latest="$(gh api "repos/${GITHUB_REPOSITORY}/branches/main" --jq .commit.sha)"
+          test "$actual" = "$EXPECTED_SHA"
+          test "$actual" = "$latest"
+          test "$(gh release view v0.1.0-biorxiv --json tagName --jq .tagName)" = "v0.1.0-biorxiv"
+          sha256sum -c checksums.sha256
+          python audit/verify_archive_provenance.py
+          test -s release/v0.2.0/RELEASE_NOTES.md
+          grep -Eq '^version: 0[.]2[.]0$' CITATION.cff
+          grep -Eq '^date-released: 2026-10-09$' CITATION.cff
+          if grep -Eq '^doi:.*10[.]5281/zenodo[.]21287944' CITATION.cff; then
+            echo "::error::Historical July DOI is assigned to the October CFF"
+            exit 1
+          fi
+          echo "Validated release source: $actual"
+
+      - name: Confirm tag and release do not already exist
+        id: gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            echo "GitHub Release $RELEASE_TAG already exists; do not republish."
+            echo "already_published=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          if git ls-remote --tags origin "refs/tags/$RELEASE_TAG" | grep -q .; then
+            echo "::error::Tag $RELEASE_TAG already exists without a matching published release"
+            exit 1
+          fi
+          echo "already_published=false" >> "$GITHUB_OUTPUT"
+
+      - name: Publish GitHub Release v0.2.0 for automatic Zenodo ingestion
+        if: steps.gate.outputs.already_published == 'false'
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh release create "$RELEASE_TAG" \
+            --target "$EXPECTED_SHA" \
+            --title "v0.2.0 — Methodological corrections and research evidence" \
+            --notes-file release/v0.2.0/RELEASE_NOTES.md \
+            --latest
+
+      - name: Check created GitHub release and immutable tag target
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh release view "$RELEASE_TAG" --json tagName,isDraft,isPrerelease,url,publishedAt \
+            --jq '{tag: .tagName, draft: .isDraft, prerelease: .isPrerelease, url: .url, published: .publishedAt}'
+          tag_object="$(gh api "repos/${GITHUB_REPOSITORY}/git/ref/tags/$RELEASE_TAG" --jq .object.sha)"
+          if [ "$tag_object" != "$EXPECTED_SHA" ]; then
+            echo "::error::Published release tag does not target the validated source commit"
+            exit 1
+          fi
+          echo "GitHub tag: $RELEASE_TAG at $tag_object"
+          echo "Zenodo ingestion is asynchronous. A valid GitHub Release is not yet proof that"
+          echo "the external Zenodo record exists or belongs to the original DOI version family."
+          echo "Verify the new Zenodo DOI and uploaded files after ingestion."
