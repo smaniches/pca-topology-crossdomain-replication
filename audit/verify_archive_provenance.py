@@ -35,7 +35,7 @@ def main() -> None:
     experiment = read("results/cptac_tumor_covariance_null_20261009/REPORT.md")
 
     # Historical DOI belongs to the July record; v0.2.0 is a distinct
-    # source snapshot whose Zenodo DOI must be obtained after ingestion.
+    # source snapshot whose Zenodo DOI was assigned after release publication.
     require(
         bool(re.search(r'^version:\s*["\']?0\.2\.0["\']?\s*$', citation, re.M)),
         "current CITATION.cff does not declare version 0.2.0",
@@ -49,7 +49,7 @@ def main() -> None:
         "historical July DOI wrongly assigned to October citation",
     )
     require(
-        bool(re.search(r'^doi:\\s*["\\']?10\\.5281/zenodo\\.23272317["\\']?\\s*$', citation, re.M)),
+        'doi: "10.5281/zenodo.23272317"' in citation.splitlines(),
         "the validated v0.2.0 Zenodo version DOI is missing from CITATION.cff",
     )
     require(CURRENT_DOI in readme and CONCEPT_DOI in readme,
