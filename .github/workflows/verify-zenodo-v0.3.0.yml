@@ -1,0 +1,79 @@
+name: Verify Zenodo v0.3.0 release and bytes
+
+# Public read-only verification. Never creates deposits, tags, releases, or DOIs.
+on:
+  pull_request:
+    paths:
+      - 'audit/probe_zenodo_v0.3.0.py'
+      - 'audit/verify_zenodo_v0.3.0_bytes.py'
+      - '.github/workflows/verify-zenodo-v0.3.0.yml'
+      - 'docs/ARCHIVAL_PROVENANCE.md'
+      - 'README.md'
+      - 'CITATION.cff'
+  push:
+    branches: [main]
+    paths:
+      - 'audit/probe_zenodo_v0.3.0.py'
+      - 'audit/verify_zenodo_v0.3.0_bytes.py'
+      - '.github/workflows/verify-zenodo-v0.3.0.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 9
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.11'
+      - name: Ensure verified GitHub tag is the exact original v0.3.0 release source
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(gh release view v0.3.0 --json tagName --jq .tagName)" = "v0.3.0"
+          target="$(gh api "repos/${GITHUB_REPOSITORY}/git/ref/tags/v0.3.0" --jq .object.sha)"
+          test "$target" = "bb453a01874a97d996bdd19a7eb571c3c2bc82ae"
+          echo "Verified fixed release source: $target"
+      - name: Validate read-only probe and ZIP verifier syntax
+        run: |
+          python -m py_compile audit/probe_zenodo_v0.3.0.py audit/verify_zenodo_v0.3.0_bytes.py
+      - name: Discover published DOI and compare concept version family
+        env:
+          PROVENANCE_OUTPUT: artifacts/zenodo_v0.3.0_probe.json
+        run: python audit/probe_zenodo_v0.3.0.py
+      - name: Download Zenodo files and independently verify v0.3.0 source bytes
+        env:
+          ZENODO_PROBE_FILE: artifacts/zenodo_v0.3.0_probe.json
+          ZENODO_BYTES_REPORT: artifacts/zenodo_v0.3.0_file_integrity.json
+        run: python audit/verify_zenodo_v0.3.0_bytes.py
+      - name: Fail closed if either Zenodo DOI or archive files are unverified
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          probe=json.loads(Path("artifacts/zenodo_v0.3.0_probe.json").read_text())
+          files=json.loads(Path("artifacts/zenodo_v0.3.0_file_integrity.json").read_text())
+          print("Zenodo DOI:", probe.get("version_doi"))
+          print("Version family:", probe.get("family_match_with_old"))
+          print("Metadata state:", probe["status"])
+          print("Archive byte state:", files["status"])
+          assert probe["status"]=="VERIFIED"
+          assert probe.get("family_match_with_old") is True
+          assert files["status"]=="VERIFIED"
+          assert files.get("new_doi")==probe.get("version_doi")
+          assert len(files.get("archive_records", [])) == 2
+          print("FINAL ZENODO v0.3.0: VERIFIED")
+          PY
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+        if: always()
+        with:
+          name: zenodo-v0.3.0-verification-${{ github.run_id }}
+          path: artifacts/*.json
+          if-no-files-found: warn
+          retention-days: 60

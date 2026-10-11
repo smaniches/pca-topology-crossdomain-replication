@@ -136,7 +136,7 @@ The first command is a **read-only** verification of all 499 new draws, the exis
 python audit/cptac_matched_null/experiment.py --mode confirm --output reproduce_output/cptac_tumor_matched_repeat.json
 ```
 
-This regenerates 499 independent per-protein permutations using `default_rng(20261011)`. The `--output` argument is mandatory; in `--mode pilot`, `--draws` can specify 2–32 draws using seed `20261012`. The GitHub Actions confirm job is **manual-only** in the permanent workflow. The original v0.2.0 Zenodo release **predates this new matched comparison**, which is currently GitHub evidence until a separately verified new archive version exists.
+This regenerates 499 independent per-protein permutations using `default_rng(20261011)`. The `--output` argument is mandatory; in `--mode pilot`, `--draws` can specify 2–32 draws using seed `20261012`. The GitHub Actions confirm job is **manual-only** in the permanent workflow. The original v0.2.0 Zenodo release **predates this matched comparison**. The full 499-draw record and implementation are now included in the distinct, independently verified [Zenodo v0.3.0 release (10.5281/zenodo.23290337)](https://doi.org/10.5281/zenodo.23290337).
 
 ## How do I check the archived independent GSE146889 results?
 
