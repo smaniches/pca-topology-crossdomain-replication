@@ -37,6 +37,10 @@ For the **current corrected research-software snapshot and October experiments**
 
 Scientific qualification remains essential: the historical classifier area-under-the-curve permutation `p=0.005` claims are withdrawn, the methylation result is metric-gated, and the new tumor-only covariance-preserving experiment did **not** reject its null (`p=0.092`). The earlier mixed 194-sample `p=0.002` control is not a matched null-model comparison with that 110-sample tumor-only experiment.
 
+## Post-v0.2.0 GitHub research has not been mirrored yet
+
+The additional **2026-10-10** [matched 110-tumor feature-permutation-versus-Haar comparison](../results/cptac_tumor_matched_null_20261010/REPORT.md) was executed *after* GitHub Release `v0.2.0` and its Zenodo ingestion. Its [499 new raw draws](../results/cptac_tumor_matched_null_20261010/499_draws.json) are preserved in later GitHub commits but are **not included in the immutable Zenodo v0.2.0 ZIP**. Do not cite `10.5281/zenodo.23272317` as the archive of this later matched experiment. A future GitHub release will need an independently verified new Zenodo version DOI if this study is to be deposited; no automatic per-commit mirroring is implied. The original v0.2.0 source is unchanged.
+
 ## Historical submission and legal boundaries
 
 The original bioRxiv submission `BIORXIV/2026/737609` was **not posted**, following an organizational-affiliation screening rule. This was not a scientific peer-review rejection. Statements within `submission/biorxiv/` saying that a DOI had not yet been issued are historical statements from package creation and must not be rewritten.

@@ -121,6 +121,23 @@ python audit/cptac_covariance_null/plot_null_distribution.py --check
 
 This check uses only the Python standard library and does not rerun costly scientific sampling. To regenerate the SVG deliberately, run the same command without `--check`.
 
+## How do I verify the matched tumor-only null comparison?
+
+The post-preregistration [matched study](../results/cptac_tumor_matched_null_20261010/REPORT.md) holds the 110 tumor samples, existing 2,000-protein standardized panel, PCA(50), Euclidean metric and `ripser` H1 statistic fixed. It compares the newly executed 499 independent-feature permutations with the **previously archived and SHA-256-bound** 499 covariance-preserving Haar draws.
+
+```bash
+python audit/cptac_matched_null/verify_evidence.py
+python -m unittest discover -s audit/cptac_matched_null -p 'test_*.py' -v
+```
+
+The first command is a **read-only** verification of all 499 new draws, the existing Haar comparator, the same observed H1 and the two tail probabilities (`p=0.002` and `p=0.092`). It does not run the expensive experiment. The new experiment's exact source data, frozen seed and hypotheses are in [`audit/cptac_matched_null/PROTOCOL.md`](../audit/cptac_matched_null/PROTOCOL.md). An optional explicit full repeat is:
+
+```bash
+python audit/cptac_matched_null/experiment.py --mode confirm --output reproduce_output/cptac_tumor_matched_repeat.json
+```
+
+This regenerates 499 independent per-protein permutations using `default_rng(20261011)`. The `--output` argument is mandatory; in `--mode pilot`, `--draws` can specify 2–32 draws using seed `20261012`. The GitHub Actions confirm job is **manual-only** in the permanent workflow. The original v0.2.0 Zenodo release **predates this new matched comparison**, which is currently GitHub evidence until a separately verified new archive version exists.
+
 ## How do I check the archived independent GSE146889 results?
 
 The following **read-only** verification checks the committed reconciliation tables and their recorded input digest without rerunning its archived multi-shard computation:

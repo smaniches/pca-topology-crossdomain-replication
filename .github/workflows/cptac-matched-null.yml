@@ -1,0 +1,95 @@
+name: CPTAC tumor matched-null comparison
+
+# Uses the archived 499-draw covariance-preserving null as an immutable
+# comparison, and generates a separately seeded tumor-only featurewise null.
+on:
+  pull_request:
+    paths:
+      - 'audit/cptac_matched_null/**'
+      - '.github/workflows/cptac-matched-null.yml'
+  workflow_dispatch:
+    inputs:
+      mode:
+        required: true
+        default: pilot
+        type: choice
+        description: 'Bounded pilot or explicit 499-draw primary null'
+        options: [pilot, confirm]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tumor-matched-null-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  OPENBLAS_NUM_THREADS: '1'
+  OMP_NUM_THREADS: '1'
+  MKL_NUM_THREADS: '1'
+  PYTHONHASHSEED: '0'
+  PYTHONUNBUFFERED: '1'
+
+jobs:
+  controls:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.11'
+      - name: Install pinned environment
+        run: python -m pip install -r requirements.txt
+      - name: Verify source, historical outputs and registered hashes
+        run: sha256sum -c checksums.sha256
+      - name: Verify immutable matched-null raw evidence without rerunning draws
+        run: python audit/cptac_matched_null/verify_evidence.py
+      - name: Check independent feature shuffling, PCA metric and H1 invariants
+        run: python -m unittest discover -s audit/cptac_matched_null -p 'test_*.py' -v
+
+  pilot:
+    needs: controls
+    if: github.event_name == 'pull_request' || (github.event_name == 'workflow_dispatch' && inputs.mode == 'pilot')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.11'
+      - name: Install pinned environment
+        run: python -m pip install -r requirements.txt
+      - name: Run 24-draw pilot with frozen seed
+        run: python audit/cptac_matched_null/experiment.py --mode pilot --draws 24 --output artifacts/cptac_matched_pilot.json
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+        if: always()
+        with:
+          name: cptac-matched-null-pilot-${{ github.run_id }}
+          path: artifacts/*.json
+          if-no-files-found: warn
+          retention-days: 7
+
+  confirm:
+    # Explicit 499-draw run after controls and pilot have been reviewed.
+    # It is never a default effect of a PR or ordinary push.
+    needs: controls
+    if: github.event_name == 'workflow_dispatch' && inputs.mode == 'confirm'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 95
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.11'
+      - name: Install pinned environment
+        run: python -m pip install -r requirements.txt
+      - name: Run frozen 499-draw featurewise reference
+        run: python audit/cptac_matched_null/experiment.py --mode confirm --output artifacts/cptac_matched_confirm.json
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+        if: always()
+        with:
+          name: cptac-matched-null-confirm-${{ github.run_id }}
+          path: artifacts/*.json
+          if-no-files-found: warn
+          retention-days: 30
