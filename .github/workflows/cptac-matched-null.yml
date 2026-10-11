@@ -4,7 +4,6 @@ name: CPTAC tumor matched-null comparison
 # comparison, and generates a separately seeded tumor-only featurewise null.
 on:
   pull_request:
-    types: [opened, synchronize, reopened, edited]
     paths:
       - 'audit/cptac_matched_null/**'
       - '.github/workflows/cptac-matched-null.yml'
@@ -49,7 +48,7 @@ jobs:
 
   pilot:
     needs: controls
-    if: (github.event_name == 'pull_request' && github.event.action != 'edited') || (github.event_name == 'workflow_dispatch' && inputs.mode == 'pilot')
+    if: github.event_name == 'pull_request' || (github.event_name == 'workflow_dispatch' && inputs.mode == 'pilot')
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
@@ -70,10 +69,10 @@ jobs:
           retention-days: 7
 
   confirm:
-    # Temporary one-shot PR-title switch for a validated 499-draw run and replay.
-    # Both title markers are removed and this gate restored to manual-only before merge.
+    # Explicit 499-draw run after controls and pilot have been reviewed.
+    # It is never a default effect of a PR or ordinary push.
     needs: controls
-    if: (github.event_name == 'pull_request' && github.event.action == 'edited' && github.head_ref == 'research/cptac-tumor-matched-null-20261010' && (contains(github.event.pull_request.title, '[CPTAC-RUN499]') || contains(github.event.pull_request.title, '[CPTAC-REPLAY499]'))) || (github.event_name == 'workflow_dispatch' && inputs.mode == 'confirm')
+    if: github.event_name == 'workflow_dispatch' && inputs.mode == 'confirm'
     runs-on: ubuntu-24.04
     timeout-minutes: 95
     steps:
@@ -85,13 +84,6 @@ jobs:
         run: python -m pip install -r requirements.txt
       - name: Run frozen 499-draw featurewise reference
         run: python audit/cptac_matched_null/experiment.py --mode confirm --output artifacts/cptac_matched_confirm.json
-      - name: Export exact draw JSON for one-off evidence archival
-        if: github.event_name == 'pull_request' && github.event.action == 'edited'
-        run: |
-          echo RESULT_B64_BEGIN
-          base64 -w0 artifacts/cptac_matched_confirm.json
-          echo
-          echo RESULT_B64_END
       - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         if: always()
         with:
