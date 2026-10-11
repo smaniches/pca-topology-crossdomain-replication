@@ -12,7 +12,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 ORIGINAL_DOI = "10.5281/zenodo.21287944"
-CURRENT_DOI = "10.5281/zenodo.23272317"
+PREVIOUS_DOI = "10.5281/zenodo.23272317"
 CONCEPT_DOI = "10.5281/zenodo.21287943"
 ORIGINAL_PDF_SHA256 = "cfc2410130c5872979a62e08cecfb964aa5412d42192c0c632c22d48e1983aac"
 ORIGINAL_RELEASE = "v0.1.0-biorxiv"
@@ -34,28 +34,40 @@ def main() -> None:
     correction = read("paper/METHODOLOGICAL_CORRECTIONS_2026-10-09.md")
     experiment = read("results/cptac_tumor_covariance_null_20261009/REPORT.md")
 
-    # Historical DOI belongs to the July record; v0.2.0 is a distinct
-    # source snapshot whose Zenodo DOI was assigned after release publication.
+    # v0.3.0 represents a distinct immutable source snapshot. Its new Zenodo
+    # version DOI is not known before GitHub Release publication.
     require(
-        bool(re.search(r'^version:\s*["\']?0\.2\.0["\']?\s*$', citation, re.M)),
-        "current CITATION.cff does not declare version 0.2.0",
+        'version: 0.3.0' in citation.splitlines(),
+        "current CITATION.cff does not declare version 0.3.0",
     )
     require(
-        bool(re.search(r'^date-released:\s*["\']?2026-10-09["\']?\s*$', citation, re.M)),
-        "current citation date is not 2026-10-09",
+        'date-released: 2026-10-10' in citation.splitlines(),
+        "current citation date is not 2026-10-10",
     )
-    require(
-        not bool(re.search(r'^doi:\s*["\']?10\.5281/zenodo\.21287944["\']?\s*$', citation, re.M)),
-        "historical July DOI wrongly assigned to October citation",
-    )
-    require(
-        'doi: "10.5281/zenodo.23272317"' in citation.splitlines(),
-        "the validated v0.2.0 Zenodo version DOI is missing from CITATION.cff",
-    )
-    require(CURRENT_DOI in readme and CONCEPT_DOI in readme,
-            "current version/concept DOI missing from README")
-    require(CURRENT_DOI in ledger and CONCEPT_DOI in ledger,
-            "current version/concept DOI missing from archive provenance")
+    current_doi_lines = [line for line in citation.splitlines()
+                         if line.startswith("doi:")]
+    for historical in (ORIGINAL_DOI, PREVIOUS_DOI, CONCEPT_DOI):
+        require(not any(historical in line for line in current_doi_lines),
+                "a historical Zenodo DOI is incorrectly assigned to v0.3.0")
+        require(historical in readme and historical in ledger,
+                "a historical DOI is missing from the public provenance notes")
+    # Before publication the version-specific DOI is intentionally absent.
+    # After Zenodo publishes the release, a new DOI may be inserted only
+    # alongside matching README and provenance references.
+    require(len(current_doi_lines) <= 1, "multiple CFF DOI entries")
+    if current_doi_lines:
+        require(current_doi_lines[0].split(":", 1)[1].strip().strip('"') in ledger,
+                "minted v0.3.0 DOI has no provenance ledger entry")
+    require("version: 0.3.0" in citation.splitlines(),
+            "CFF release version is not 0.3.0")
+    require("date-released: 2026-10-10" in citation.splitlines(),
+            "CFF release date is incorrect")
+    require("release/v0.3.0/RELEASE_NOTES.md" in readme,
+            "new version release notes missing from README")
+    require("release/v0.3.0/RELEASE_NOTES.md" in ledger,
+            "new version release notes missing from archive ledger")
+    require("docs/INDEPENDENT_COHORT_VALIDATION_PHASE.md" in readme,
+            "separate, unexecuted independent-cohort phase is undocumented")
     require(ORIGINAL_DOI in readme, "original DOI omitted from README")
     require("release/v0.2.0/RELEASE_NOTES.md" in readme,
             "README omits v0.2.0 release notes")
@@ -81,7 +93,7 @@ def main() -> None:
         require(digest == ORIGINAL_PDF_SHA256,
                 f"original sealed PDF unexpectedly changed: {relative}")
 
-    print("ARCHIVE PROVENANCE: PASS — historical and v0.2.0 DOIs correct, concept linked, PDFs sealed")
+    print("ARCHIVE PROVENANCE: PASS — v0.3.0 distinct, historic DOIs preserved, original PDFs sealed")
     print("EXTERNAL ZENODO RECORD: UNKNOWN — this check cannot verify archive synchronization")
 
 
