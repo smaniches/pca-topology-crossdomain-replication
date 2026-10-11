@@ -1,19 +1,19 @@
 # Repository file inventory
 
-This table lists the Git-tracked paths and their byte sizes after primary matched-null result archive. It does not list untracked caches or locally generated results. The checksum registry checks every tracked path **except itself**, which is intentionally excluded to avoid a self-referential digest. Neither inventory nor hashing verifies a scientific interpretation.
+This table lists the Git-tracked paths and their byte sizes after independently verified CPTAC matched-null follow-up. It does not list untracked caches or locally generated results. The checksum registry checks every tracked path **except itself**, which is intentionally excluded to avoid a self-referential digest. Neither inventory nor hashing verifies a scientific interpretation.
 
 | Path | Size (bytes) |
 | --- | ---: |
-| `.github/workflows/ci.yml` | 3092 |
+| `.github/workflows/ci.yml` | 3240 |
 | `.github/workflows/cptac-covariance-null.yml` | 3399 |
-| `.github/workflows/cptac-matched-null.yml` | 4211 |
+| `.github/workflows/cptac-matched-null.yml` | 3655 |
 | `.github/workflows/cptac-residualization-null.yml` | 3370 |
 | `.github/workflows/verify-zenodo-v0.2.0.yml` | 2562 |
 | `.gitignore` | 102 |
 | `CITATION.cff` | 1163 |
 | `LICENSE` | 1301 |
-| `MANIFEST.md` | 13379 |
-| `README.md` | 5527 |
+| `MANIFEST.md` | 13518 |
+| `README.md` | 5958 |
 | `audit/CPTAC_RESIDUALIZATION_NULL_GATE_20261009.md` | 3364 |
 | `audit/cptac_covariance_null/PROTOCOL.md` | 7721 |
 | `audit/cptac_covariance_null/experiment.py` | 8528 |
@@ -22,6 +22,7 @@ This table lists the Git-tracked paths and their byte sizes after primary matche
 | `audit/cptac_matched_null/PROTOCOL.md` | 8477 |
 | `audit/cptac_matched_null/experiment.py` | 11272 |
 | `audit/cptac_matched_null/test_experiment.py` | 4689 |
+| `audit/cptac_matched_null/verify_evidence.py` | 4415 |
 | `audit/cptac_resid_null/experiment.py` | 7105 |
 | `audit/cptac_resid_null/test_experiment.py` | 3817 |
 | `audit/gse146889_clean_lineage/EXECUTION_WORKFLOW.yml` | 8895 |
@@ -48,7 +49,7 @@ This table lists the Git-tracked paths and their byte sizes after primary matche
 | `audit/probe_zenodo_v0.2.0.py` | 6902 |
 | `audit/verify_archive_provenance.py` | 4044 |
 | `audit/verify_zenodo_archive_bytes.py` | 8598 |
-| `checksums.sha256` | 23175 |
+| `checksums.sha256` | 23403 |
 | `code/.gitignore` | 929 |
 | `code/03_statistics_and_results_table.py` | 10271 |
 | `code/04a_figure_persistence_diagrams.py` | 5807 |
@@ -83,11 +84,11 @@ This table lists the Git-tracked paths and their byte sizes after primary matche
 | `code/replication_cross_dataset/04c_figure_cross_dataset_replication.py` | 22859 |
 | `code/replication_cross_dataset/README.md` | 2600 |
 | `docs/ARCHITECTURE.md` | 8662 |
-| `docs/ARCHIVAL_PROVENANCE.md` | 7704 |
+| `docs/ARCHIVAL_PROVENANCE.md` | 8458 |
 | `docs/DESIGN_DECISIONS.md` | 10134 |
 | `docs/EXPERIMENT_EXPLAINED.md` | 6838 |
-| `docs/LIMITATIONS.md` | 9101 |
-| `docs/USAGE.md` | 13544 |
+| `docs/LIMITATIONS.md` | 9786 |
+| `docs/USAGE.md` | 15128 |
 | `experiments/cptac_full_null_20261009/EXECUTION_WORKFLOW.yml` | 9818 |
 | `experiments/cptac_full_null_20261009/PROTOCOL.md` | 3051 |
 | `experiments/cptac_full_null_20261009/REPORT.md` | 5797 |
@@ -166,6 +167,7 @@ This table lists the Git-tracked paths and their byte sizes after primary matche
 | `results/cptac_tumor_covariance_null_20261009/REPORT.md` | 9314 |
 | `results/cptac_tumor_covariance_null_20261009/null_distribution.svg` | 5688 |
 | `results/cptac_tumor_matched_null_20261010/499_draws.json` | 15140 |
+| `results/cptac_tumor_matched_null_20261010/REPORT.md` | 10080 |
 | `results/cross_dataset_BH_family.csv` | 2184 |
 | `results/cross_dataset_checkpoint.md` | 11662 |
 | `results/final_verdict.md` | 18068 |
