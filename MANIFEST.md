@@ -1,6 +1,6 @@
 # Repository file inventory
 
-This table lists the Git-tracked paths and their byte sizes after matched-null protocol freeze. It does not list untracked caches or locally generated results. The checksum registry checks every tracked path **except itself**, which is intentionally excluded to avoid a self-referential digest. Neither inventory nor hashing verifies a scientific interpretation.
+This table lists the Git-tracked paths and their byte sizes after primary matched-null result archive. It does not list untracked caches or locally generated results. The checksum registry checks every tracked path **except itself**, which is intentionally excluded to avoid a self-referential digest. Neither inventory nor hashing verifies a scientific interpretation.
 
 | Path | Size (bytes) |
 | --- | ---: |
@@ -12,7 +12,7 @@ This table lists the Git-tracked paths and their byte sizes after matched-null p
 | `.gitignore` | 102 |
 | `CITATION.cff` | 1163 |
 | `LICENSE` | 1301 |
-| `MANIFEST.md` | 13301 |
+| `MANIFEST.md` | 13379 |
 | `README.md` | 5527 |
 | `audit/CPTAC_RESIDUALIZATION_NULL_GATE_20261009.md` | 3364 |
 | `audit/cptac_covariance_null/PROTOCOL.md` | 7721 |
@@ -48,7 +48,7 @@ This table lists the Git-tracked paths and their byte sizes after matched-null p
 | `audit/probe_zenodo_v0.2.0.py` | 6902 |
 | `audit/verify_archive_provenance.py` | 4044 |
 | `audit/verify_zenodo_archive_bytes.py` | 8598 |
-| `checksums.sha256` | 23052 |
+| `checksums.sha256` | 23175 |
 | `code/.gitignore` | 929 |
 | `code/03_statistics_and_results_table.py` | 10271 |
 | `code/04a_figure_persistence_diagrams.py` | 5807 |
@@ -165,6 +165,7 @@ This table lists the Git-tracked paths and their byte sizes after matched-null p
 | `results/cptac_tumor_covariance_null_20261009/499_draws.json` | 12866 |
 | `results/cptac_tumor_covariance_null_20261009/REPORT.md` | 9314 |
 | `results/cptac_tumor_covariance_null_20261009/null_distribution.svg` | 5688 |
+| `results/cptac_tumor_matched_null_20261010/499_draws.json` | 15140 |
 | `results/cross_dataset_BH_family.csv` | 2184 |
 | `results/cross_dataset_checkpoint.md` | 11662 |
 | `results/final_verdict.md` | 18068 |
