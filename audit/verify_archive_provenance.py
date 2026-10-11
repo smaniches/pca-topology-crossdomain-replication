@@ -13,6 +13,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 ORIGINAL_DOI = "10.5281/zenodo.21287944"
 PREVIOUS_DOI = "10.5281/zenodo.23272317"
+CURRENT_DOI = "10.5281/zenodo.23290337"
 CONCEPT_DOI = "10.5281/zenodo.21287943"
 ORIGINAL_PDF_SHA256 = "cfc2410130c5872979a62e08cecfb964aa5412d42192c0c632c22d48e1983aac"
 ORIGINAL_RELEASE = "v0.1.0-biorxiv"
@@ -51,13 +52,12 @@ def main() -> None:
                 "a historical Zenodo DOI is incorrectly assigned to v0.3.0")
         require(historical in readme and historical in ledger,
                 "a historical DOI is missing from the public provenance notes")
-    # Before publication the version-specific DOI is intentionally absent.
-    # After Zenodo publishes the release, a new DOI may be inserted only
-    # alongside matching README and provenance references.
-    require(len(current_doi_lines) <= 1, "multiple CFF DOI entries")
-    if current_doi_lines:
-        require(current_doi_lines[0].split(":", 1)[1].strip().strip('"') in ledger,
-                "minted v0.3.0 DOI has no provenance ledger entry")
+    # A new v0.3.0 version DOI is now independently verified. The tagged
+    # source predates that DOI, but current main citation metadata must not.
+    require(current_doi_lines == ['doi: "10.5281/zenodo.23290337"'],
+            "current CFF does not identify the verified v0.3.0 DOI")
+    require(CURRENT_DOI in ledger and CURRENT_DOI in readme,
+            "v0.3.0 minted DOI is absent from documentation")
     require("version: 0.3.0" in citation.splitlines(),
             "CFF release version is not 0.3.0")
     require("date-released: 2026-10-10" in citation.splitlines(),
@@ -94,7 +94,7 @@ def main() -> None:
                 f"original sealed PDF unexpectedly changed: {relative}")
 
     print("ARCHIVE PROVENANCE: PASS — v0.3.0 distinct, historic DOIs preserved, original PDFs sealed")
-    print("EXTERNAL ZENODO RECORD: UNKNOWN — this check cannot verify archive synchronization")
+    print("OFFLINE HASH CHECK: PASS — see the separate public Zenodo ZIP verification for external evidence")
 
 
 if __name__ == "__main__":
