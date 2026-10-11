@@ -1,23 +1,27 @@
 # Repository file inventory
 
-This table lists the Git-tracked paths and their byte sizes after verified v0.2.0 Zenodo archival reconciliation. It does not list untracked caches or locally generated results. The checksum registry checks every tracked path **except itself**, which is intentionally excluded to avoid a self-referential digest. Neither inventory nor hashing verifies a scientific interpretation.
+This table lists the Git-tracked paths and their byte sizes after matched-null protocol freeze. It does not list untracked caches or locally generated results. The checksum registry checks every tracked path **except itself**, which is intentionally excluded to avoid a self-referential digest. Neither inventory nor hashing verifies a scientific interpretation.
 
 | Path | Size (bytes) |
 | --- | ---: |
 | `.github/workflows/ci.yml` | 3092 |
 | `.github/workflows/cptac-covariance-null.yml` | 3399 |
+| `.github/workflows/cptac-matched-null.yml` | 3510 |
 | `.github/workflows/cptac-residualization-null.yml` | 3370 |
 | `.github/workflows/verify-zenodo-v0.2.0.yml` | 2562 |
 | `.gitignore` | 102 |
 | `CITATION.cff` | 1163 |
 | `LICENSE` | 1301 |
-| `MANIFEST.md` | 13105 |
+| `MANIFEST.md` | 13301 |
 | `README.md` | 5527 |
 | `audit/CPTAC_RESIDUALIZATION_NULL_GATE_20261009.md` | 3364 |
 | `audit/cptac_covariance_null/PROTOCOL.md` | 7721 |
 | `audit/cptac_covariance_null/experiment.py` | 8528 |
 | `audit/cptac_covariance_null/plot_null_distribution.py` | 6562 |
 | `audit/cptac_covariance_null/test_experiment.py` | 4370 |
+| `audit/cptac_matched_null/PROTOCOL.md` | 8477 |
+| `audit/cptac_matched_null/experiment.py` | 11272 |
+| `audit/cptac_matched_null/test_experiment.py` | 4689 |
 | `audit/cptac_resid_null/experiment.py` | 7105 |
 | `audit/cptac_resid_null/test_experiment.py` | 3817 |
 | `audit/gse146889_clean_lineage/EXECUTION_WORKFLOW.yml` | 8895 |
@@ -44,7 +48,7 @@ This table lists the Git-tracked paths and their byte sizes after verified v0.2.
 | `audit/probe_zenodo_v0.2.0.py` | 6902 |
 | `audit/verify_archive_provenance.py` | 4044 |
 | `audit/verify_zenodo_archive_bytes.py` | 8598 |
-| `checksums.sha256` | 22627 |
+| `checksums.sha256` | 23052 |
 | `code/.gitignore` | 929 |
 | `code/03_statistics_and_results_table.py` | 10271 |
 | `code/04a_figure_persistence_diagrams.py` | 5807 |
