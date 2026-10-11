@@ -1,6 +1,6 @@
 # Repository file inventory
 
-This table lists the Git-tracked paths and their byte sizes at v0.3.0 scientific closure. It does not list untracked caches or locally generated results. The checksum registry checks every tracked path **except itself**, which is intentionally excluded to avoid a self-referential digest. Neither inventory nor hashing verifies a scientific interpretation.
+This table lists the Git-tracked paths and their byte sizes after verified v0.3.0 GitHub release. It does not list untracked caches or locally generated results. The checksum registry checks every tracked path **except itself**, which is intentionally excluded to avoid a self-referential digest. Neither inventory nor hashing verifies a scientific interpretation.
 
 | Path | Size (bytes) |
 | --- | ---: |
@@ -8,12 +8,12 @@ This table lists the Git-tracked paths and their byte sizes at v0.3.0 scientific
 | `.github/workflows/cptac-covariance-null.yml` | 3399 |
 | `.github/workflows/cptac-matched-null.yml` | 3655 |
 | `.github/workflows/cptac-residualization-null.yml` | 3370 |
-| `.github/workflows/publish-v0.3.0.yml` | 4241 |
 | `.github/workflows/verify-zenodo-v0.2.0.yml` | 2562 |
+| `.github/workflows/verify-zenodo-v0.3.0.yml` | 3272 |
 | `.gitignore` | 102 |
 | `CITATION.cff` | 1231 |
 | `LICENSE` | 1301 |
-| `MANIFEST.md` | 13641 |
+| `MANIFEST.md` | 13747 |
 | `README.md` | 6346 |
 | `audit/CPTAC_RESIDUALIZATION_NULL_GATE_20261009.md` | 3364 |
 | `audit/cptac_covariance_null/PROTOCOL.md` | 7721 |
@@ -48,9 +48,11 @@ This table lists the Git-tracked paths and their byte sizes at v0.3.0 scientific
 | `audit/gse146889_clean_lineage/verify_reconciliation.py` | 9761 |
 | `audit/gse146889_clean_lineage/worker.py` | 5006 |
 | `audit/probe_zenodo_v0.2.0.py` | 6902 |
+| `audit/probe_zenodo_v0.3.0.py` | 7030 |
 | `audit/verify_archive_provenance.py` | 4903 |
 | `audit/verify_zenodo_archive_bytes.py` | 8598 |
-| `checksums.sha256` | 23714 |
+| `audit/verify_zenodo_v0.3.0_bytes.py` | 10231 |
+| `checksums.sha256` | 23917 |
 | `code/.gitignore` | 929 |
 | `code/03_statistics_and_results_table.py` | 10271 |
 | `code/04a_figure_persistence_diagrams.py` | 5807 |
