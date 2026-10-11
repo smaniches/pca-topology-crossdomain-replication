@@ -37,9 +37,13 @@ For the **current corrected research-software snapshot and October experiments**
 
 Scientific qualification remains essential: the historical classifier area-under-the-curve permutation `p=0.005` claims are withdrawn, the methylation result is metric-gated, and the new tumor-only covariance-preserving experiment did **not** reject its null (`p=0.092`). The earlier mixed 194-sample `p=0.002` control is not a matched null-model comparison with that 110-sample tumor-only experiment.
 
-## Post-v0.2.0 GitHub research has not been mirrored yet
+## New v0.3.0 matched-study release and DOI boundary
 
-The additional **2026-10-10** [matched 110-tumor feature-permutation-versus-Haar comparison](../results/cptac_tumor_matched_null_20261010/REPORT.md) was executed *after* GitHub Release `v0.2.0` and its Zenodo ingestion. Its [499 new raw draws](../results/cptac_tumor_matched_null_20261010/499_draws.json) are preserved in later GitHub commits but are **not included in the immutable Zenodo v0.2.0 ZIP**. Do not cite `10.5281/zenodo.23272317` as the archive of this later matched experiment. A future GitHub release will need an independently verified new Zenodo version DOI if this study is to be deposited; no automatic per-commit mirroring is implied. The original v0.2.0 source is unchanged.
+The additional 2026-10-10 [matched 110-tumor study](../results/cptac_tumor_matched_null_20261010/REPORT.md) and all [499 new raw draws](../results/cptac_tumor_matched_null_20261010/499_draws.json) were completed after v0.2.0. They have their own [v0.3.0 source release notes](../release/v0.3.0/RELEASE_NOTES.md). **The matched comparison is scientifically and computationally closed**: the observed H1 is 5.3542976 against both 499-draw references; per-protein independent permutations yield p = 0.002, while full-covariance-preserving Haar rotations yield p = 0.092. The difference is conditional on the distinct null-model assumptions, not proof of biological topology.
+
+**Version rule:** these new matched-study files are **not in the immutable v0.2.0 ZIP**. They belong to the separate v0.3.0 GitHub source snapshot. The owner-authorized GitHub Release will trigger its already enabled Zenodo integration; the v0.3.0 version DOI, concept-family relationship, and exact ZIP checksum **must be independently verified after the GitHub Release is actually published**. Do not cite the older v0.2.0 version DOI as if it archived the new 499 draws. The recorded v0.2.0 DOI remains [10.5281/zenodo.23272317](https://doi.org/10.5281/zenodo.23272317), and the existing all-version concept DOI remains [10.5281/zenodo.21287943](https://doi.org/10.5281/zenodo.21287943).
+
+A separate [independent-cohort validation phase](INDEPENDENT_COHORT_VALIDATION_PHASE.md) is **not executed** and makes no new biological claim. Publishing v0.3.0 closes only the finished matched comparison; it neither initiates nor completes an independent-cohort experiment.
 
 ## Historical submission and legal boundaries
 
