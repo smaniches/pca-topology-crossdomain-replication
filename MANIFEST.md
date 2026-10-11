@@ -6,7 +6,7 @@ This table lists the Git-tracked paths and their byte sizes after matched-null p
 | --- | ---: |
 | `.github/workflows/ci.yml` | 3092 |
 | `.github/workflows/cptac-covariance-null.yml` | 3399 |
-| `.github/workflows/cptac-matched-null.yml` | 3510 |
+| `.github/workflows/cptac-matched-null.yml` | 4211 |
 | `.github/workflows/cptac-residualization-null.yml` | 3370 |
 | `.github/workflows/verify-zenodo-v0.2.0.yml` | 2562 |
 | `.gitignore` | 102 |
