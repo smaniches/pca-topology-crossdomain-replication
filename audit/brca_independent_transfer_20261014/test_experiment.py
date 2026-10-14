@@ -53,18 +53,32 @@ class IndependentCohortControls(unittest.TestCase):
     def test_patient_matching_does_not_admit_normal_tissues(self):
         patients = [f"AO-A{i:03d}" for i in range(65)]
         columns = [patient + ".01TCGA" for patient in patients]
-        df = pd.DataFrame(columns=columns + ["263d3f-I", "random"])
+        df = pd.DataFrame(columns=columns + ["263d3f-I.CPTAC", "random"])
         clin = pd.DataFrame(
             {"Complete TCGA ID": ["TCGA-" + patient for patient in patients]}
         )
         result = lab.sample_mapping(df, clin)
         self.assertEqual(len(result), 65)
-        self.assertNotIn("263d3f-I", [column for _, column in result])
+        self.assertNotIn(
+            "263d3f-I.CPTAC",
+            [column for _, group in result for column in group]
+        )
 
-    def test_duplicate_tumor_patient_rejected(self):
+    def test_second_technical_measurement_is_grouped_not_independent(self):
         patients = [f"AO-A{i:03d}" for i in range(65)]
         cols = [p + ".01TCGA" for p in patients]
-        df = pd.DataFrame(columns=cols + [cols[0]])
+        df = pd.DataFrame(columns=cols + ["AO-A000.02TCGA"])
+        clin = pd.DataFrame(
+            {"Complete TCGA ID": ["TCGA-" + p for p in patients]}
+        )
+        mapping = lab.sample_mapping(df, clin)
+        self.assertEqual(len(mapping), 65)
+        self.assertEqual(len(dict(mapping)["AO-A000"]), 2)
+
+    def test_more_than_two_measurements_for_patient_rejected(self):
+        patients = [f"AO-A{i:03d}" for i in range(65)]
+        cols = [p + ".01TCGA" for p in patients]
+        df = pd.DataFrame(columns=cols + ["AO-A000.02TCGA", "AO-A000.03TCGA"])
         clin = pd.DataFrame(
             {"Complete TCGA ID": ["TCGA-" + p for p in patients]}
         )
