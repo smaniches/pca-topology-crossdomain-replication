@@ -1,6 +1,6 @@
 # BRCA-TRANSFER-001: frozen-reference transfer to an independently sourced breast cohort
 
-**Status:** EXECUTED ONCE; exact null-draw array and source-integrity checks reviewed; awaiting independent second-run confirmation and original-study batch/aliquot audit. **Draft research, not a new published scientific result or third-party replication.**
+**Status:** TWO COMPLETE DETERMINISTIC RUNS ON THE PINNED EXTERNAL COHORT; 998/998 ordered null draws identical and all outcome statistics reproduced. Original-study batch/aliquot audit and third-party review remain outstanding. **Draft research, not a new published scientific result or third-party replication.**
 
 **Scientific investigator:** Santiago Maniches, TOPOLOGICA LLC. AI-assisted code and internal review, not unaffiliated replication.  
 **Execution:** [GitHub Actions run 38614749781](https://github.com/smaniches/pca-topology-crossdomain-replication/actions/runs/38614749781), 2026-10-14.  
@@ -52,3 +52,13 @@ The feature-permutation null distribution has mean **3.4236486278220504**, sampl
 The current run completed all executable gates. **Next gate:** a second exact deterministic run on the frozen source/code, independent post-run digest comparison and original PDC batch/aliquot QC reconciliation. After these, external scientific review is still needed for any assertion beyond a finite two-cohort null-reference sensitivity observation.
 
 **Keep PR as a draft; no scientific publication or new DOI from this run without the investigator's review.**
+
+## Deterministic independent execution replay, same source and method
+
+A second fresh GitHub Actions execution ([run 38615582991](https://github.com/smaniches/pca-topology-crossdomain-replication/actions/runs/38615582991), [artifact 11919068825](https://github.com/smaniches/pca-topology-crossdomain-replication/actions/runs/38615582991/artifacts/11919068825)) re-downloaded and Git-blob-authenticated both original files, passed the unchanged synthetic gates and recomputed both complete 499-draw references. **Both ordered arrays of 499 floating-point values are exactly equal** to the first run; observed H1, p-values, exceedance counts, null means, SDs, all cohort/source QC values, and source SHA-256 hashes are also exactly equal.
+
+Only diagnostic parity residuals differed by floating-point roundoff: observed PCA full-SVD distance error **1.56319e-13 vs 1.91847e-13**; first Haar-null PCA parity **2.13163e-13 vs 2.62901e-13**; Haar covariance relative error **5.72016e-16 vs 5.92830e-16**, all far below prescribed tolerances. The results JSON file bytes differ due to workflow/runtime metadata and these tiny diagnostic differences; **the entire statistical outcome and both full-precision null arrays are identical**, not the full ZIP bytes.
+
+Second ZIP SHA-256 `02861f2da2697aeb7fe549317c9ed3c1d966d57d5803fbdb40eab9b5bc9fdc25`, second `brca_confirm.json` SHA-256 `4ca472cac413b217ad5a4afabc290f9316cfb1f583c285b12382b926faaf6654`. Artifact retention is temporary; protocol, pinned public source and exact output-array hashes preserve an executable verification route after artifact expiry.
+
+**Promotion decision:** deterministic software/data replication: **PASS** within this two-run runtime scope. Batch-adjusted interpretation and independent outside-laboratory verification: **UNKNOWN / NOT TESTED**. Do not convert numerical reproduction into scientific peer review or a biological mechanism claim.
