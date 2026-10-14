@@ -19,6 +19,7 @@ import tempfile
 import time
 import urllib.request
 from pathlib import Path
+from contextlib import nullcontext
 
 import numpy as np
 import pandas as pd
@@ -355,9 +356,13 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--mode", choices=("qc", "confirm"), required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--source-dir", type=Path, default=None,
+                        help="Ephemeral raw source directory reused within a CI run")
     args = parser.parse_args()
     started = time.monotonic()
-    with tempfile.TemporaryDirectory(prefix="brca_transfer_") as rawdir:
+    context = (nullcontext(str(args.source_dir)) if args.source_dir
+               else tempfile.TemporaryDirectory(prefix="brca_transfer_"))
+    with context as rawdir:
         provenance = acquire(Path(rawdir))
         x, qc = preprocess(Path(rawdir) / PROTEOME, Path(rawdir) / CLINICAL)
         payload = {
