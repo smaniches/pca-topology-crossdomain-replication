@@ -14,7 +14,7 @@ This table lists the Git-tracked paths and their byte sizes after verified Zenod
 | `CITATION.cff` | 1238 |
 | `LICENSE` | 1301 |
 | `MANIFEST.md` | 13764 |
-| `README.md` | 6700 |
+| `README.md` | 7186 |
 | `audit/CPTAC_RESIDUALIZATION_NULL_GATE_20261009.md` | 3364 |
 | `audit/cptac_covariance_null/PROTOCOL.md` | 7721 |
 | `audit/cptac_covariance_null/experiment.py` | 8528 |
