@@ -49,7 +49,7 @@ N_PCA = 50
 MIN_SAMPLES = 60
 MAX_SAMPLES = 110
 MAX_SOURCE_BYTES = 26_000_000
-TUMOR_HEADER = re.compile(r"^([A-Z0-9]{2}-[A-Z0-9]{4})\.01TCGA$", re.I)
+TUMOR_HEADER = re.compile(r"^([A-Z0-9]{2}-[A-Z0-9]{4})\.([0-9]{2})TCGA$", re.I)
 
 
 def sha256_file(path: Path) -> str:
@@ -108,28 +108,41 @@ def canonical_patient(text: object) -> str | None:
     return match.group(1) if match else None
 
 
-def sample_mapping(proteome: pd.DataFrame, clinical: pd.DataFrame) -> list:
+def sample_mapping(
+    proteome: pd.DataFrame, clinical: pd.DataFrame, enforce_snapshot: bool = False
+) -> list:
+    """One row per patient; technical duplicate runs remain grouped."""
     if "Complete TCGA ID" not in clinical.columns:
         raise ValueError("Required clinical patient identifier column absent")
     clinical_ids = [canonical_patient(i) for i in clinical["Complete TCGA ID"]]
     unique_clinical_ids = {i for i in clinical_ids if i is not None}
     if not unique_clinical_ids:
         raise ValueError("Clinical source lacks recognizable TCGA IDs")
-    matched = []
+    groups: dict[str, list[str]] = {}
     for header in proteome.columns:
         match = TUMOR_HEADER.fullmatch(str(header))
         if match and match.group(1).upper() in unique_clinical_ids:
-            matched.append((match.group(1).upper(), header))
-    matched.sort(key=lambda x: x[0])
-    ids = [i for i, _ in matched]
-    if len(set(ids)) != len(ids):
-        raise ValueError("Duplicate patient identifiers among selected tumor columns")
-    if not (MIN_SAMPLES <= len(ids) <= MAX_SAMPLES):
+            key = match.group(1).upper()
+            groups.setdefault(key, []).append(str(header))
+    mapping = sorted(groups.items())
+    doubles = [(patient, cols) for patient, cols in mapping if len(cols) == 2]
+    if any(len(columns) > 2 for _, columns in mapping):
+        raise ValueError("More than two measurements for a single tumor patient")
+    if not (MIN_SAMPLES <= len(mapping) <= MAX_SAMPLES):
         raise ValueError(
             f"Expected between {MIN_SAMPLES} and {MAX_SAMPLES} "
-            f"distinct matched tumor samples, found {len(ids)}"
+            f"distinct matched tumor patients, found {len(mapping)}"
         )
-    return matched
+    if enforce_snapshot and (
+        sum(len(c) for _, c in mapping) != 80
+        or len(mapping) != 77
+        or len(doubles) != 3
+    ):
+        raise ValueError(
+            "Pinned cohort structure changed: expect 80 tumor measures, "
+            "77 distinct patients, 3 technical replicate doublets"
+        )
+    return mapping
 
 
 def preprocess(proteome_path: Path, clinical_path: Path):
@@ -137,16 +150,36 @@ def preprocess(proteome_path: Path, clinical_path: Path):
     clinical = pd.read_csv(clinical_path, low_memory=False)
     if "RefSeq_accession_number" not in proteome.columns:
         raise ValueError("Missing RefSeq accession feature identifiers")
-    mapping = sample_mapping(proteome, clinical)
-    columns = [header for _, header in mapping]
+    mapping = sample_mapping(proteome, clinical, enforce_snapshot=True)
+    # Pre-outcome schema amendment A01: .XXTCGA is the experiment number,
+    # not a primary-tumor code. Group the three duplicated patient runs.
+    columns = [h for _, group in mapping for h in group]
     ids = [patient for patient, _ in mapping]
     refseq = proteome["RefSeq_accession_number"].fillna("").astype(str).str.strip()
     nonempty = refseq.ne("") & refseq.ne("nan")
     unique = nonempty & ~refseq.duplicated(keep="first")
     duplicates = int((nonempty & refseq.duplicated(keep="first")).sum())
     numeric = proteome.loc[unique, columns].apply(pd.to_numeric, errors="coerce")
-    raw = numeric.to_numpy(dtype=np.float64)
+    raw_measurements = numeric.to_numpy(dtype=np.float64)
     identifiers = refseq.loc[unique].to_numpy(dtype=str)
+
+    # For each protein, average available log2 ratios across a patient's
+    # technical runs. Retain NaN where both measurements are unavailable.
+    aggregated = []
+    offset = 0
+    for _patient, group in mapping:
+        values = raw_measurements[:, offset:offset+len(group)]
+        offset += len(group)
+        valid = np.isfinite(values)
+        counts = valid.sum(axis=1)
+        sums = np.where(valid, values, 0.0).sum(axis=1)
+        average = np.divide(
+            sums, counts,
+            out=np.full(len(values), np.nan, dtype=np.float64),
+            where=counts > 0,
+        )
+        aggregated.append(average)
+    raw = np.column_stack(aggregated)
     measured = np.isfinite(raw)
     fractions = measured.mean(axis=1)
     elig = fractions >= 0.8
@@ -177,8 +210,17 @@ def preprocess(proteome_path: Path, clinical_path: Path):
     x /= sd
     if x.shape != (len(ids), N_FEATURES) or not np.isfinite(x).all():
         raise ValueError("Invalid normalized breast tumor matrix")
+    doublets = [
+        {"patient": patient, "experiment_columns": group}
+        for patient, group in mapping if len(group) == 2
+    ]
     qc = {
         "n_distinct_matched_tumors": len(ids),
+        "n_tumor_measurement_columns": len(columns),
+        "technical_duplicate_patient_groups": doublets,
+        "normal_breast_columns_excluded": [
+            col for col in proteome.columns if str(col).endswith(".CPTAC")
+        ],
         "patient_identifiers_sha256": hashlib.sha256(
             "\n".join(ids).encode("utf-8")
         ).hexdigest(),
@@ -197,8 +239,9 @@ def preprocess(proteome_path: Path, clinical_path: Path):
         ).hexdigest(),
         "batch_covariates_available_in_this_mirror": False,
         "patient_and_batch_audit": (
-            "Unique TCGA tumor columns matched against clinical IDs. "
-            "Original instrument batch/channel and aliquot QC mapping NOT verified."
+            "Unique TCGA patients matched against clinical IDs; technical "
+            "doublets averaged in log2 space per amendment A01. Original "
+            "instrument batch/channel and aliquot QC NOT verified."
         ),
     }
     return x, qc
