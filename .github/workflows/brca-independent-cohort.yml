@@ -1,0 +1,85 @@
+name: BRCA independent-cohort transfer (pre-outcome protocol)
+
+# The documented protocol was committed before this workflow was introduced.
+# No release, DOI, tag, merge, or scientific claim is created by this workflow.
+on:
+  pull_request:
+    paths:
+      - "audit/brca_independent_transfer_20261014/**"
+      - ".github/workflows/brca-independent-cohort.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: brca-independent-transfer-001
+  cancel-in-progress: false
+
+jobs:
+  synthetic-method-controls:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.11"
+      - name: Install exact-analysis runtime
+        run: |
+          python -m pip install \
+            numpy==2.4.6 pandas==3.0.3 scipy==1.17.1 \
+            scikit-learn==1.9.0 ripser==0.6.14
+      - name: Synthetic invariant and failure-closed tests
+        run: |
+          OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 \
+            python -m unittest discover \
+              -s audit/brca_independent_transfer_20261014 \
+              -p "test_*.py" -v
+
+  external-cohort-check-and-transfer:
+    needs: synthetic-method-controls
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.11"
+      - name: Install exact-analysis runtime
+        run: |
+          python -m pip install \
+            numpy==2.4.6 pandas==3.0.3 scipy==1.17.1 \
+            scikit-learn==1.9.0 ripser==0.6.14
+      - name: Acquire authenticated breast-tumor input; eligibility only
+        env:
+          OPENBLAS_NUM_THREADS: "1"
+          OMP_NUM_THREADS: "1"
+          MKL_NUM_THREADS: "1"
+        run: |
+          python audit/brca_independent_transfer_20261014/experiment.py \
+            --mode qc --source-dir "/tmp/brca_raw_not_uploaded" \
+            --output "/tmp/brca_qc.json"
+      - name: Run prespecified 499-draw conditional references in both arms
+        env:
+          OPENBLAS_NUM_THREADS: "1"
+          OMP_NUM_THREADS: "1"
+          MKL_NUM_THREADS: "1"
+        run: |
+          python audit/brca_independent_transfer_20261014/experiment.py \
+            --mode confirm --source-dir "/tmp/brca_raw_not_uploaded" \
+            --output "/tmp/brca_confirm.json"
+      - name: Preserve provenance and null draws; never raw cohort
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: brca-transfer-001-analysis
+          path: |
+            /tmp/brca_qc.json
+            /tmp/brca_confirm.json
+          if-no-files-found: warn
+          retention-days: 90
