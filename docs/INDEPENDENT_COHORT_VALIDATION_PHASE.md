@@ -1,6 +1,8 @@
 # Independent-cohort validation — separate future research phase
 
-**Status:** NOT STARTED. No new cohort acquired, selected, analyzed, or used to generate a scientific result under this phase. This file records the next scientific question; it is **not** a continuation, outstanding requirement, or post-hoc amendment of the completed `CPTAC-TUMOR-MATCHED-NULL-002` study.
+**Status update, 2026-10-14:** a distinct, externally sourced but internally executed conditional transfer check, `BRCA-TRANSFER-001`, now has two complete deterministic runs on a pinned public TCGA breast-cancer proteomics cohort (77 patients; both ordered 499-draw null arrays identical across runs). See its [results and limits](../audit/brca_independent_transfer_20261014/RESULTS.md). The cohort is separately sourced, but the check was designed, executed and interpreted by the same investigator-directed, AI-assisted workflow; it is **not** a replication by independent external researchers. Its original batch/channel/aliquot reconciliation is outstanding, its source is a secondary public mirror, and its design was informed by the known renal outcome. It therefore does not meet the promotion gates and completion criteria below. The **broader batch-reconciled, external independent-validation phase remains NOT COMPLETED.** BRCA-TRANSFER-001 is not part of the v0.3.0 release or any Zenodo version.
+
+**Status as recorded in the v0.3.0 release snapshot:** NOT STARTED. No new cohort acquired, selected, analyzed, or used to generate a scientific result under this phase. That statement was accurate for v0.3.0 and is retained unchanged in its archive. This file records the next scientific question; it is **not** a continuation, outstanding requirement, or post-hoc amendment of the completed `CPTAC-TUMOR-MATCHED-NULL-002` study.
 
 ## Completed finding and boundary
 
@@ -25,7 +27,7 @@ That contrast is evidence of **null-model sensitivity**, not proof that tumor to
 
 ## Completion criteria for this *future* phase
 
-A genuinely independent cohort, frozen analysis contract, covariate/batch audit, complete numerical evidence, exact rerun and bounded scientific interpretation must all exist. Until then the phase status remains **UNKNOWN / NOT EXECUTED**. A successful v0.3.0 GitHub/Zenodo release **does not** satisfy any of these requirements.
+A genuinely independent cohort, frozen analysis contract, covariate/batch audit, complete numerical evidence, exact rerun and bounded scientific interpretation must all exist. Until then the phase status remains **UNKNOWN / NOT EXECUTED**; the narrower BRCA-TRANSFER-001 check dated above does not change that. A successful v0.3.0 GitHub/Zenodo release **does not** satisfy any of these requirements.
 
 ## Scope and versioning
 

@@ -14,7 +14,7 @@ This table lists the Git-tracked paths and their byte sizes after verified Zenod
 | `CITATION.cff` | 1238 |
 | `LICENSE` | 1301 |
 | `MANIFEST.md` | 13764 |
-| `README.md` | 7186 |
+| `README.md` | 7454 |
 | `audit/CPTAC_RESIDUALIZATION_NULL_GATE_20261009.md` | 3364 |
 | `audit/cptac_covariance_null/PROTOCOL.md` | 7721 |
 | `audit/cptac_covariance_null/experiment.py` | 8528 |
@@ -65,7 +65,7 @@ This table lists the Git-tracked paths and their byte sizes after verified Zenod
 | `code/ablation_sweep/README.md` | 6557 |
 | `code/ablation_sweep/verify_default.py` | 2754 |
 | `code/confound_attribution_audit/04_figure_confound_audit.py` | 11724 |
-| `code/confound_attribution_audit/README.md` | 10012 |
+| `code/confound_attribution_audit/README.md` | 10593 |
 | `code/confound_attribution_audit/confound_audit_common.py` | 17660 |
 | `code/confound_attribution_audit/confound_audit_cptac_ccrcc.py` | 9947 |
 | `code/confound_attribution_audit/confound_audit_gse146889.py` | 14492 |
@@ -87,10 +87,10 @@ This table lists the Git-tracked paths and their byte sizes after verified Zenod
 | `code/replication_cross_dataset/04c_figure_cross_dataset_replication.py` | 22859 |
 | `code/replication_cross_dataset/README.md` | 2600 |
 | `docs/ARCHITECTURE.md` | 8662 |
-| `docs/ARCHIVAL_PROVENANCE.md` | 11101 |
+| `docs/ARCHIVAL_PROVENANCE.md` | 11613 |
 | `docs/DESIGN_DECISIONS.md` | 10134 |
 | `docs/EXPERIMENT_EXPLAINED.md` | 6838 |
-| `docs/INDEPENDENT_COHORT_VALIDATION_PHASE.md` | 4261 |
+| `docs/INDEPENDENT_COHORT_VALIDATION_PHASE.md` | 5466 |
 | `docs/LIMITATIONS.md` | 9786 |
 | `docs/USAGE.md` | 15226 |
 | `experiments/cptac_full_null_20261009/EXECUTION_WORKFLOW.yml` | 9818 |
@@ -129,10 +129,10 @@ This table lists the Git-tracked paths and their byte sizes after verified Zenod
 | `results/ablation_sweep/imputation_overlap_table.csv` | 246 |
 | `results/ablation_sweep/interaction_check_table.csv` | 631 |
 | `results/ablation_sweep/permutation_convergence_table.csv` | 1085 |
-| `results/confound_attribution_audit/confound_audit_CPTAC_CCRCC.md` | 18437 |
-| `results/confound_attribution_audit/confound_audit_GSE146889.md` | 15757 |
-| `results/confound_attribution_audit/confound_audit_GSE81089.md` | 14115 |
-| `results/confound_attribution_audit/confound_audit_TCGA_LUAD.md` | 19802 |
+| `results/confound_attribution_audit/confound_audit_CPTAC_CCRCC.md` | 19492 |
+| `results/confound_attribution_audit/confound_audit_GSE146889.md` | 16941 |
+| `results/confound_attribution_audit/confound_audit_GSE81089.md` | 15299 |
+| `results/confound_attribution_audit/confound_audit_TCGA_LUAD.md` | 20986 |
 | `results/confound_attribution_audit/cross_dataset_confound_audit_summary.csv` | 1373 |
 | `results/confound_attribution_audit/figures/bootstrap_ci_and_auc_check.png` | 117761 |
 | `results/confound_attribution_audit/figures/bootstrap_ci_and_auc_check_CPTAC_CCRCC.png` | 125390 |

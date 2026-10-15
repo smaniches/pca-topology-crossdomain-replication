@@ -53,6 +53,8 @@ The current run completed all executable gates. **Next gate:** a second exact de
 
 **Keep PR as a draft; no scientific publication or new DOI from this run without the investigator's review.**
 
+*Status note, 2026-10-15:* the sentence above was written while the work was on a draft branch. [Pull request #19](https://github.com/smaniches/pca-topology-crossdomain-replication/pull/19) was subsequently merged into `main` on 2026-10-14 at 19:16 UTC (merge commit `321f066e312e1cb2d830de4bcf6e43f23bc041b4`). That merge added this record to `main` only; no GitHub release, Zenodo version or DOI has been created for BRCA-TRANSFER-001, and the scientific promotion gates in this file are unchanged.
+
 ## Deterministic independent execution replay, same source and method
 
 A second fresh GitHub Actions execution ([run 38615582991](https://github.com/smaniches/pca-topology-crossdomain-replication/actions/runs/38615582991), [artifact 11919068825](https://github.com/smaniches/pca-topology-crossdomain-replication/actions/runs/38615582991/artifacts/11919068825)) re-downloaded and Git-blob-authenticated both original files, passed the unchanged synthetic gates and recomputed both complete 499-draw references. **Both ordered arrays of 499 floating-point values are exactly equal** to the first run; observed H1, p-values, exceedance counts, null means, SDs, all cohort/source QC values, and source SHA-256 hashes are also exactly equal.

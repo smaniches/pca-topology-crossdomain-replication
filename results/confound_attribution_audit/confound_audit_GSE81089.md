@@ -1,5 +1,12 @@
 # Confound-Attribution Audit: Is the GSE81089 H1 Signal a Tumor/Normal Class-Mean-Shift Artifact?
 
+> **Correction pointer, added 2026-10-15. The historical analysis below is unchanged.**
+> Read the existing [2026-10-09 methodological correction](../../paper/METHODOLOGICAL_CORRECTIONS_2026-10-09.md) before citing this report.
+>
+> **Withdrawn (correction section 1):** the residualized-classifier AUC permutation significance (`p=0.005`) and the reading of the post-residualization AUC collapse as evidence that the confound was removed. The AUC values remain historical records, not valid held-out discrimination estimates. The class-mean residualization used every sample's true label before cross-validation, and the label permutation kept that label-informed representation fixed.
+>
+> **Qualified, not withdrawn (correction section 2):** the post-residualization max-H1 z-scores and p-values below were computed against Gaussian and permutation reference draws that were not subjected to the same class-mean subtraction, so they cannot by themselves establish persistence after matched confound removal. The correction does not retroactively invalidate the observed max-H1 values or the within-class, within-stratum and bootstrap numbers; each keeps its own stated assumptions.
+
 **Project:** TOPOLOGICA PCA-topology-cross-domain replication | **Dataset:** GSE81089 (NSCLC bulk RNA-seq, GEO)
 **Protocol:** `confound-attribution-audit` skill, adapted from ML-attribution to a topological setting
 **Data refetched fresh** from `ftp.ncbi.nlm.nih.gov/geo/series/GSE81nnn/GSE81089/suppl/GSE81089_FPKM_cufflinks.tsv.gz` and reprocessed per the locked pre-registration's fixed hyperparameters (log1p(FPKM), ENSG-only rows, −1.0 sentinels → 0, HVG=2000, PCA=50, seed=42, standardize-then-PCA). Reproduced sample counts (199 tumor / 19 normal / 218 total) and the mixed-set observed max-H1 persistence (3.887) match the prior GSE81089 pilot exactly, confirming the refetch/reprocess is faithful to the locked pipeline.
