@@ -1,5 +1,12 @@
 # Confound-Attribution Audit: Is the TCGA-LUAD H1 Signal a Tumor/Normal Class-Mean-Shift Artifact?
 
+> **Correction pointer, added 2026-10-15. The historical analysis below is unchanged.**
+> Read the existing [2026-10-09 methodological correction](../../paper/METHODOLOGICAL_CORRECTIONS_2026-10-09.md) before citing this report.
+>
+> **Withdrawn (correction section 1):** the residualized-classifier AUC permutation significance (`p=0.005`) and the reading of the post-residualization AUC collapse as evidence that the confound was removed. The AUC values remain historical records, not valid held-out discrimination estimates. The class-mean residualization used every sample's true label before cross-validation, and the label permutation kept that label-informed representation fixed.
+>
+> **Qualified, not withdrawn (correction section 2):** the post-residualization max-H1 z-scores and p-values below were computed against Gaussian and permutation reference draws that were not subjected to the same class-mean subtraction, so they cannot by themselves establish persistence after matched confound removal. The correction does not retroactively invalidate the observed max-H1 values or the within-class, within-stratum and bootstrap numbers; each keeps its own stated assumptions.
+
 **Project:** TOPOLOGICA PCA-topology cross-domain replication | **Dataset:** TCGA-LUAD (lung adenocarcinoma, RNA-seq layer only)
 **Protocol:** `confound-attribution-audit` skill, identical methodology to the GSE81089 pilot audit
 **Data reused** from the already-committed TCGA-LUAD confirmatory analysis (`rna_fpkm_matrix.pkl`, `rna_sample_meta.csv`, 116 samples: 58 Primary Tumor / 58 Solid Tissue Normal, STAR-Counts FPKM, GENCODE v36). The RNA-seq preprocessing pipeline (log1p(FPKM), top-2000-by-variance HVG, standardize, PCA(50), seed=42) was reproduced independently in this audit and matched the original report's real max-H1 values to full numerical precision (raw HVG: 8.326534 vs. reported 8.327; PCA(50): 7.433323 vs. reported 7.433), confirming the reproduction is faithful before any audit computation began. Methylation is excluded per task scope — that layer's PCA-space real max-H1 was already found to be exactly 0 (no signal exists to attribute).

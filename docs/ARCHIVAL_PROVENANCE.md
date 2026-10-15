@@ -49,7 +49,9 @@ The fully executed and independently replayed [110-tumor matched study](../resul
 
 **Immutable snapshot boundary:** later `main` documentation/CFF changes containing the minted DOI are **not automatically inside the v0.3.0 GitHub tag or Zenodo ZIP**, because those source archives were frozen at publication. The post-release DOI citation is a later metadata correction, not a reason to overwrite the validated archive.
 
-The separately documented [independent-cohort validation phase](INDEPENDENT_COHORT_VALIDATION_PHASE.md) remains **NOT STARTED**. Publishing the matched null experiment does not constitute, initiate, or complete independent biological replication.
+At the 2026-10-11 verification, the separately documented [independent-cohort validation phase](INDEPENDENT_COHORT_VALIDATION_PHASE.md) was **NOT STARTED**. Publishing the matched null experiment does not constitute, initiate, or complete independent biological replication.
+
+**Post-release status, 2026-10-14:** the internally executed `BRCA-TRANSFER-001` conditional transfer check on a separately sourced breast cohort has two complete deterministic runs ([results](../audit/brca_independent_transfer_20261014/RESULTS.md)). It exists only on `main`: it is **not** in the v0.3.0 tag or Zenodo ZIP, has no DOI, and does not complete the broader batch-reconciled, external independent-validation phase. The 2026-10-11 archive verification above is unchanged.
 
 ## Historical submission and legal boundaries
 

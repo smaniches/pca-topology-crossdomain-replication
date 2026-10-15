@@ -1,5 +1,12 @@
 # Confound-Attribution Audit: Is the CPTAC-CCRCC H1 Signal a Tumor/Normal Class-Mean-Shift Artifact?
 
+> **Correction pointer, added 2026-10-15. The historical analysis below is unchanged.**
+> Read the existing [2026-10-09 methodological correction](../../paper/METHODOLOGICAL_CORRECTIONS_2026-10-09.md) before citing this report.
+>
+> **Withdrawn (correction section 1):** the reading of the post-residualization AUC collapse (1.000 to 0.236) as evidence that the confound was removed. The AUC values remain historical records, not valid held-out discrimination estimates. The class-mean residualization used every sample's true label before cross-validation.
+>
+> **Qualified, not withdrawn (correction section 2):** the post-residualization max-H1 z-scores and p-values below were computed against Gaussian and permutation reference draws that were not subjected to the same class-mean subtraction, so they cannot by themselves establish persistence after matched confound removal. The correction does not retroactively invalidate the observed max-H1 values or the within-class, within-stratum and bootstrap numbers; each keeps its own stated assumptions.
+
 **Project:** TOPOLOGICA PCA-topology-cross-domain replication | **Dataset:** CPTAC-CCRCC proteomics (PDC000127)
 **Protocol:** `confound-attribution-audit` skill, replicating the GSE81089 pilot's exact methodology on a second dataset (proteomics, renal cell carcinoma)
 **Data reused** from the already-saved, pipeline-verified artifacts `cptac_ccrcc_log2ratio_raw.csv` (9,591 proteins × 194 samples, log2-ratio-to-reference, PDC's own median-centered TMT output) and `cptac_ccrcc_labels.csv` (110 Primary Tumor / 84 Solid Tissue Normal). Preprocessing exactly reproduced from `cptac_ccrcc_report.md`: impute missing → 0, median-center each sample (log-ratio space, confirmed a no-op — PDC's log2_ratio arrives pre-centered), top-2000 HVG by variance, per-protein standardization, PCA(50), seed=42. Reproduction verified: raw top-2000-HVG max-H1 persistence = 3.832947 and PCA(50) max-H1 persistence = 4.683274, both matching the report's stated values (3.833, 4.683) to 6 decimal places, and 5-fold CV AUC on PCA(50) = 1.000, matching the report's stated AUC exactly.

@@ -1,5 +1,12 @@
 # Confound-attribution audit (4 cohorts)
 
+> **Correction pointer, added 2026-10-15.** Control 3 below describes the historical
+> residualization design. The existing [2026-10-09 methodological correction](../../paper/METHODOLOGICAL_CORRECTIONS_2026-10-09.md)
+> **withdraws** its classifier-AUC permutation significance and the use of the AUC collapse
+> as evidence of confound removal (section 1), and **qualifies** its post-residualization
+> max-H1 z-scores and p-values because the reference draws were not pipeline-matched
+> (section 2). The scripts and committed reports are preserved unchanged as historical records.
+
 Reproduces `results/confound_attribution_audit/confound_audit_{GSE81089,CPTAC_CCRCC,
 TCGA_LUAD,GSE146889}.md` and their supporting `tableN_*.csv` files.
 
