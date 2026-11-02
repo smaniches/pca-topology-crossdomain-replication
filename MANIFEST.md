@@ -1,10 +1,11 @@
 # Repository file inventory
 
-This table lists the Git-tracked paths and their byte sizes after verified Zenodo v0.3.0 archival reconciliation. It does not list untracked caches or locally generated results. The checksum registry checks every tracked path **except itself**, which is intentionally excluded to avoid a self-referential digest. Neither inventory nor hashing verifies a scientific interpretation.
+This table inventories the files tracked in the **current Git checkout**, not the immutable Zenodo v0.3.0 release. The published archive retains its own frozen source and checksums. No untracked caches or locally generated results are listed. The current `checksums.sha256` covers every tracked file except itself to avoid self-reference. `audit/verify_registry_complete.py` compares the live Git tree, byte sizes, and hashes against both registries in CI. These checks establish byte integrity, not scientific validity.
 
 | Path | Size (bytes) |
 | --- | ---: |
-| `.github/workflows/ci.yml` | 3240 |
+| `.github/workflows/brca-independent-cohort.yml` | 3079 |
+| `.github/workflows/ci.yml` | 3496 |
 | `.github/workflows/cptac-covariance-null.yml` | 3399 |
 | `.github/workflows/cptac-matched-null.yml` | 3655 |
 | `.github/workflows/cptac-residualization-null.yml` | 3370 |
@@ -13,9 +14,14 @@ This table lists the Git-tracked paths and their byte sizes after verified Zenod
 | `.gitignore` | 102 |
 | `CITATION.cff` | 1238 |
 | `LICENSE` | 1301 |
-| `MANIFEST.md` | 13764 |
+| `MANIFEST.md` | 14467 |
 | `README.md` | 7454 |
 | `audit/CPTAC_RESIDUALIZATION_NULL_GATE_20261009.md` | 3364 |
+| `audit/brca_independent_transfer_20261014/AMENDMENT-A01.md` | 3996 |
+| `audit/brca_independent_transfer_20261014/PROTOCOL.md` | 8104 |
+| `audit/brca_independent_transfer_20261014/RESULTS.md` | 11155 |
+| `audit/brca_independent_transfer_20261014/experiment.py` | 18946 |
+| `audit/brca_independent_transfer_20261014/test_experiment.py` | 5576 |
 | `audit/cptac_covariance_null/PROTOCOL.md` | 7721 |
 | `audit/cptac_covariance_null/experiment.py` | 8528 |
 | `audit/cptac_covariance_null/plot_null_distribution.py` | 6562 |
@@ -50,19 +56,22 @@ This table lists the Git-tracked paths and their byte sizes after verified Zenod
 | `audit/probe_zenodo_v0.2.0.py` | 6902 |
 | `audit/probe_zenodo_v0.3.0.py` | 7030 |
 | `audit/verify_archive_provenance.py` | 4914 |
+| `audit/verify_registry_complete.py` | 2774 |
 | `audit/verify_zenodo_archive_bytes.py` | 8598 |
 | `audit/verify_zenodo_v0.3.0_bytes.py` | 10231 |
-| `checksums.sha256` | 23917 |
+| `checksums.sha256` | 24954 |
 | `code/.gitignore` | 929 |
 | `code/03_statistics_and_results_table.py` | 10271 |
 | `code/04a_figure_persistence_diagrams.py` | 5807 |
 | `code/04b_figure_barcode_null_distributions.py` | 8101 |
 | `code/ablation_sweep/00_download_and_preprocess.py` | 4191 |
 | `code/ablation_sweep/01_make_configs.py` | 2863 |
-| `code/ablation_sweep/02_run_sweep.py` | 11444 |
+| `code/ablation_sweep/02_run_sweep.py` | 12066 |
 | `code/ablation_sweep/03_aggregate_results.py` | 11582 |
 | `code/ablation_sweep/04_figure_sweep_sensitivity.py` | 10178 |
-| `code/ablation_sweep/README.md` | 6557 |
+| `code/ablation_sweep/README.md` | 7882 |
+| `code/ablation_sweep/sweep_checkpoint.py` | 4471 |
+| `code/ablation_sweep/test_sweep_checkpoint.py` | 5519 |
 | `code/ablation_sweep/verify_default.py` | 2754 |
 | `code/confound_attribution_audit/04_figure_confound_audit.py` | 11724 |
 | `code/confound_attribution_audit/README.md` | 10593 |
@@ -91,7 +100,7 @@ This table lists the Git-tracked paths and their byte sizes after verified Zenod
 | `docs/DESIGN_DECISIONS.md` | 10134 |
 | `docs/EXPERIMENT_EXPLAINED.md` | 6838 |
 | `docs/INDEPENDENT_COHORT_VALIDATION_PHASE.md` | 5466 |
-| `docs/LIMITATIONS.md` | 9786 |
+| `docs/LIMITATIONS.md` | 10260 |
 | `docs/USAGE.md` | 15226 |
 | `experiments/cptac_full_null_20261009/EXECUTION_WORKFLOW.yml` | 9818 |
 | `experiments/cptac_full_null_20261009/PROTOCOL.md` | 3051 |

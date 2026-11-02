@@ -19,6 +19,9 @@ jobs:
       - name: Verify checksums
         run: sha256sum -c checksums.sha256
 
+      - name: Verify live file-registry completeness
+        run: python audit/verify_registry_complete.py
+
       - name: Verify historical release citation and sealed submission evidence
         run: python audit/verify_archive_provenance.py
 
@@ -26,6 +29,9 @@ jobs:
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: "3.11"
+
+      - name: Verify ablation sweep checkpoint and failure controls
+        run: python -m unittest discover -s code/ablation_sweep -p 'test_*.py'
 
       - name: Validate data-derived CPTAC null histogram
         run: python audit/cptac_covariance_null/plot_null_distribution.py --check

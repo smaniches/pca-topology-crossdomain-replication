@@ -38,6 +38,8 @@ import time
 import warnings
 from multiprocessing import Pool
 
+from sweep_checkpoint import execute_configs, load_records
+
 import numpy as np
 import pandas as pd
 from ripser import ripser
@@ -197,57 +199,66 @@ def run_config(tag, imputation_rule, n_hvg, n_pcs, n_perm_pipeline, n_draws_gaus
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--quick", type=int, default=None,
-                     help="Cap n_perm_pipeline and n_draws_gaussian at this value for every "
-                          "config (smoke-test mode; real-data statistics are unaffected).")
+                    help="Cap n_perm_pipeline and n_draws_gaussian at this value for every "
+                         "config (smoke-test mode; real-data statistics are unaffected).")
     ap.add_argument("--workers", type=int, default=4)
     ap.add_argument("--tags", type=str, default=None,
-                     help="Comma-separated subset of config tags to run (default: all 18).")
+                    help="Comma-separated subset of config tags to run (default: all 18).")
     args = ap.parse_args()
+    if args.workers < 1:
+        ap.error("--workers must be positive")
+    if args.quick is not None and args.quick < 1:
+        ap.error("--quick must be positive")
 
     imputation_data = load_imputation_data()
     os.makedirs(RESULTS_DIR, exist_ok=True)
 
-    configs = json.load(open(os.path.join(_ROOT, "configs.json")))
+    with open(os.path.join(_ROOT, "configs.json"), encoding="utf-8") as file:
+        configs = json.load(file)
     if args.tags:
         wanted = set(args.tags.split(","))
-        configs = [c for c in configs if c['tag'] in wanted]
+        available = {config["tag"] for config in configs}
+        unknown = wanted - available
+        if unknown:
+            ap.error(f"Unknown config tags: {sorted(unknown)}")
+        configs = [config for config in configs if config["tag"] in wanted]
     if args.quick is not None:
-        for c in configs:
-            c['n_perm_pipeline'] = min(c['n_perm_pipeline'], args.quick)
-            c['n_draws_gaussian'] = min(c['n_draws_gaussian'], args.quick)
+        for config in configs:
+            config["n_perm_pipeline"] = min(config["n_perm_pipeline"], args.quick)
+            config["n_draws_gaussian"] = min(config["n_draws_gaussian"], args.quick)
         print(f"--quick {args.quick}: capping permutation/draw counts "
               f"(z-scores/p-values will differ from the full run; real-data "
               f"statistics will not).", flush=True)
 
     results_path = os.path.join(RESULTS_DIR, "sweep_results.json")
-    all_results = []
-    done_tags = set()
-    if os.path.exists(results_path):
-        prev = json.load(open(results_path))
-        all_results = prev
-        done_tags = {r['tag'] for r in prev}
-        print(f"Resuming: {len(done_tags)} configs already done", flush=True)
+    all_results = load_records(results_path)
+    if all_results:
+        print(f"Loaded {len(all_results)} checkpoint records; only matching successful "
+              "configs with nonempty null-distribution files will be reused.", flush=True)
+
+    def report_failure(config, error):
+        import traceback
+        print(f"[{config['tag']}] FAILED: {error}\n{traceback.format_exc()}", flush=True)
 
     pool = Pool(args.workers)
     try:
-        for cfg in configs:
-            if cfg['tag'] in done_tags:
-                continue
-            try:
-                res = run_config(pool=pool, n_workers=args.workers,
-                                  imputation_data=imputation_data, **cfg)
-                all_results.append(res)
-            except Exception as e:
-                import traceback
-                print(f"[{cfg['tag']}] FAILED: {e}\n{traceback.format_exc()}", flush=True)
-                all_results.append({'tag': cfg['tag'], 'FAILED': True, 'error': str(e), **cfg})
-            with open(results_path, "w") as f:
-                json.dump(all_results, f, indent=2, default=str)
+        failed_tags, skipped = execute_configs(
+            configs, all_results, RESULTS_DIR, results_path,
+            lambda config: run_config(pool=pool, n_workers=args.workers,
+                                      imputation_data=imputation_data, **config),
+            report_failure,
+        )
     finally:
         pool.close()
         pool.join()
-    print("SWEEP COMPLETE", flush=True)
 
+    if failed_tags:
+        print(f"SWEEP FAILED: {len(failed_tags)}/{len(configs)} requested configs failed: "
+              f"{', '.join(failed_tags)}", flush=True)
+        sys.exit(1)
+    scope = "SELECTED CONFIGS" if args.tags else "SWEEP"
+    print(f"{scope} COMPLETE: {len(configs)}/{len(configs)} requested configs succeeded "
+          f"({skipped} reused from matching checkpoints).", flush=True)
 
 if __name__ == "__main__":
     main()
