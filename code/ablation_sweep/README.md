@@ -72,6 +72,32 @@ python 03_aggregate_results.py
 python verify_default.py
 ```
 
+## Checkpoint recovery and failure semantics
+
+The sweep keeps one checkpoint record per configuration tag in
+`results/sweep_results.json`. On resume, a record is reused **only** if it
+succeeded, its effective settings (including the permutation and Gaussian
+draw counts) still match the requested run, and its null-distribution file
+is present and nonempty. Previous `FAILED` entries, missing artifacts, and
+records produced with different `--quick` settings are recomputed. Their
+old records are **replaced**, not duplicated.
+
+Checkpoint JSON is replaced atomically after each attempted configuration.
+An unsuccessful requested configuration is recorded with `FAILED: true`,
+and the sweep exits nonzero instead of printing a misleading success banner.
+`--tags` runs report completion only for the selected subset. Invalid or
+duplicate checkpoint records fail explicitly rather than being silently
+accepted. If results are reused, the recorded null-distribution file's
+*contents* are not revalidated by this resume check; preserve and inspect
+the source artifacts before drawing scientific conclusions.
+
+No existing archived results were recomputed or changed by this fix. The
+checkpoint behavior can be tested without network or research data:
+
+```bash
+python -m unittest discover -s code/ablation_sweep -p 'test_*.py'
+```
+
 ## Verification performed
 
 Ran the full 18-config grid locally with `--quick 20` (20 permutation/
