@@ -19,6 +19,9 @@ jobs:
       - name: Verify checksums
         run: sha256sum -c checksums.sha256
 
+      - name: Verify live file-registry completeness
+        run: python audit/verify_registry_complete.py
+
       - name: Verify historical release citation and sealed submission evidence
         run: python audit/verify_archive_provenance.py
 
